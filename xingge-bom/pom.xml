@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    行歌项目 BOM (Bill of Materials) 依赖版本管理
+    
+    作用：
+    1. 统一管理项目中所有依赖的版本号
+    2. 避免不同模块间的版本冲突
+    3. 简化子模块的依赖声明
+    
+    使用方式：
+    在子模块的 pom.xml 中引入此 BOM：
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-bom</artifactId>
+                <version>0.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    
+    然后在 dependencies 中直接使用依赖，无需指定版本号
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 继承父项目配置 -->
+    <parent>
+        <groupId>tech.msop</groupId>
+        <artifactId>xingge</artifactId>
+        <version>0.0.1</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- 当前模块信息 -->
+    <artifactId>xingge-bom</artifactId>
+    <name>xingge-bom</name>
+    <description>行歌项目依赖版本管理 - 统一管理所有第三方依赖的版本号</description>
+    <packaging>pom</packaging>
+
+    <!-- 版本属性定义 - 统一管理所有第三方依赖的版本号 -->
+    <properties>
+        <!-- ================================ Spring 生态系统 ================================ -->
+        <!-- Spring Boot 2.7.18 - LTS版本，稳定可靠，支持Java 8-17 -->
+        <spring-boot.version>2.7.18</spring-boot.version>
+        <!-- Spring Cloud 2021.0.8 - 与Spring Boot 2.7.x兼容的稳定版本 -->
+        <spring-cloud.version>2021.0.8</spring-cloud.version>
+        <!-- Spring Cloud Alibaba 2021.0.5.0 - 与Spring Cloud 2021.0.x兼容 -->
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+        
+        <!-- ================================ 数据库相关 ================================ -->
+        <!-- MySQL 8.0.33 - 最新稳定版本，性能优化，安全性增强 -->
+        <mysql.version>8.0.33</mysql.version>
+        <!-- Druid 1.2.20 - 阿里巴巴数据库连接池，监控功能强大 -->
+        <druid.version>1.2.20</druid.version>
+        <!-- MyBatis Plus 3.5.4.1 - MyBatis增强工具，简化CRUD操作 -->
+        <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
+        <!-- PageHelper 1.4.7 - MyBatis分页插件，支持多数据库 -->
+        <pagehelper.version>1.4.7</pagehelper.version>
+        
+        <!-- ================================ 缓存相关 ================================ -->
+        <!-- Redisson 3.24.3 - Redis Java客户端，支持分布式锁、集合等高级功能 -->
+        <redisson.version>3.24.3</redisson.version>
+        
+        <!-- ================================ 工具类库 ================================ -->
+        <!-- Hutool 5.8.22 - Java工具类库，简化开发 -->
+        <hutool.version>5.8.22</hutool.version>
+        <!-- FastJSON2 2.0.43 - 阿里巴巴JSON处理库，性能优异 -->
+        <fastjson2.version>2.0.43</fastjson2.version>
+        <!-- Knife4j 4.4.0 - Swagger UI增强版，API文档生成工具 -->
+        <knife4j.version>4.4.0</knife4j.version>
+        <!-- MapStruct 1.5.5.Final - Java Bean映射工具，编译时生成映射代码 -->
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        
+        <!-- ================================ 安全相关 ================================ -->
+        <!-- JJWT 0.11.5 - Java JWT库，用于生成和验证JWT令牌 -->
+        <jwt.version>0.11.5</jwt.version>
+        <!-- BouncyCastle 1.76 - 加密算法库，提供各种加密解密功能 -->
+        <bcprov.version>1.76</bcprov.version>
+        
+        <!-- ================================ 监控相关 ================================ -->
+        <!-- Micrometer 1.10.13 - 应用监控指标库，支持Prometheus等监控系统 -->
+        <micrometer.version>1.10.13</micrometer.version>
+        
+        <!-- ================================ 测试相关 ================================ -->
+        <!-- TestContainers 1.19.3 - 集成测试容器化工具，支持Docker容器测试 -->
+        <testcontainers.version>1.19.3</testcontainers.version>
+    </properties>
+
+    <!-- 依赖管理 - 定义项目中所有依赖的版本，子模块可直接引用无需指定版本 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- ================================ Spring 生态系统 BOM ================================ -->
+            <!-- Spring Boot 官方 BOM - 管理所有 Spring Boot 相关依赖的版本 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- Spring Cloud 官方 BOM - 管理微服务相关组件版本（网关、配置中心、服务发现等） -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- Spring Cloud Alibaba BOM - 管理阿里云微服务组件版本（Nacos、Sentinel、Seata等） -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- ================================ 数据库相关依赖 ================================ -->
+            <!-- MySQL 数据库驱动 - 连接MySQL数据库的JDBC驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <!-- Druid 数据库连接池 - 阿里巴巴开源，提供监控、防SQL注入等功能 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- MyBatis Plus - MyBatis增强工具，提供通用CRUD、代码生成器等功能 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- PageHelper 分页插件 - MyBatis物理分页插件，支持多种数据库 -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper.version}</version>
+            </dependency>
+            
+            <!-- ================================ 缓存相关依赖 ================================ -->
+            <!-- Redisson - Redis Java客户端，支持分布式锁、分布式集合、分布式对象等高级功能 -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            
+            <!-- ================================ 工具类库依赖 ================================ -->
+            <!-- Hutool - Java工具类库，包含加密解密、转换、日期、各种Util等 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!-- FastJSON2 - 阿里巴巴JSON处理库，性能优异，安全性高 -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson2.version}</version>
+            </dependency>
+            <!-- Knife4j - Swagger UI增强版，提供美观的API文档界面和在线调试功能 -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!-- MapStruct - Java Bean映射工具，编译时生成高性能的映射代码 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!-- MapStruct 注解处理器 - 编译时处理MapStruct注解，生成映射实现类 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            
+            <!-- ================================ 安全相关依赖 ================================ -->
+            <!-- JJWT API - JWT令牌生成和解析的API接口 -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!-- JJWT 实现 - JWT令牌生成和解析的具体实现 -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!-- JJWT Jackson支持 - 使用Jackson进行JWT的JSON序列化和反序列化 -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!-- BouncyCastle 加密库 - 提供各种加密算法实现，支持RSA、AES等加密方式 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov.version}</version>
+            </dependency>
+            
+            <!-- ================================ 监控相关依赖 ================================ -->
+            <!-- Micrometer Prometheus注册表 - 应用监控指标收集，支持Prometheus监控系统 -->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${micrometer.version}</version>
+            </dependency>
+            
+            <!-- ================================ 测试相关依赖 ================================ -->
+            <!-- TestContainers BOM - 集成测试容器化工具，支持Docker容器测试环境 -->
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
