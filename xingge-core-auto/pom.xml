@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>tech.msop</groupId>
+        <artifactId>xingge</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <artifactId>xingge-core-auto</artifactId>
+    <packaging>jar</packaging>
+
+    <name>xingge-core-auto</name>
+
+    <build>
+        <plugins>
+
+            <!-- Maven编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                    <encoding>UTF-8</encoding>
+                    <!-- 禁用注解处理器，避免循环依赖 -->
+                    <proc>none</proc>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

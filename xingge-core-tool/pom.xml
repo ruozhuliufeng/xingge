@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    xingge-core-tool 核心模块
+    
+    功能说明：
+    - 为各个服务类提供基础支持
+    - 包含通用工具类、常量定义、异常处理等
+    - 提供统一的配置管理和基础组件
+    - 作为其他业务模块的基础依赖
+    
+    使用方式：
+    在需要使用核心功能的模块中添加依赖：
+    <dependency>
+        <groupId>tech.msop</groupId>
+        <artifactId>xingge-core</artifactId>
+    </dependency>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 继承父项目 -->
+    <parent>
+        <groupId>tech.msop</groupId>
+        <artifactId>xingge</artifactId>
+        <version>0.0.1</version>
+    </parent>
+
+    <!-- 当前模块信息 -->
+    <artifactId>xingge-core-tool</artifactId>
+    <packaging>jar</packaging>
+    <name>xingge-core-tool</name>
+    <description>行歌项目核心模块，为各个服务类提供基础支持</description>
+
+    <!-- 模块属性配置 -->
+    <properties>
+        <!-- 编译配置 -->
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>
