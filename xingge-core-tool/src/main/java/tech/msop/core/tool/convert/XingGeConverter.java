@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 @Slf4j
 @AllArgsConstructor
-public class MsConverter implements Converter {
+public class XingGeConverter implements Converter {
 	private static final ConcurrentMap<String, TypeDescriptor> TYPE_CACHE = new ConcurrentHashMap<>();
 	private final Class<?> sourceClazz;
 	private final Class<?> targetClazz;
@@ -47,12 +47,12 @@ public class MsConverter implements Converter {
 			return value;
 		}
 		try {
-			TypeDescriptor targetDescriptor = MsConverter.getTypeDescriptor(targetClazz, (String) fieldName);
+			TypeDescriptor targetDescriptor = XingGeConverter.getTypeDescriptor(targetClazz, (String) fieldName);
 			// 1. 判断 sourceClazz 为 Map
 			if (Map.class.isAssignableFrom(sourceClazz)) {
 				return ConvertUtil.convert(value, targetDescriptor);
 			} else {
-				TypeDescriptor sourceDescriptor = MsConverter.getTypeDescriptor(sourceClazz, (String) fieldName);
+				TypeDescriptor sourceDescriptor = XingGeConverter.getTypeDescriptor(sourceClazz, (String) fieldName);
 				return ConvertUtil.convert(value, sourceDescriptor, targetDescriptor);
 			}
 		} catch (Throwable e) {

@@ -2,7 +2,7 @@ package tech.msop.core.tool.model;
 
 import javax.servlet.http.HttpServletResponse;
 
-public enum CodeEnum {
+public enum CodeEnum implements ICodeResult{
     /**
      * 操作成功
      */
@@ -69,28 +69,22 @@ public enum CodeEnum {
     PARAM_VALID_ERROR(HttpServletResponse.SC_BAD_REQUEST, "参数校验失败"),
     ;
 
-    private Integer code;
-    private String message;
+    private final Integer code;
+    private final String message;
 
     CodeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
 
+    @Override
     public Integer getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
+    @Override
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
 

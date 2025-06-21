@@ -3,9 +3,9 @@ package tech.msop.core.tool.utils;
 
 
 import tech.msop.core.tool.beans.BeanProperty;
-import tech.msop.core.tool.beans.MsBeanCopier;
-import tech.msop.core.tool.beans.MsBeanMap;
-import tech.msop.core.tool.convert.MsConverter;
+import tech.msop.core.tool.beans.XingGeBeanCopier;
+import tech.msop.core.tool.beans.XingGeBeanMap;
+import tech.msop.core.tool.convert.XingGeConverter;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -136,7 +136,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		if (source == null) {
 			return null;
 		}
-		MsBeanCopier copier = MsBeanCopier.create(sourceClazz, targetClazz, false);
+		XingGeBeanCopier copier = XingGeBeanCopier.create(sourceClazz, targetClazz, false);
 		T to = newInstance(targetClazz);
 		copier.copy(source, to, null);
 		return to;
@@ -187,7 +187,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		if (source == null || targetBean == null) {
 			return;
 		}
-		MsBeanCopier copier = MsBeanCopier
+		XingGeBeanCopier copier = XingGeBeanCopier
 			.create(source.getClass(), targetBean.getClass(), false);
 
 		copier.copy(source, targetBean, null);
@@ -207,7 +207,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		if (source == null || targetBean == null) {
 			return;
 		}
-		MsBeanCopier copier = MsBeanCopier
+		XingGeBeanCopier copier = XingGeBeanCopier
 			.create(source.getClass(), targetBean.getClass(), false, true);
 
 		copier.copy(source, targetBean, null);
@@ -251,9 +251,9 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		if (source == null) {
 			return null;
 		}
-		MsBeanCopier copier = MsBeanCopier.create(sourceClazz, targetClazz, true);
+		XingGeBeanCopier copier = XingGeBeanCopier.create(sourceClazz, targetClazz, true);
 		T to = newInstance(targetClazz);
-		copier.copy(source, to, new MsConverter(sourceClazz, targetClazz));
+		copier.copy(source, to, new XingGeConverter(sourceClazz, targetClazz));
 		return to;
 	}
 
@@ -350,7 +350,7 @@ public class BeanUtil extends org.springframework.beans.BeanUtils {
 		if (bean == null) {
 			return new HashMap<>(0);
 		}
-		return MsBeanMap.create(bean);
+		return XingGeBeanMap.create(bean);
 	}
 
 	/**

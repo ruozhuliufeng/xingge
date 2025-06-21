@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 统一返回工具类
@@ -16,24 +18,37 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Result<T> implements Serializable {
-    private T datas;
+    /**
+     * 泛型数据
+     */
+    private T data;
+    /**
+     * 异常编码
+     */
     private Integer code;
+    /**
+     * 异常信息
+     */
     private String msg;
+    /**
+     * dataMap
+     */
+    private final Map<String, Object> dataMap = new HashMap<String, Object>();
 
-    public Result(CodeEnum codeEnum) {
-        this(null, codeEnum.getCode(), codeEnum.getMessage());
+    public Result(ICodeResult codeResult) {
+        this(null, codeResult.getCode(), codeResult.getMessage());
     }
 
-    public Result(CodeEnum codeEnum, String message) {
-        this(null, codeEnum.getCode(), message);
+    public Result(ICodeResult codeResult, String message) {
+        this(null, codeResult.getCode(), message);
     }
 
-    public Result(CodeEnum codeEnum, T data) {
-        this(data, codeEnum.getCode(), codeEnum.getMessage());
+    public Result(ICodeResult codeResult, T data) {
+        this(data, codeResult.getCode(), codeResult.getMessage());
     }
 
-    public Result(CodeEnum codeEnum, T data, String message) {
-        this(data, codeEnum.getCode(), message);
+    public Result(ICodeResult codeResult, T data, String message) {
+        this(data, codeResult.getCode(), message);
     }
 
     public static <T> Result<T> succeed(String msg) {
@@ -56,20 +71,20 @@ public class Result<T> implements Serializable {
         return new Result<T>(null, code, msg);
     }
 
-    public static <T> Result<T> succeed(CodeEnum codeEnum) {
-        return new Result<>(codeEnum);
+    public static <T> Result<T> succeed(ICodeResult codeResult) {
+        return new Result<>(codeResult);
     }
 
-    public static <T> Result<T> succeed(CodeEnum codeEnum, String message) {
-        return new Result<>(codeEnum, message);
+    public static <T> Result<T> succeed(ICodeResult codeResult, String message) {
+        return new Result<>(codeResult, message);
     }
 
-    public static <T> Result<T> succeed(T data, CodeEnum codeEnum) {
-        return new Result<>(codeEnum, data);
+    public static <T> Result<T> succeed(T data, ICodeResult codeResult) {
+        return new Result<>(codeResult, data);
     }
 
-    public static <T> Result<T> succeed(T data, CodeEnum codeEnum, String message) {
-        return new Result<>(codeEnum, data, message);
+    public static <T> Result<T> succeed(T data, ICodeResult codeResult, String message) {
+        return new Result<>(codeResult, data, message);
     }
 
     public static <T> Result<T> of(T datas, Integer code, String msg) {
@@ -92,20 +107,20 @@ public class Result<T> implements Serializable {
         return new Result<T>(null, code, msg);
     }
 
-    public static <T> Result<T> failed(CodeEnum codeEnum) {
-        return new Result<>(codeEnum);
+    public static <T> Result<T> failed(ICodeResult codeResult) {
+        return new Result<>(codeResult);
     }
 
-    public static <T> Result<T> failed(CodeEnum codeEnum, String message) {
-        return new Result<>(codeEnum, message);
+    public static <T> Result<T> failed(ICodeResult codeResult, String message) {
+        return new Result<>(codeResult, message);
     }
 
-    public static <T> Result<T> failed(T data, CodeEnum codeEnum) {
-        return new Result<>(codeEnum, data);
+    public static <T> Result<T> failed(T data, ICodeResult codeResult) {
+        return new Result<>(codeResult, data);
     }
 
-    public static <T> Result<T> failed(T data, CodeEnum codeEnum, String message) {
-        return new Result<>(codeEnum, data, message);
+    public static <T> Result<T> failed(T data, ICodeResult codeResult, String message) {
+        return new Result<>(codeResult, data, message);
     }
 
 

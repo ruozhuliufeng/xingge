@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode
 @AllArgsConstructor
-public class MsBeanMapKey {
+public class XingGeBeanMapKey {
     private final Class type;
     private final int require;
 }

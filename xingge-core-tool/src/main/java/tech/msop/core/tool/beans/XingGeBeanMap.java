@@ -12,15 +12,15 @@ import java.security.ProtectionDomain;
  *
  * @author ruozhuliufeng
  */
-public abstract class MsBeanMap extends BeanMap {
-	protected MsBeanMap() {
+public abstract class XingGeBeanMap extends BeanMap {
+	protected XingGeBeanMap() {
 	}
 
-	protected MsBeanMap(Object bean) {
+	protected XingGeBeanMap(Object bean) {
 		super(bean);
 	}
 
-	public static MsBeanMap create(Object bean) {
+	public static XingGeBeanMap create(Object bean) {
 		MsGenerator gen = new MsGenerator();
 		gen.setBean(bean);
 		return gen.create();
@@ -33,7 +33,7 @@ public abstract class MsBeanMap extends BeanMap {
 	 * @return MsBeanMap
 	 */
 	@Override
-	public abstract MsBeanMap newInstance(Object o);
+	public abstract XingGeBeanMap newInstance(Object o);
 
 	public static class MsGenerator extends AbstractClassGenerator {
 		private static final Source SOURCE = new Source(MsGenerator.class.getName());
@@ -97,18 +97,18 @@ public abstract class MsBeanMap extends BeanMap {
 		 *
 		 * @return {MsBeanMap}
 		 */
-		public MsBeanMap create() {
+		public XingGeBeanMap create() {
 			if (beanClass == null) {
 				throw new IllegalArgumentException("Class of bean unknown");
 			}
 			setNamePrefix(beanClass.getName());
 			MsBeanMapKey key = new MsBeanMapKey(beanClass, require);
-			return (MsBeanMap) super.create(key);
+			return (XingGeBeanMap) super.create(key);
 		}
 
 		@Override
 		public void generateClass(ClassVisitor v) throws Exception {
-			new MsBeanMapEmitter(v, getClassName(), beanClass, require);
+			new XingGeBeanMapEmitter(v, getClassName(), beanClass, require);
 		}
 
 		@Override

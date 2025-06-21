@@ -19,9 +19,9 @@ import java.time.LocalTime;
  *
  * @author ruozhuliufeng
  */
-public class MsJavaTimeModule extends SimpleModule {
+public class XingGeJavaTimeModule extends SimpleModule {
 
-    public MsJavaTimeModule() {
+    public XingGeJavaTimeModule() {
         super(PackageVersion.VERSION);
         this.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeUtil.DATETIME_FORMAT));
         this.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeUtil.DATE_FORMAT));

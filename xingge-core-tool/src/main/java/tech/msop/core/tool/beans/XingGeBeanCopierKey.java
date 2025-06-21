@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 @AllArgsConstructor
-public class MsBeanCopierKey {
+public class XingGeBeanCopierKey {
     private final Class<?> source;
     private final Class<?> target;
     private final boolean useConverter;

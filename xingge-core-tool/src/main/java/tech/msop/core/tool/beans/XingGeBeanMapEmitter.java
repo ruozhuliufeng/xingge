@@ -16,8 +16,8 @@ import java.util.Map;
  *
  * @author ruozhuliufeng
  */
-class MsBeanMapEmitter extends ClassEmitter {
-	private static final Type BEAN_MAP = TypeUtils.parseType(MsBeanMap.class.getName());
+class XingGeBeanMapEmitter extends ClassEmitter {
+	private static final Type BEAN_MAP = TypeUtils.parseType(XingGeBeanMap.class.getName());
 	private static final Type FIXED_KEY_SET = TypeUtils.parseType("org.springframework.cglib.beans.FixedKeySet");
 	private static final Signature CSTRUCT_OBJECT = TypeUtils.parseConstructor("Object");
 	private static final Signature CSTRUCT_STRING_ARRAY = TypeUtils.parseConstructor("String[]");
@@ -27,7 +27,7 @@ class MsBeanMapEmitter extends ClassEmitter {
 	private static final Signature NEW_INSTANCE = new Signature("newInstance", BEAN_MAP, new Type[]{Constants.TYPE_OBJECT});
 	private static final Signature GET_PROPERTY_TYPE = TypeUtils.parseSignature("Class getPropertyType(String)");
 
-	public MsBeanMapEmitter(ClassVisitor v, String className, Class type, int require) {
+	public XingGeBeanMapEmitter(ClassVisitor v, String className, Class type, int require) {
 		super(v);
 
 		begin_class(Constants.V1_2, Constants.ACC_PUBLIC, className, BEAN_MAP, null, Constants.SOURCE_FILE);
@@ -44,8 +44,8 @@ class MsBeanMapEmitter extends ClassEmitter {
 		if (require != 0) {
 			for (Iterator it = allProps.keySet().iterator(); it.hasNext(); ) {
 				String name = (String) it.next();
-				if ((((require & MsBeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name)) ||
-					(((require & MsBeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
+				if ((((require & XingGeBeanMap.REQUIRE_GETTER) != 0) && !getters.containsKey(name)) ||
+					(((require & XingGeBeanMap.REQUIRE_SETTER) != 0) && !setters.containsKey(name))) {
 					it.remove();
 					getters.remove(name);
 					setters.remove(name);

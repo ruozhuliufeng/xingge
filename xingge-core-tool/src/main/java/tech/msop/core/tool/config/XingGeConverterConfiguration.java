@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author ruozhuliufeng
  */
 @Configuration
-public class MsConverterConfiguration implements WebMvcConfigurer {
+public class XingGeConverterConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {

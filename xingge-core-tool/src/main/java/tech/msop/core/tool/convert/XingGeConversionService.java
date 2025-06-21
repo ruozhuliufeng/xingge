@@ -8,15 +8,15 @@ import org.springframework.util.StringValueResolver;
 /**
  * 类型转换服务，添加了ResultEnum依赖
  */
-public class MsConversionService extends ApplicationConversionService {
+public class XingGeConversionService extends ApplicationConversionService {
     @Nullable
-    private static volatile MsConversionService SHARED_INSTANCE;
+    private static volatile XingGeConversionService SHARED_INSTANCE;
 
-    public MsConversionService(){
+    public XingGeConversionService(){
         this(null);
     }
 
-    public MsConversionService(@Nullable StringValueResolver embeddedValueResolber){
+    public XingGeConversionService(@Nullable StringValueResolver embeddedValueResolber){
         super(embeddedValueResolber);
         super.addConverter(new EnumToStringConverter());
         super.addConverter(new StringToEnumConverter());
@@ -26,19 +26,19 @@ public class MsConversionService extends ApplicationConversionService {
      * Return a shared default application {@code ConversionService} instance, lazily
      * building it once needed.
      * <p>
-     * Note: This method actually returns an {@link MsConversionService}
+     * Note: This method actually returns an {@link XingGeConversionService}
      * instance. However, the {@code ConversionService} signature has been preserved for
      * binary compatibility.
      * @return the shared {@code MsConversionService} instance (never{@code null})
      */
     public static GenericConversionService getInstance(){
-        MsConversionService sharedInstance = MsConversionService.SHARED_INSTANCE;
+        XingGeConversionService sharedInstance = XingGeConversionService.SHARED_INSTANCE;
         if (sharedInstance == null){
-            synchronized (MsConversionService.class){
-                sharedInstance = MsConversionService.SHARED_INSTANCE;
+            synchronized (XingGeConversionService.class){
+                sharedInstance = XingGeConversionService.SHARED_INSTANCE;
                 if (sharedInstance == null){
-                    sharedInstance = new MsConversionService();
-                    MsConversionService.SHARED_INSTANCE = sharedInstance;
+                    sharedInstance = new XingGeConversionService();
+                    XingGeConversionService.SHARED_INSTANCE = sharedInstance;
                 }
             }
         }

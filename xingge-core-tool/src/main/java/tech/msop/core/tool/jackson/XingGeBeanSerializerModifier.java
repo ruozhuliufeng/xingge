@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author ruozhuliufeng
  */
-public class MsBeanSerializerModifier extends BeanSerializerModifier {
+public class XingGeBeanSerializerModifier extends BeanSerializerModifier {
     @Override
     public List<BeanPropertyWriter> changeProperties(
             SerializationConfig config, BeanDescription beanDesc,

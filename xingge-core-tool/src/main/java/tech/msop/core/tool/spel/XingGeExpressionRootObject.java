@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
  */
 @Getter
 @AllArgsConstructor
-public class MsExpressionRootObject {
+public class XingGeExpressionRootObject {
 	private final Method method;
 
 	private final Object[] args;

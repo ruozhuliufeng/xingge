@@ -5,7 +5,7 @@ package tech.msop.core.tool.constant;
  *
  * @author ruozhuliufeng
  */
-public interface MsConstant {
+public interface XingGeConstant {
 
     /**
      * 锁前缀

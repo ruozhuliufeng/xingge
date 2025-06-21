@@ -9,8 +9,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties("ms.jackson")
-public class MsJacksonProperties {
+@ConfigurationProperties("xg.jackson")
+public class XingGeJacksonProperties {
     /**
      * null 转为 空,字符串转为 "",数组转为[]，对象转为{} 数字转为-1
      */

@@ -31,9 +31,9 @@ import java.util.concurrent.ConcurrentMap;
  *
  * @author ruozhuliufeng
  */
-public abstract class MsBeanCopier {
+public abstract class XingGeBeanCopier {
 	private static final Type CONVERTER = TypeUtils.parseType("org.springframework.cglib.core.Converter");
-	private static final Type BEAN_COPIER = TypeUtils.parseType(MsBeanCopier.class.getName());
+	private static final Type BEAN_COPIER = TypeUtils.parseType(XingGeBeanCopier.class.getName());
 	private static final Type BEAN_MAP = TypeUtils.parseType(Map.class.getName());
 	private static final Signature COPY = new Signature("copy", Type.VOID_TYPE, new Type[]{Constants.TYPE_OBJECT, Constants.TYPE_OBJECT, CONVERTER});
 	private static final Signature CONVERT = TypeUtils.parseSignature("Object convert(Object, Class, Object)");
@@ -41,16 +41,16 @@ public abstract class MsBeanCopier {
 	private static final Type CLASS_UTILS = TypeUtils.parseType(ClassUtils.class.getName());
 	private static final Signature IS_ASSIGNABLE_VALUE = TypeUtils.parseSignature("boolean isAssignableValue(Class, Object)");
 	/**
-	 * The map to store {@link MsBeanCopier} of source type and class type for copy.
+	 * The map to store {@link XingGeBeanCopier} of source type and class type for copy.
 	 */
-	private static final ConcurrentMap<MsBeanCopierKey, MsBeanCopier> BEAN_COPIER_MAP = new ConcurrentHashMap<>();
+	private static final ConcurrentMap<XingGeBeanCopierKey, XingGeBeanCopier> BEAN_COPIER_MAP = new ConcurrentHashMap<>();
 
-	public static MsBeanCopier create(Class source, Class target, boolean useConverter) {
-		return MsBeanCopier.create(source, target, useConverter, false);
+	public static XingGeBeanCopier create(Class source, Class target, boolean useConverter) {
+		return XingGeBeanCopier.create(source, target, useConverter, false);
 	}
 
-	public static MsBeanCopier create(Class source, Class target, boolean useConverter, boolean nonNull) {
-		MsBeanCopierKey copierKey = new MsBeanCopierKey(source, target, useConverter, nonNull);
+	public static XingGeBeanCopier create(Class source, Class target, boolean useConverter, boolean nonNull) {
+		XingGeBeanCopierKey copierKey = new XingGeBeanCopierKey(source, target, useConverter, nonNull);
 		// 利用 ConcurrentMap 缓存 提高性能，接近 直接 get set
 		return BEAN_COPIER_MAP.computeIfAbsent(copierKey, key -> {
 			Generator gen = new Generator();
@@ -72,7 +72,7 @@ public abstract class MsBeanCopier {
 	abstract public void copy(Object from, Object to, @Nullable Converter converter);
 
 	public static class Generator extends AbstractClassGenerator {
-		private static final Source SOURCE = new Source(MsBeanCopier.class.getName());
+		private static final Source SOURCE = new Source(XingGeBeanCopier.class.getName());
 		private Class source;
 		private Class target;
 		private boolean useConverter;
@@ -116,8 +116,8 @@ public abstract class MsBeanCopier {
 		}
 
 		@Override
-		public MsBeanCopier create(Object key) {
-			return (MsBeanCopier) super.create(key);
+		public XingGeBeanCopier create(Object key) {
+			return (XingGeBeanCopier) super.create(key);
 		}
 
 		@Override

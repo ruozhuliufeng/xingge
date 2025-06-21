@@ -5,8 +5,8 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import tech.msop.core.tool.jackson.MsJacksonProperties;
-import tech.msop.core.tool.jackson.MsJavaTimeModule;
+import tech.msop.core.tool.jackson.XingGeJacksonProperties;
+import tech.msop.core.tool.jackson.XingGeJavaTimeModule;
 import tech.msop.core.tool.utils.DateUtil;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,7 +30,7 @@ import java.util.TimeZone;
 @Configuration
 @ConditionalOnClass(ObjectMapper.class)
 @AutoConfigureBefore(JacksonAutoConfiguration.class)
-@EnableConfigurationProperties(MsJacksonProperties.class)
+@EnableConfigurationProperties(XingGeJacksonProperties.class)
 public class JacksonConfiguration {
 
     @Primary
@@ -59,7 +59,7 @@ public class JacksonConfiguration {
         // 反序列化时，属性不存在的兼容处理
         objectMapper.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         // 日期格式化
-        objectMapper.registerModule(new MsJavaTimeModule());
+        objectMapper.registerModule(new XingGeJavaTimeModule());
         objectMapper.findAndRegisterModules();
         return objectMapper;
     }

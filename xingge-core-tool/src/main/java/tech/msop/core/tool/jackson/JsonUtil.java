@@ -649,7 +649,7 @@ public class JsonUtil {
 			//反序列化时，属性不存在的兼容处理s
 			super.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			//日期格式化
-			super.registerModule(new MsJavaTimeModule());
+			super.registerModule(new XingGeJavaTimeModule());
 			super.findAndRegisterModules();
 		}
 

@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author L.cm
  */
-public class MsExpressionEvaluator extends CachedExpressionEvaluator {
+public class XingGeExpressionEvaluator extends CachedExpressionEvaluator {
 	private final Map<ExpressionKey, Expression> expressionCache = new ConcurrentHashMap<>(64);
 	private final Map<AnnotatedElementKey, Method> methodCache = new ConcurrentHashMap<>(64);
 
@@ -34,7 +34,7 @@ public class MsExpressionEvaluator extends CachedExpressionEvaluator {
 	 */
 	public EvaluationContext createContext(Method method, Object[] args, Object target, Class<?> targetClass, @Nullable BeanFactory beanFactory) {
 		Method targetMethod = getTargetMethod(targetClass, method);
-		MsExpressionRootObject rootObject = new MsExpressionRootObject(method, args, target, targetClass, targetMethod);
+		XingGeExpressionRootObject rootObject = new XingGeExpressionRootObject(method, args, target, targetClass, targetMethod);
 		MethodBasedEvaluationContext evaluationContext = new MethodBasedEvaluationContext(rootObject, targetMethod, args, getParameterNameDiscoverer());
 		if (beanFactory != null) {
 			evaluationContext.setBeanResolver(new BeanFactoryResolver(beanFactory));

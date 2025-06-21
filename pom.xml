@@ -50,6 +50,11 @@
         <module>xingge-bom</module>
         <module>xingge-core-tool</module>
         <module>xingge-core-auto</module>
+        <module>xingge-starter-http</module>
+        <module>xingge-core-db</module>
+        <module>xingge-starter-request-interceptor</module>
+        <module>xingge-starter-mybatis</module>
+        <module>xingge-starter-log</module>
     </modules>
 
     <!-- 依赖版本管理 - 引入 xingge-bom 作为整个项目的版本管理模块 -->

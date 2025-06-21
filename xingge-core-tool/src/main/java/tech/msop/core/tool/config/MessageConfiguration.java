@@ -2,7 +2,7 @@ package tech.msop.core.tool.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import tech.msop.core.tool.jackson.MappingApiJackson2HttpMessageConverter;
-import tech.msop.core.tool.jackson.MsJacksonProperties;
+import tech.msop.core.tool.jackson.XingGeJacksonProperties;
 import tech.msop.core.tool.utils.Charsets;
 import tech.msop.core.tool.utils.DateUtil;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.List;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class MessageConfiguration implements WebMvcConfigurer {
     private final ObjectMapper objectMapper;
-    private final MsJacksonProperties properties;
+    private final XingGeJacksonProperties properties;
 
     /**
      * 使用JACKSON 作为JSON MessageConverter

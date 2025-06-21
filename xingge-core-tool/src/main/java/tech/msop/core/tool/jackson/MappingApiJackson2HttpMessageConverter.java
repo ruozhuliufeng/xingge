@@ -32,11 +32,11 @@ public class MappingApiJackson2HttpMessageConverter extends AbstractReadWriteJac
     @Nullable
     private String jsonPrefix;
 
-    public MappingApiJackson2HttpMessageConverter(ObjectMapper objectMapper, MsJacksonProperties properties) {
+    public MappingApiJackson2HttpMessageConverter(ObjectMapper objectMapper, XingGeJacksonProperties properties) {
         super(objectMapper, initWriteObjectMapper(objectMapper, properties), initMediaType(properties));
     }
 
-    private static List<MediaType> initMediaType(MsJacksonProperties properties) {
+    private static List<MediaType> initMediaType(XingGeJacksonProperties properties) {
         List<MediaType> supportedMediaTypes = new ArrayList<>();
         supportedMediaTypes.add(MediaType.APPLICATION_JSON);
         supportedMediaTypes.add(new MediaType("application", "*+json"));
@@ -47,7 +47,7 @@ public class MappingApiJackson2HttpMessageConverter extends AbstractReadWriteJac
         return supportedMediaTypes;
     }
 
-    private static ObjectMapper initWriteObjectMapper(ObjectMapper readObjectMapper, MsJacksonProperties properties) {
+    private static ObjectMapper initWriteObjectMapper(ObjectMapper readObjectMapper, XingGeJacksonProperties properties) {
         // 拷贝 readObjectMapper
         ObjectMapper writeObjectMapper = readObjectMapper.copy();
         // 大数字 转 字符串
@@ -56,8 +56,8 @@ public class MappingApiJackson2HttpMessageConverter extends AbstractReadWriteJac
         }
         // null 处理
         if (Boolean.TRUE.equals(properties.getNullToEmpty())) {
-            writeObjectMapper.setSerializerFactory(writeObjectMapper.getSerializerFactory().withSerializerModifier(new MsBeanSerializerModifier()));
-            writeObjectMapper.getSerializerProvider().setNullValueSerializer(MsBeanSerializerModifier.NullJsonSerializers.STRING_JSON_SERIALIZER);
+            writeObjectMapper.setSerializerFactory(writeObjectMapper.getSerializerFactory().withSerializerModifier(new XingGeBeanSerializerModifier()));
+            writeObjectMapper.getSerializerProvider().setNullValueSerializer(XingGeBeanSerializerModifier.NullJsonSerializers.STRING_JSON_SERIALIZER);
         }
         return writeObjectMapper;
     }

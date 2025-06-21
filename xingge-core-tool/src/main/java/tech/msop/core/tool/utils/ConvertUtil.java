@@ -1,6 +1,6 @@
 package tech.msop.core.tool.utils;
 
-import tech.msop.core.tool.convert.MsConversionService;
+import tech.msop.core.tool.convert.XingGeConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.lang.Nullable;
@@ -31,7 +31,7 @@ public class ConvertUtil {
 		if (ClassUtil.isAssignableValue(targetType, source)) {
 			return (T) source;
 		}
-		GenericConversionService conversionService = MsConversionService.getInstance();
+		GenericConversionService conversionService = XingGeConversionService.getInstance();
 		return conversionService.convert(source, targetType);
 	}
 
@@ -52,7 +52,7 @@ public class ConvertUtil {
 		if (source == null) {
 			return null;
 		}
-		GenericConversionService conversionService = MsConversionService.getInstance();
+		GenericConversionService conversionService = XingGeConversionService.getInstance();
 		return (T) conversionService.convert(source, sourceType, targetType);
 	}
 
@@ -74,7 +74,7 @@ public class ConvertUtil {
 		if (source == null) {
 			return null;
 		}
-		GenericConversionService conversionService = MsConversionService.getInstance();
+		GenericConversionService conversionService = XingGeConversionService.getInstance();
 		return (T) conversionService.convert(source, targetType);
 	}
 
