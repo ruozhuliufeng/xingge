@@ -150,6 +150,22 @@
                 </executions>
             </plugin>
 
+            <!-- GPG签名插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- 中央仓库发布插件 -->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
@@ -164,4 +180,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- 分发管理配置 -->
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/upload</url>
+        </repository>
+        <snapshotRepository>
+            <id>central</id>
+            <name>Central Repository Snapshots</name>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/upload</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
