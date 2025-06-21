@@ -1,0 +1,153 @@
+# GitHub Actions 自动部署工作流
+# 当代码推送到 master 分支时，自动构建并发布到 Maven 中央仓库
+name: Deploy to Maven Central
+
+# 触发条件：推送到 master 分支
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+# 环境变量
+env:
+  JAVA_VERSION: '8'
+  MAVEN_OPTS: '-Xmx1024m'
+
+# 作业定义
+jobs:
+  # 构建和测试作业
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    # 设置 JDK 环境
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    # 缓存 Maven 依赖
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+          
+    # 编译项目
+    - name: Compile project
+      run: mvn clean compile
+      
+    # 运行测试
+    - name: Run tests
+      run: mvn test
+      
+    # 打包项目
+    - name: Package project
+      run: mvn clean package -DskipTests
+      
+    # 上传构建产物
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts
+        path: |
+          **/target/*.jar
+          **/target/*.pom
+        retention-days: 7
+
+  # 部署作业（仅在 master 分支且构建成功时执行）
+  deploy:
+    name: Deploy to Maven Central
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    
+    steps:
+    # 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    # 设置 JDK 环境
+    - name: Set up JDK ${{ env.JAVA_VERSION }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+        
+    # 缓存 Maven 依赖
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+          
+    # 配置 Maven settings.xml
+    - name: Configure Maven settings
+      run: |
+        mkdir -p ~/.m2
+        cat > ~/.m2/settings.xml << 'EOF'
+        <?xml version="1.0" encoding="UTF-8"?>
+        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
+                  http://maven.apache.org/xsd/settings-1.0.0.xsd">
+          <servers>
+            <server>
+              <id>central</id>
+              <username>${{ secrets.SONATYPE_USERNAME }}</username>
+              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+            </server>
+          </servers>
+          <profiles>
+            <profile>
+              <id>gpg</id>
+              <properties>
+                <gpg.keyname>${{ secrets.GPG_KEY_ID }}</gpg.keyname>
+                <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
+                <gpg.executable>gpg</gpg.executable>
+              </properties>
+            </profile>
+          </profiles>
+          <activeProfiles>
+            <activeProfile>gpg</activeProfile>
+          </activeProfiles>
+        </settings>
+        EOF
+        
+    # 导入 GPG 私钥
+    - name: Import GPG key
+      run: |
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 -d | gpg --batch --import
+        gpg --list-secret-keys --keyid-format LONG
+        
+    # 构建并部署到 Maven 中央仓库
+    - name: Deploy to Maven Central
+      run: |
+        mvn clean deploy -DskipTests \
+          -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+          --batch-mode --no-transfer-progress
+          
+    # 通知部署结果
+    - name: Notify deployment success
+      if: success()
+      run: |
+        echo "✅ 项目已成功部署到 Maven 中央仓库！"
+        echo "📦 版本: $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+        echo "🔗 仓库地址: https://central.sonatype.com/artifact/tech.msop/xingge"
+        
+    - name: Notify deployment failure
+      if: failure()
+      run: |
+        echo "❌ 部署失败，请检查日志并修复问题。"
+        echo "💡 常见问题：GPG签名、Sonatype认证、网络连接等"
