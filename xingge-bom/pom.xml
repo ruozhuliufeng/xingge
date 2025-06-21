@@ -34,7 +34,7 @@
     <name>xingge-bom</name>
     <description>行歌项目依赖版本管理 - 统一管理所有第三方依赖的版本号</description>
     <packaging>pom</packaging>
-    
+
     <!-- 基本属性定义 -->
     <properties>
         <java.version>1.8</java.version>
@@ -42,7 +42,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        
+
         <!-- 版本属性定义 - 统一管理所有第三方依赖的版本号 -->
         <!-- ================================ Spring 生态系统 ================================ -->
         <!-- Spring Boot 2.7.18 - LTS版本，稳定可靠，支持Java 8-17 -->
@@ -51,7 +51,7 @@
         <spring-cloud.version>2021.0.8</spring-cloud.version>
         <!-- Spring Cloud Alibaba 2021.0.5.0 - 与Spring Cloud 2021.0.x兼容 -->
         <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
-        
+
         <!-- ================================ 数据库相关 ================================ -->
         <!-- MySQL 8.0.33 - 最新稳定版本，性能优化，安全性增强 -->
         <mysql.version>8.0.33</mysql.version>
@@ -61,11 +61,11 @@
         <mybatis-plus.version>3.5.4.1</mybatis-plus.version>
         <!-- PageHelper 1.4.7 - MyBatis分页插件，支持多数据库 -->
         <pagehelper.version>1.4.7</pagehelper.version>
-        
+
         <!-- ================================ 缓存相关 ================================ -->
         <!-- Redisson 3.24.3 - Redis Java客户端，支持分布式锁、集合等高级功能 -->
         <redisson.version>3.24.3</redisson.version>
-        
+
         <!-- ================================ 工具类库 ================================ -->
         <!-- Hutool 5.8.22 - Java工具类库，简化开发 -->
         <hutool.version>5.8.22</hutool.version>
@@ -75,24 +75,34 @@
         <knife4j.version>4.4.0</knife4j.version>
         <!-- MapStruct 1.5.5.Final - Java Bean映射工具，编译时生成映射代码 -->
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        
+
         <!-- ================================ 安全相关 ================================ -->
         <!-- JJWT 0.11.5 - Java JWT库，用于生成和验证JWT令牌 -->
         <jwt.version>0.11.5</jwt.version>
         <!-- BouncyCastle 1.76 - 加密算法库，提供各种加密解密功能 -->
         <bcprov.version>1.76</bcprov.version>
-        
+
         <!-- ================================ 消息队列相关 ================================ -->
         <!-- RocketMQ 5.3.3 - Apache RocketMQ最新稳定版本 -->
         <rocketmq.version>5.3.3</rocketmq.version>
-        
+
         <!-- ================================ 监控相关 ================================ -->
         <!-- Micrometer 1.10.13 - 应用监控指标库，支持Prometheus等监控系统 -->
         <micrometer.version>1.10.13</micrometer.version>
-        
-        <!-- ================================ 测试相关 ================================ -->
-        <!-- TestContainers 1.19.3 - 集成测试容器化工具，支持Docker容器测试 -->
-        <testcontainers.version>1.19.3</testcontainers.version>
+        <xingge.version>0.0.1</xingge.version>
+        <guava.version>30.0-jre</guava.version>
+        <swagger.version>2.10.5</swagger.version>
+        <swagger.models.version>1.6.2</swagger.models.version>
+        <knife4j.version>2.0.9</knife4j.version>
+        <mybatis.plus.version>3.5.1</mybatis.plus.version>
+        <mybatis.plus.dynamic.version>3.3.6</mybatis.plus.dynamic.version>
+        <protostuff.version>1.6.0</protostuff.version>
+        <disruptor.version>3.4.2</disruptor.version>
+        <logstash.version>6.2</logstash.version>
+        <druid.version>1.2.8</druid.version>
+        <jackson.version>2.11.4</jackson.version>
+        <okhttp.version>4.9.3</okhttp.version>
+
     </properties>
 
     <!-- 依赖管理 - 定义项目中所有依赖的版本，子模块可直接引用无需指定版本 -->
@@ -107,7 +117,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- Spring Cloud 官方 BOM - 管理微服务相关组件版本（网关、配置中心、服务发现等） -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -116,7 +126,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- Spring Cloud Alibaba BOM - 管理阿里云微服务组件版本（Nacos、Sentinel、Seata等） -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
@@ -125,7 +135,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- ================================ 数据库相关依赖 ================================ -->
             <!-- MySQL 数据库驱动 - 连接MySQL数据库的JDBC驱动 -->
             <dependency>
@@ -151,7 +161,7 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.version}</version>
             </dependency>
-            
+
             <!-- ================================ 缓存相关依赖 ================================ -->
             <!-- Redisson - Redis Java客户端，支持分布式锁、分布式集合、分布式对象等高级功能 -->
             <dependency>
@@ -159,7 +169,7 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
-            
+
             <!-- ================================ 工具类库依赖 ================================ -->
             <!-- Hutool - Java工具类库，包含加密解密、转换、日期、各种Util等 -->
             <dependency>
@@ -185,89 +195,67 @@
                 <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
-            <!-- MapStruct - Java Bean映射工具，编译时生成高性能的映射代码 -->
+            <!-- Guava -->
             <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct</artifactId>
-                <version>${mapstruct.version}</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
             </dependency>
-            <!-- MapStruct 注解处理器 - 编译时处理MapStruct注解，生成映射实现类 -->
+            <!-- jackson -->
             <dependency>
-                <groupId>org.mapstruct</groupId>
-                <artifactId>mapstruct-processor</artifactId>
-                <version>${mapstruct.version}</version>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
-            
-            <!-- ================================ 安全相关依赖 ================================ -->
-            <!-- JJWT API - JWT令牌生成和解析的API接口 -->
+            <!-- Swagger -->
+            <!-- Swagger -->
             <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-api</artifactId>
-                <version>${jwt.version}</version>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
-            <!-- JJWT 实现 - JWT令牌生成和解析的具体实现 -->
             <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-impl</artifactId>
-                <version>${jwt.version}</version>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger.models.version}</version>
             </dependency>
-            <!-- JJWT Jackson支持 - 使用Jackson进行JWT的JSON序列化和反序列化 -->
             <dependency>
-                <groupId>io.jsonwebtoken</groupId>
-                <artifactId>jjwt-jackson</artifactId>
-                <version>${jwt.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
-            <!-- BouncyCastle 加密库 - 提供各种加密算法实现，支持RSA、AES等加密方式 -->
             <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
-                <version>${bcprov.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-ui</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
-            
-            <!-- ================================ 消息队列相关依赖 ================================ -->
-            <!-- RocketMQ Spring Boot Starter - 阿里巴巴开源消息中间件Spring Boot集成 -->
+            <!-- protostuff -->
             <dependency>
-                <groupId>org.apache.rocketmq</groupId>
-                <artifactId>rocketmq-spring-boot-starter</artifactId>
-                <version>${rocketmq.version}</version>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${protostuff.version}</version>
             </dependency>
-            <!-- RocketMQ 客户端 - RocketMQ原生客户端 -->
             <dependency>
-                <groupId>org.apache.rocketmq</groupId>
-                <artifactId>rocketmq-client</artifactId>
-                <version>${rocketmq.version}</version>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${protostuff.version}</version>
             </dependency>
-            
-            <!-- ================================ 监控相关依赖 ================================ -->
-            <!-- Micrometer Prometheus注册表 - 应用监控指标收集，支持Prometheus监控系统 -->
+            <!-- Validation -->
             <dependency>
-                <groupId>io.micrometer</groupId>
-                <artifactId>micrometer-registry-prometheus</artifactId>
-                <version>${micrometer.version}</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
             </dependency>
-            
-            <!-- ================================ 测试相关依赖 ================================ -->
-            <!-- TestContainers BOM - 集成测试容器化工具，支持Docker容器测试环境 -->
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>testcontainers-bom</artifactId>
-                <version>${testcontainers.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            
             <!-- ================================ 项目内部模块依赖 ================================ -->
             <!-- 项目核心模块 - 提供基础工具类和通用功能 -->
             <dependency>
                 <groupId>tech.msop</groupId>
-                <artifactId>xingge-core-tool</artifactId>
-                <version>0.0.1</version>
+                <artifactId>xingge-core-auto</artifactId>
+                <version>${xingge.version}</version>
             </dependency>
-            <!-- 项目拦截器模块 - 提供数据拦截和处理功能 -->
             <dependency>
                 <groupId>tech.msop</groupId>
-                <artifactId>xingge-interceptor-starter</artifactId>
-                <version>0.0.1</version>
+                <artifactId>xingge-core-tool</artifactId>
+                <version>${xingge.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
