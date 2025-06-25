@@ -1,4 +1,4 @@
-package tech.msop.core.tool.model;
+package tech.msop.core.tool.common;
 
 /**
  * 异常响应码

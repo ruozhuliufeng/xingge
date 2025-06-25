@@ -1,6 +1,6 @@
 package tech.msop.core.tool.exception;
 
-import tech.msop.core.tool.model.Result;
+import tech.msop.core.tool.common.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpMediaTypeNotSupportedException;

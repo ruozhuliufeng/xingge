@@ -1,4 +1,4 @@
-package tech.msop.core.tool.model;
+package tech.msop.core.tool.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import java.util.Map;
  * 统一返回工具类
  *
  * @author ruozhuliufeng
- * @date 2021-08-04
+ * @date 2025-06-26
  */
 @Data
 @AllArgsConstructor
