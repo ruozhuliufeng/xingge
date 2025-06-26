@@ -1,4 +1,4 @@
-package tech.msop.core.tool.model;
+package tech.msop.core.tool.common;
 
 import javax.servlet.http.HttpServletResponse;
 

@@ -1,4 +1,4 @@
-package tech.msop.core.tool.model;
+package tech.msop.core.tool.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,11 +24,6 @@ public class PageResult<T> implements Serializable {
      * 总数
      */
     private Long count;
-
-    /**
-     * 是否成功 0-成功 1-失败
-     */
-    private int code;
 
     /**
      * 当前页结果集
