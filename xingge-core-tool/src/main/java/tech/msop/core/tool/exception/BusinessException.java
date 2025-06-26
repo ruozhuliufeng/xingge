@@ -1,7 +1,7 @@
 package tech.msop.core.tool.exception;
 
-import tech.msop.core.tool.model.CodeEnum;
 import lombok.Getter;
+import tech.msop.core.tool.common.CodeEnum;
 
 /**
  * 业务异常
