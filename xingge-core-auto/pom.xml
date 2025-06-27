@@ -16,6 +16,7 @@
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
         <version>0.0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <!-- 当前模块信息 -->
@@ -35,20 +36,29 @@
     <!-- 构建配置 -->
     <build>
         <plugins>
-            <!-- Maven编译插件配置 -->
+            <!-- Maven编译插件 - 仅为此模块禁用注解处理器 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                    <encoding>UTF-8</encoding>
                     <!-- 禁用注解处理器，避免循环依赖 -->
                     <proc>none</proc>
                 </configuration>
             </plugin>
+            
+            <!-- 跳过源码插件执行，避免重复配置冲突 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
 
 </project>

@@ -5,6 +5,7 @@
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
         <version>0.0.1</version>
+        <relativePath/>
     </parent>
 
     <artifactId>xingge-core-db</artifactId>
@@ -60,4 +61,5 @@
             <artifactId>mssql-jdbc</artifactId>
         </dependency>
     </dependencies>
+
 </project>

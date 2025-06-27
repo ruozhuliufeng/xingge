@@ -32,11 +32,9 @@
             <name>若竹流风</name>
             <email>ruozhuliufeng@aixuxi.cn</email>
             <roles>
-                <role>
-                    Java Development Engineer
-                </role>
+                <role>Java Development Engineer</role>
             </roles>
-            <timezone>2025-06-18 13:25:00</timezone>
+            <timezone>+8</timezone>
         </developer>
     </developers>
     <properties>
@@ -116,11 +114,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven源码插件 -->
+            <!-- Maven源码插件 - 仅在子模块中执行 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.0</version>
+                <inherited>false</inherited>
                 <executions>
                     <execution>
                         <id>attach-sources</id>

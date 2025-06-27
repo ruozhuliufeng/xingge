@@ -1,21 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    xingge-starter-request-interceptor 请求拦截器启动器模块
+    
+    功能说明：
+    - 提供HTTP请求拦截功能
+    - 支持请求日志记录和监控
+    - 集成Spring Boot自动配置
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
+    <!-- 继承父项目 -->
     <parent>
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
         <version>0.0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <!-- 当前模块信息 -->
     <artifactId>xingge-starter-request-interceptor</artifactId>
     <packaging>jar</packaging>
-
     <name>xingge-starter-request-interceptor</name>
+    <description>行歌项目请求拦截器启动器，提供HTTP请求拦截和监控功能</description>
 
+    <!-- 依赖管理 -->
     <dependencies>
+        <!-- 内部依赖 -->
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
+            <version>${project.version}</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>tech.msop</groupId>-->
@@ -30,4 +46,5 @@
 <!--            <artifactId>xingge-starter-http</artifactId>-->
 <!--        </dependency>-->
     </dependencies>
+
 </project>

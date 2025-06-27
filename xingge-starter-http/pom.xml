@@ -1,26 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    xingge-starter-http HTTP客户端启动器模块
+    
+    功能说明：
+    - 提供HTTP客户端自动配置
+    - 集成OkHttp和Jsoup
+    - 支持请求拦截和日志记录
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
+    <!-- 继承父项目 -->
     <parent>
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
         <version>0.0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
+    <!-- 当前模块信息 -->
     <artifactId>xingge-starter-http</artifactId>
     <packaging>jar</packaging>
-
-    <name>xingge-http-starter</name>
+    <name>xingge-starter-http</name>
+    <description>行歌项目HTTP客户端启动器，提供OkHttp和Jsoup集成支持</description>
+    <!-- 依赖管理 -->
     <dependencies>
+        <!-- 内部依赖 -->
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-tool</artifactId>
+            <version>${project.version}</version>
         </dependency>
-        <!-- okhttp -->
+        
+        <!-- HTTP客户端依赖 -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
@@ -29,10 +47,11 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
         </dependency>
+        
+        <!-- HTML解析依赖 -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
         </dependency>
     </dependencies>
-
 </project>

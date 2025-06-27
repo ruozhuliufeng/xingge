@@ -241,10 +241,11 @@
                 <artifactId>protostuff-runtime</artifactId>
                 <version>${protostuff.version}</version>
             </dependency>
-            <!-- Validation -->
+            <!-- Validation - 版本由Spring Boot BOM管理 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
             <!-- ================================ 项目内部模块依赖 ================================ -->
             <!-- 项目核心模块 - 提供基础工具类和通用功能 -->
@@ -260,5 +261,143 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <build>
+        <plugins>
+            <!-- Maven编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
 
+            <!-- Maven源码插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Javadoc插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                    <!-- 忽略Javadoc错误 -->
+                    <additionalJOption>-Xdoclint:none</additionalJOption>
+                    <failOnError>false</failOnError>
+                    <quiet>true</quiet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG签名插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 中央仓库发布插件 -->
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.8.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>false</autoPublish>
+                    <waitUntil>validated</waitUntil>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.7</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- 分发管理配置 -->
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/upload</url>
+        </repository>
+        <snapshotRepository>
+            <id>central</id>
+            <name>Central Repository Snapshots</name>
+            <url>https://central.sonatype.com/api/v1/publisher/deployments/upload</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/ruozhuliufeng/xingge.git</connection>
+        <developerConnection>scm:git:ssh://github.com:ruozhuliufeng/xingge.git</developerConnection>
+        <url>https://github.com/ruozhuliufeng/xingge/tree/main</url>
+    </scm>
+    <developers>
+        <developer>
+            <id>ruozhuliufeng</id>
+            <name>若竹流风</name>
+            <email>ruozhuliufeng@aixuxi.cn</email>
+            <roles>
+                <role>Java Development Engineer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
 </project>

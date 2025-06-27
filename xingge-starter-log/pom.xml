@@ -18,4 +18,5 @@
             <artifactId>xingge-core-auto</artifactId>
         </dependency>
     </dependencies>
+
 </project>
