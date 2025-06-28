@@ -107,6 +107,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
+                <inherited>true</inherited>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -119,7 +120,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>3.3.0</version>
-                <inherited>false</inherited>
+                <inherited>true</inherited>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -153,7 +154,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- GPG签名插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -178,7 +178,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <autoPublish>false</autoPublish>
+                    <autoPublish>true</autoPublish>
                     <waitUntil>validated</waitUntil>
                 </configuration>
             </plugin>
