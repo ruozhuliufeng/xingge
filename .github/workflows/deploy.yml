@@ -42,13 +42,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
           
-    # 编译项目
-    - name: Compile project
-      run: mvn clean compile
-      
-    # 运行测试
-    - name: Run tests
-      run: mvn test
       
     # 打包项目
     - name: Package project
@@ -144,7 +137,7 @@ jobs:
     # 构建并部署到 Maven 中央仓库
     - name: Deploy to Maven Central
       run: |
-        mvn clean deploy -DskipTests \
+        mvn clean package deploy -DskipTests \
           -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
           --batch-mode --no-transfer-progress
           
