@@ -12,6 +12,10 @@
 
     <name>xingge-starter-log</name>
 
+    <description>
+        行歌-日志记录。
+        支持自定义日志注解，自定义日志保存的方式，如本地日志记录、数据库保存、接口推送等
+    </description>
     <dependencies>
         <dependency>
             <groupId>tech.msop</groupId>

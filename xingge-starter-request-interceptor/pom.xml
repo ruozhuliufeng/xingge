@@ -10,7 +10,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <!-- 继承父项目 -->
     <parent>
         <groupId>tech.msop</groupId>
@@ -23,7 +23,10 @@
     <artifactId>xingge-starter-request-interceptor</artifactId>
     <packaging>jar</packaging>
     <name>xingge-starter-request-interceptor</name>
-    <description>行歌项目请求拦截器启动器，提供HTTP请求拦截和监控功能</description>
+    <description>
+        行歌-请求与响应拦截器，提供HTTP请求拦截和监控功能。
+        支持请求拦截数据保存到RocketMQ(本地部署)、MySQL数据库、Postgres数据库、Mongo数据库、本地日志记录与索引、对外接口等方式。
+    </description>
 
     <!-- 依赖管理 -->
     <dependencies>
@@ -33,18 +36,18 @@
             <artifactId>xingge-core-auto</artifactId>
             <version>${project.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>tech.msop</groupId>-->
-<!--            <artifactId>xingge-core-db</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>tech.msop</groupId>-->
-<!--            <artifactId>xingge-starter-mybatis</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>tech.msop</groupId>-->
-<!--            <artifactId>xingge-starter-http</artifactId>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>tech.msop</groupId>-->
+        <!--            <artifactId>xingge-core-db</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>tech.msop</groupId>-->
+        <!--            <artifactId>xingge-starter-mybatis</artifactId>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>tech.msop</groupId>-->
+        <!--            <artifactId>xingge-starter-http</artifactId>-->
+        <!--        </dependency>-->
     </dependencies>
 
 </project>
