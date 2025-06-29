@@ -33,17 +33,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Package project
-        run: mvn clean package -DskipTests
+      - name: Bump patch version
+        run: |
+          mvn build-helper:parse-version versions:set \
+            -DnewVersion=\"${{ github.run_number }}\" \
+            -DgenerateBackupPoms=false
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: |
-            **/target/*.jar
-            **/target/*.pom
-          retention-days: 7
+      - name: Commit and push version bump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pom.xml
+          git commit -m "ci: bump version"
+          git push origin HEAD:master
 
   deploy:
     name: Deploy to Maven Central
@@ -98,6 +100,14 @@ jobs:
           </settings>
           EOF
 
+      - name: Configure GPG for CI (loopback mode)
+        run: |
+          mkdir -p ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "use-agent" >> ~/.gnupg/gpg.conf
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          chmod 600 ~/.gnupg/*
+
       - name: Import GPG key and unlock
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -110,6 +120,7 @@ jobs:
           echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
           echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
             --sign --default-key "$GPG_KEY_ID" --output /dev/null <<< "unlock"
+          gpg --list-secret-keys --keyid-format LONG
 
       - name: Deploy to Maven Central
         run: |
