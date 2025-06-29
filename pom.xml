@@ -168,6 +168,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                    <passphraseServerId>gpg.passphrase</passphraseServerId>
+                </configuration>
             </plugin>
 
             <!-- 中央仓库发布插件 -->
@@ -181,23 +188,6 @@
                     <autoPublish>true</autoPublish>
                     <waitUntil>validated</waitUntil>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.2.7</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
