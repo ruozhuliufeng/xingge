@@ -1,156 +1,141 @@
-# GitHub Actions 自动部署工作流
-# 当代码推送到 master 分支时，自动构建并发布到 Maven 中央仓库
 name: Deploy to Maven Central
 
-# 触发条件：推送到 master 分支
 on:
   push:
     branches: [ master, main ]
   pull_request:
     branches: [ master, main ]
 
-# 环境变量
 env:
   JAVA_VERSION: '8'
   MAVEN_OPTS: '-Xmx1024m'
 
-# 作业定义
 jobs:
-  # 构建和测试作业
   build:
     name: Build and Test
     runs-on: ubuntu-latest
-    
-    steps:
-    # 检出代码
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    # 设置 JDK 环境
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    # 缓存 Maven 依赖
-    - name: Cache Maven dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-          
-      
-    # 打包项目
-    - name: Package project
-      run: mvn clean package -DskipTests
-      
-    # 上传构建产物
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts
-        path: |
-          **/target/*.jar
-          **/target/*.pom
-        retention-days: 7
 
-  # 部署作业（仅在 master 分支且构建成功时执行）
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Package project
+        run: mvn clean package -DskipTests
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            **/target/*.jar
+            **/target/*.pom
+          retention-days: 7
+
   deploy:
     name: Deploy to Maven Central
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-    
+
     steps:
-    # 检出代码
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    # 设置 JDK 环境
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
-      uses: actions/setup-java@v4
-      with:
-        java-version: ${{ env.JAVA_VERSION }}
-        distribution: 'temurin'
-        
-    # 缓存 Maven 依赖
-    - name: Cache Maven dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-          
-    # 配置 Maven settings.xml
-    - name: Configure Maven settings
-      run: |
-        mkdir -p ~/.m2
-        cat > ~/.m2/settings.xml << 'EOF'
-        <?xml version="1.0" encoding="UTF-8"?>
-        <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
-                  http://maven.apache.org/xsd/settings-1.0.0.xsd">
-          <servers>
-            <server>
-              <id>central</id>
-              <username>${{ secrets.SONATYPE_USERNAME }}</username>
-              <password>${{ secrets.SONATYPE_PASSWORD }}</password>
-            </server>
-          </servers>
-          <profiles>
-            <profile>
-              <id>gpg</id>
-              <properties>
-                <gpg.keyname>${{ secrets.GPG_KEY_ID }}</gpg.keyname>
-                <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
-                <gpg.executable>gpg</gpg.executable>
-              </properties>
-            </profile>
-          </profiles>
-          <activeProfiles>
-            <activeProfile>gpg</activeProfile>
-          </activeProfiles>
-        </settings>
-        EOF
-        
-    # 导入 GPG 私钥
-    - name: Import GPG key
-      env:
-        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-      run: |
-        # 创建临时文件存储GPG密钥
-        echo "$GPG_PRIVATE_KEY" | base64 -d > /tmp/private.key
-        # 导入GPG密钥
-        gpg --batch --yes --import /tmp/private.key
-        # 删除临时文件
-        rm -f /tmp/private.key
-        # 验证密钥导入
-        gpg --list-secret-keys --keyid-format LONG
-        # 设置信任级别
-        echo "${{ secrets.GPG_KEY_ID }}:6:" | gpg --import-ownertrust
-        
-    # 构建并部署到 Maven 中央仓库
-    - name: Deploy to Maven Central
-      run: |
-        mvn clean package deploy -DskipTests \
-          -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
-          --batch-mode --no-transfer-progress
-          
-    # 通知部署结果
-    - name: Notify deployment success
-      if: success()
-      run: |
-        echo "✅ 项目已成功部署到 Maven 中央仓库！"
-        echo "📦 版本: $(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-        echo "🔗 仓库地址: https://central.sonatype.com/artifact/tech.msop/xingge"
-        
-    - name: Notify deployment failure
-      if: failure()
-      run: |
-        echo "❌ 部署失败，请检查日志并修复问题。"
-        echo "💡 常见问题：GPG签名、Sonatype认证、网络连接等"
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Configure Maven settings.xml
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << EOF
+          <settings>
+            <servers>
+              <server>
+                <id>central</id>
+                <username>${{ secrets.SONATYPE_USERNAME }}</username>
+                <password>${{ secrets.SONATYPE_PASSWORD }}</password>
+              </server>
+            </servers>
+            <profiles>
+              <profile>
+                <id>release</id>
+                <properties>
+                  <gpg.keyname>${{ secrets.GPG_KEY_ID }}</gpg.keyname>
+                  <gpg.passphrase>${{ secrets.GPG_PASSPHRASE }}</gpg.passphrase>
+                </properties>
+              </profile>
+            </profiles>
+            <activeProfiles>
+              <activeProfile>release</activeProfile>
+            </activeProfiles>
+          </settings>
+          EOF
+
+      - name: Import GPG key and unlock
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          echo "$GPG_PRIVATE_KEY" | base64 -d > /tmp/private.key
+          gpg --batch --yes --import /tmp/private.key
+          rm -f /tmp/private.key
+          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+          echo "$GPG_PASSPHRASE" | gpg --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+            --sign --default-key "$GPG_KEY_ID" --output /dev/null <<< "unlock"
+
+      - name: Deploy to Maven Central
+        run: |
+          mvn clean deploy -P release -DskipTests \
+            -Dgpg.passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            --batch-mode --no-transfer-progress
+
+      - name: Get project version
+        id: get_version
+        run: echo "version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag -a v${{ steps.get_version.outputs.version }} -m "Release v${{ steps.get_version.outputs.version }}"
+          git push origin v${{ steps.get_version.outputs.version }}
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ 项目已成功部署到 Maven 中央仓库！"
+          echo "📦 版本: ${{ steps.get_version.outputs.version }}"
+          echo "🔗 仓库地址: https://central.sonatype.com/artifact/tech.msop/xingge"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          echo "❌ 部署失败，请检查日志并修复问题。"
