@@ -1,0 +1,128 @@
+# 请求拦截器多存储类型配置示例
+# 支持多种存储类型的组合使用
+
+xg:
+  request:
+    # 启用请求拦截器
+    enabled: true
+    
+    # 多种存储类型配置（支持同时使用多种存储方式）
+    # 可选值：LOG, MONGO, DATABASE, KAFKA, ROCKET_MQ, API
+    storage-types:
+      - LOG      # 输出到日志
+      - MONGO    # 保存到MongoDB
+    
+    # 单一存储类型配置（向后兼容，建议使用storage-types）
+    # storage-type: LOG
+    
+    # 是否包含请求头
+    include-headers: true
+    
+    # 是否包含请求体
+    include-request-body: true
+    
+    # 是否包含响应体
+    include-response-body: true
+    
+    # 最大请求体大小（字节）
+    max-body-size: 1048576  # 1MB
+    
+    # 日志配置
+    log:
+      enabled: true
+      level: INFO
+      pattern: "[REQUEST-INTERCEPTOR] %s"
+    
+    # MongoDB配置
+    mongo:
+      enabled: true
+      uri: mongodb://localhost:27017
+      database-name: request_logs
+      collection-name: t_request_interceptor_log
+      batch-size: 100
+    
+    # 数据库配置
+    database:
+      enabled: false
+      table-name: request_log
+      batch-size: 100
+    
+    # Kafka配置
+    kafka:
+      enabled: false
+      topic: request-log
+      partitions: 1
+    
+    # RocketMQ配置
+    rocket-mq:
+      enabled: false
+      topic: request-log
+      tag: REQUEST
+      producer-group: request-interceptor-producer
+    
+    # 自定义API配置
+    api:
+      enabled: false
+      url: http://localhost:8080/api/request-log
+      method: POST
+      connect-timeout: 5000
+      read-timeout: 10000
+    
+    # HTTP客户端配置
+    http-client:
+      # 是否启用OkHttp拦截
+      ok-http-enabled: true
+      # 是否启用RestTemplate拦截
+      rest-template-enabled: true
+      # 是否启用OpenFeign拦截
+      open-feign-enabled: true
+
+---
+# 仅使用日志输出的简单配置
+spring:
+  profiles: log-only
+  
+xg:
+  request:
+    enabled: true
+    storage-types:
+      - LOG
+    log:
+      enabled: true
+      level: INFO
+
+---
+# 仅使用MongoDB存储的配置
+spring:
+  profiles: mongo-only
+  
+xg:
+  request:
+    enabled: true
+    storage-types:
+      - MONGO
+    mongo:
+      enabled: true
+      uri: mongodb://localhost:27017
+      database-name: request_logs
+      collection-name: t_request_interceptor_log
+
+---
+# 同时使用日志和MongoDB的配置
+spring:
+  profiles: log-and-mongo
+  
+xg:
+  request:
+    enabled: true
+    storage-types:
+      - LOG
+      - MONGO
+    log:
+      enabled: true
+      level: INFO
+    mongo:
+      enabled: true
+      uri: mongodb://localhost:27017
+      database-name: request_logs
+      collection-name: t_request_interceptor_log
