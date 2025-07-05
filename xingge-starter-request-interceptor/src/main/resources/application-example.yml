@@ -1,0 +1,136 @@
+# 请求拦截器配置示例
+# 展示如何配置不同的存储方式
+
+xg:
+  request:
+    # 是否启用请求拦截器
+    enabled: true
+    
+    # 存储类型：LOG（日志）、MONGO（MongoDB）
+    storage-type: LOG
+    
+    # 是否包含请求头信息
+    include-headers: true
+    
+    # 是否包含请求体信息
+    include-request-body: true
+    
+    # 是否包含响应体信息
+    include-response-body: true
+    
+    # 最大请求体大小（字节）
+    max-body-size: 10240
+    
+    # 日志存储配置
+    log:
+      # 是否启用日志输出
+      enabled: true
+      # 日志级别：DEBUG、INFO、WARN、ERROR
+      level: INFO
+      # 日志输出格式
+      pattern: "[REQUEST-INTERCEPTOR] %s"
+    
+    # MongoDB存储配置
+    mongo:
+      # 是否启用MongoDB存储
+      enabled: false
+      # MongoDB连接地址（可选，不配置则使用项目默认MongoDB配置）
+      uri: "mongodb://localhost:27017"
+      # 数据库名称（默认：request_logs）
+      database-name: "request_logs"
+      # 集合名称（默认：t_request_interceptor_log）
+      collection-name: "t_request_interceptor_log"
+      # 批量插入大小
+      batch-size: 100
+    
+    # HTTP客户端拦截配置
+    http-client:
+      # 是否拦截OkHttp请求
+      intercept-okhttp: true
+      # 是否拦截RestTemplate请求
+      intercept-rest-template: true
+      # 是否拦截OpenFeign请求
+      intercept-open-feign: true
+
+---
+# 日志输出配置示例
+spring:
+  profiles: log-storage
+
+xg:
+  request:
+    enabled: true
+    storage-type: LOG
+    include-headers: true
+    include-request-body: true
+    include-response-body: true
+    max-body-size: 5120
+    
+    log:
+      enabled: true
+      level: INFO
+      pattern: "[HTTP-REQUEST] %s"
+    
+    http-client:
+      intercept-okhttp: true
+      intercept-rest-template: true
+      intercept-open-feign: true
+
+---
+# MongoDB存储配置示例
+spring:
+  profiles: mongo-storage
+
+xg:
+  request:
+    enabled: true
+    storage-type: MONGO
+    include-headers: true
+    include-request-body: true
+    include-response-body: true
+    max-body-size: 10240
+    
+    mongo:
+      enabled: true
+      # 使用自定义MongoDB地址
+      uri: "mongodb://192.168.1.100:27017"
+      database-name: "app_logs"
+      collection-name: "http_request_logs"
+      batch-size: 50
+    
+    http-client:
+      intercept-okhttp: true
+      intercept-rest-template: true
+      intercept-open-feign: true
+
+---
+# 使用默认MongoDB配置示例
+spring:
+  profiles: mongo-default
+  
+  # 项目默认MongoDB配置
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/myapp
+
+xg:
+  request:
+    enabled: true
+    storage-type: MONGO
+    include-headers: false
+    include-request-body: true
+    include-response-body: true
+    max-body-size: 8192
+    
+    mongo:
+      enabled: true
+      # 不配置uri，使用项目默认MongoDB配置
+      # uri: 
+      # 使用默认集合名称
+      collection-name: "t_request_interceptor_log"
+      batch-size: 100
+    
+    http-client:
+      intercept-okhttp: true
+      intercept-rest-template: false
+      intercept-open-feign: true
