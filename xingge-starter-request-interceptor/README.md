@@ -60,7 +60,7 @@ xg:
 
 ### 3. 使用示例
 
-配置完成后，所有HTTP请求将自动被拦截和记录：
+配置完成后，框架会自动启用请求拦截器，所有HTTP请求将自动被拦截和记录：
 
 ```java
 @RestController
@@ -76,6 +76,9 @@ public class TestController {
         return result;
     }
 }
+```
+
+**注意**：无需添加任何注解，框架会通过Spring Boot自动配置机制自动启用。
 ```
 
 ## 存储方式配置

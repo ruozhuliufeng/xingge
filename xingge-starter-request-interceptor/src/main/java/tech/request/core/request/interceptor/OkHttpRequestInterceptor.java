@@ -168,8 +168,7 @@ public class OkHttpRequestInterceptor implements Interceptor {
                 return null;
             }
             
-            // 克隆响应体，避免消费原始响应体
-            ResponseBody clonedBody = responseBody.source().getBuffer().clone().readByteString();
+            // 读取响应体内容
             BufferedSource source = responseBody.source();
             source.request(Long.MAX_VALUE);
             String body = source.getBuffer().clone().readString(StandardCharsets.UTF_8);

@@ -84,8 +84,8 @@
         <bcprov.version>1.76</bcprov.version>
 
         <!-- ================================ 消息队列相关 ================================ -->
-        <!-- RocketMQ 5.3.3 - Apache RocketMQ最新稳定版本 -->
-        <rocketmq.version>5.3.3</rocketmq.version>
+        <!-- RocketMQ 2.3.3 - Apache RocketMQ Spring Boot Starter最新稳定版本 -->
+        <rocketmq.version>2.3.3</rocketmq.version>
 
         <!-- ================================ 监控相关 ================================ -->
         <!-- Micrometer 1.10.13 - 应用监控指标库，支持Prometheus等监控系统 -->
@@ -170,6 +170,14 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+
+            <!-- ================================ 消息队列相关依赖 ================================ -->
+            <!-- RocketMQ - Apache RocketMQ Spring Boot Starter -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
             </dependency>
 
             <!-- ================================ 工具类库依赖 ================================ -->

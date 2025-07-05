@@ -55,15 +55,17 @@ public class RequestInterceptorTestApplication {
      * @param args 命令行参数
      */
     public static void main(String[] args) {
-        System.out.println("=".repeat(80));
+        String separator = createRepeatedString("=", 80);
+        System.out.println(separator);
         System.out.println("🚀 启动请求拦截器测试应用");
         System.out.println("📝 测试接口地址: http://localhost:8080/test/");
         System.out.println("🔍 健康检查: http://localhost:8080/test/health");
-        System.out.println("=".repeat(80));
+        System.out.println(separator);
         
         SpringApplication.run(RequestInterceptorTestApplication.class, args);
         
-        System.out.println("\n" + "=".repeat(80));
+        String separator2 = createRepeatedString("=", 80);
+        System.out.println("\n" + separator2);
         System.out.println("✅ 请求拦截器测试应用启动成功！");
         System.out.println("📋 可用的测试接口:");
         System.out.println("   • GET  /test/simple           - 简单请求测试");
@@ -73,7 +75,7 @@ public class RequestInterceptorTestApplication {
         System.out.println("   • GET  /test/error            - 错误请求测试");
         System.out.println("   • GET  /test/large-data       - 大数据量请求测试");
         System.out.println("   • GET  /test/health           - 健康检查");
-        System.out.println("=".repeat(80));
+        System.out.println(separator2);
     }
     
     /**
@@ -86,5 +88,20 @@ public class RequestInterceptorTestApplication {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+    
+    /**
+     * 创建重复字符串（Java 8兼容）
+     * 
+     * @param str 要重复的字符串
+     * @param count 重复次数
+     * @return 重复后的字符串
+     */
+    private static String createRepeatedString(String str, int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
     }
 }

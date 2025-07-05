@@ -79,8 +79,23 @@ public class LogRequestLogStorage implements RequestLogStorage {
     /**
      * 分隔线
      */
-    private static final String SEPARATOR = "=".repeat(80);
-    private static final String SUB_SEPARATOR = "-".repeat(40);
+    private static final String SEPARATOR = createRepeatedString("=", 80);
+    private static final String SUB_SEPARATOR = createRepeatedString("-", 40);
+    
+    /**
+     * 创建重复字符串（Java 8兼容）
+     * 
+     * @param str 要重复的字符串
+     * @param count 重复次数
+     * @return 重复后的字符串
+     */
+    private static String createRepeatedString(String str, int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
     
     /**
      * 初始化日志存储服务
@@ -203,6 +218,8 @@ public class LogRequestLogStorage implements RequestLogStorage {
     /**
      * 异步存储单个请求日志
      * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
+     * 
      * @param logInfo 请求日志信息
      * @return CompletableFuture对象
      */
@@ -212,14 +229,16 @@ public class LogRequestLogStorage implements RequestLogStorage {
             try {
                 store(logInfo);
             } catch (Exception e) {
+                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步输出请求日志失败: {}", logInfo.getRequestId(), e);
-                throw new RuntimeException(e);
             }
         }, executorService);
     }
     
     /**
      * 异步批量存储请求日志
+     * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
      * 
      * @param logInfoList 请求日志信息列表
      * @return CompletableFuture对象
@@ -230,9 +249,9 @@ public class LogRequestLogStorage implements RequestLogStorage {
             try {
                 batchStore(logInfoList);
             } catch (Exception e) {
+                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步批量输出请求日志失败，数量: {}", 
                         logInfoList != null ? logInfoList.size() : 0, e);
-                throw new RuntimeException(e);
             }
         }, executorService);
     }
@@ -295,16 +314,16 @@ public class LogRequestLogStorage implements RequestLogStorage {
         sb.append("│ 请求URL: ").append(logInfo.getUrl()).append("\n");
         
         // 时间信息
-        if (logInfo.getStartTime() != null) {
-            sb.append("│ 开始时间: ").append(logInfo.getStartTime().format(DATE_TIME_FORMATTER)).append("\n");
+        if (logInfo.getRequestTime() != null) {
+            sb.append("│ 开始时间: ").append(logInfo.getRequestTime().format(DATE_TIME_FORMATTER)).append("\n");
         }
-        if (logInfo.getEndTime() != null) {
-            sb.append("│ 结束时间: ").append(logInfo.getEndTime().format(DATE_TIME_FORMATTER)).append("\n");
+        if (logInfo.getResponseTime() != null) {
+            sb.append("│ 结束时间: ").append(logInfo.getResponseTime().format(DATE_TIME_FORMATTER)).append("\n");
         }
         sb.append("│ 耗时: ").append(logInfo.getDuration()).append("ms\n");
-        sb.append("│ 执行状态: ").append(logInfo.isSuccess() ? "成功" : "失败").append("\n");
+        sb.append("│ 执行状态: ").append(logInfo.getSuccess() != null && logInfo.getSuccess() ? "成功" : "失败").append("\n");
         
-        if (!logInfo.isSuccess() && logInfo.getErrorMessage() != null) {
+        if ((logInfo.getSuccess() == null || !logInfo.getSuccess()) && logInfo.getErrorMessage() != null) {
             sb.append("│ 错误信息: ").append(logInfo.getErrorMessage()).append("\n");
         }
         
@@ -418,17 +437,24 @@ public class LogRequestLogStorage implements RequestLogStorage {
                 case '[':
                     formatted.append(c).append('\n');
                     indent++;
-                    formatted.append("  ".repeat(indent));
+                    for (int i = 0; i < indent; i++) {
+                        formatted.append("  ");
+                    }
                     break;
                 case '}':
                 case ']':
                     formatted.append('\n');
                     indent--;
-                    formatted.append("  ".repeat(indent)).append(c);
+                    for (int i = 0; i < indent; i++) {
+                        formatted.append("  ");
+                    }
+                    formatted.append(c);
                     break;
                 case ',':
                     formatted.append(c).append('\n');
-                    formatted.append("  ".repeat(indent));
+                    for (int i = 0; i < indent; i++) {
+                        formatted.append("  ");
+                    }
                     break;
                 case ':':
                     formatted.append(c).append(' ');

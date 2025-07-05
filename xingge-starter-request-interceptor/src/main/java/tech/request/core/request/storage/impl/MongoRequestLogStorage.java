@@ -200,6 +200,8 @@ public class MongoRequestLogStorage implements RequestLogStorage {
     /**
      * 异步存储单个请求日志
      * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
+     * 
      * @param logInfo 请求日志信息
      * @return CompletableFuture对象
      */
@@ -209,14 +211,16 @@ public class MongoRequestLogStorage implements RequestLogStorage {
             try {
                 store(logInfo);
             } catch (Exception e) {
+                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步存储请求日志到MongoDB失败: {}", logInfo.getRequestId(), e);
-                throw new RuntimeException(e);
             }
         }, executorService);
     }
     
     /**
      * 异步批量存储请求日志
+     * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
      * 
      * @param logInfoList 请求日志信息列表
      * @return CompletableFuture对象
@@ -227,9 +231,9 @@ public class MongoRequestLogStorage implements RequestLogStorage {
             try {
                 batchStore(logInfoList);
             } catch (Exception e) {
+                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步批量存储请求日志到MongoDB失败，数量: {}", 
                         logInfoList != null ? logInfoList.size() : 0, e);
-                throw new RuntimeException(e);
             }
         }, executorService);
     }
@@ -304,12 +308,12 @@ public class MongoRequestLogStorage implements RequestLogStorage {
                 .append("url", logInfo.getUrl())
                 .append("method", logInfo.getMethod())
                 .append("clientType", logInfo.getClientType())
-                .append("startTime", logInfo.getStartTime() != null ? 
-                        logInfo.getStartTime().format(DATE_TIME_FORMATTER) : null)
-                .append("endTime", logInfo.getEndTime() != null ? 
-                        logInfo.getEndTime().format(DATE_TIME_FORMATTER) : null)
+                .append("startTime", logInfo.getRequestTime() != null ? 
+                        logInfo.getRequestTime().format(DATE_TIME_FORMATTER) : null)
+                .append("endTime", logInfo.getResponseTime() != null ?
+                        logInfo.getResponseTime().format(DATE_TIME_FORMATTER) : null)
                 .append("duration", logInfo.getDuration())
-                .append("success", logInfo.isSuccess())
+                .append("success", logInfo.getSuccess())
                 .append("errorMessage", logInfo.getErrorMessage())
                 .append("createTime", LocalDateTime.now().format(DATE_TIME_FORMATTER));
         

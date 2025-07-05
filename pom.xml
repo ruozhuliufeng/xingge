@@ -185,7 +185,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <autoPublish>true</autoPublish>
+                    <autoPublish>false</autoPublish>
                     <waitUntil>validated</waitUntil>
                 </configuration>
             </plugin>

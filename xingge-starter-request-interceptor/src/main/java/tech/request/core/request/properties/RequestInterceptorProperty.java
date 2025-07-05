@@ -52,8 +52,16 @@ public class RequestInterceptorProperty {
     private boolean enabled = true;
     
     /**
-     * 数据存储类型
+     * 数据存储类型（支持多选）
+     * 例如：["LOG", "MONGO"] 表示同时输出到日志和MongoDB
      */
+    private java.util.List<StorageType> storageTypes = java.util.Arrays.asList(StorageType.LOG);
+    
+    /**
+     * 数据存储类型（单选，保持向后兼容）
+     * @deprecated 建议使用 storageTypes 支持多选
+     */
+    @Deprecated
     private StorageType storageType = StorageType.LOG;
     
     /**
@@ -530,12 +538,30 @@ public class RequestInterceptorProperty {
         this.enabled = enabled;
     }
     
+    public java.util.List<StorageType> getStorageTypes() {
+        return storageTypes;
+    }
+    
+    public void setStorageTypes(java.util.List<StorageType> storageTypes) {
+        this.storageTypes = storageTypes != null ? storageTypes : java.util.Arrays.asList(StorageType.LOG);
+    }
+    
+    /**
+     * @deprecated 建议使用 getStorageTypes() 支持多选
+     */
+    @Deprecated
     public StorageType getStorageType() {
         return storageType;
     }
     
+    /**
+     * @deprecated 建议使用 setStorageTypes() 支持多选
+     */
+    @Deprecated
     public void setStorageType(StorageType storageType) {
         this.storageType = storageType;
+        // 为了向后兼容，同时设置storageTypes
+        this.storageTypes = java.util.Arrays.asList(storageType);
     }
     
     public boolean isIncludeHeaders() {

@@ -12,7 +12,6 @@ package tech.request.core.request.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.model.RequestLogInfo;
@@ -55,14 +54,23 @@ public class RequestLogHandler {
     /**
      * 请求日志存储接口
      */
-    @Autowired
-    private RequestLogStorage requestLogStorage;
+    private final RequestLogStorage requestLogStorage;
     
     /**
      * 请求拦截器配置属性
      */
-    @Autowired
-    private RequestInterceptorProperty properties;
+    private final RequestInterceptorProperty properties;
+    
+    /**
+     * 构造函数
+     * 
+     * @param requestLogStorage 请求日志存储接口
+     * @param properties 请求拦截器配置属性
+     */
+    public RequestLogHandler(RequestLogStorage requestLogStorage, RequestInterceptorProperty properties) {
+        this.requestLogStorage = requestLogStorage;
+        this.properties = properties;
+    }
     
     /**
      * 初始化处理器
@@ -73,7 +81,9 @@ public class RequestLogHandler {
     }
     
     /**
-     * 处理请求日志（同步方式）
+     * 处理请求日志（默认异步方式）
+     * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
      * 
      * @param clientType 客户端类型（如：OkHttp、RestTemplate、OpenFeign）
      * @param method 请求方法
@@ -93,19 +103,21 @@ public class RequestLogHandler {
                                int responseStatus, Map<String, String> responseHeaders, String responseBody,
                                LocalDateTime startTime, LocalDateTime endTime,
                                boolean success, String errorMessage) {
-        try {
-            RequestLogInfo logInfo = buildRequestLogInfo(clientType, method, url,
-                    requestHeaders, requestBody, responseStatus, responseHeaders, responseBody,
-                    startTime, endTime, success, errorMessage);
-            
-            requestLogStorage.store(logInfo);
-        } catch (Exception e) {
-            logger.error("处理请求日志失败: {} {}", method, url, e);
-        }
+        // 默认使用异步方式处理，不阻碍业务流程
+        handleRequestLogAsync(clientType, method, url, requestHeaders, requestBody,
+                responseStatus, responseHeaders, responseBody, startTime, endTime,
+                success, errorMessage)
+                .exceptionally(throwable -> {
+                    // 异常通过日志输出，不抛出异常
+                    logger.error("异步处理请求日志失败: {} {}", method, url, throwable);
+                    return null;
+                });
     }
     
     /**
      * 处理请求日志（异步方式）
+     * 
+     * <p>默认为异步输出，不阻碍现有业务流程，所有异常通过日志输出</p>
      * 
      * @param clientType 客户端类型
      * @param method 请求方法
@@ -133,8 +145,9 @@ public class RequestLogHandler {
             
             return requestLogStorage.storeAsync(logInfo);
         } catch (Exception e) {
+            // 异常通过日志输出，不抛出异常以避免阻碍业务流程
             logger.error("异步处理请求日志失败: {} {}", method, url, e);
-            return CompletableFuture.failedFuture(e);
+            return CompletableFuture.completedFuture(null);
         }
     }
     
@@ -167,8 +180,8 @@ public class RequestLogHandler {
         logInfo.setClientType(clientType);
         logInfo.setMethod(method);
         logInfo.setUrl(url);
-        logInfo.setStartTime(startTime);
-        logInfo.setEndTime(endTime);
+        logInfo.setRequestTime(startTime);
+        logInfo.setResponseTime(endTime);
         logInfo.setSuccess(success);
         logInfo.setErrorMessage(errorMessage);
         

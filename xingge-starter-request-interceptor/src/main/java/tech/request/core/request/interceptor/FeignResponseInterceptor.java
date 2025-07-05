@@ -116,7 +116,15 @@ public class FeignResponseInterceptor implements Client {
      */
     private byte[] readBodyData(Response.Body body) {
         try {
-            return body.asInputStream().readAllBytes();
+            java.io.InputStream inputStream = body.asInputStream();
+            java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            return buffer.toByteArray();
         } catch (IOException e) {
             log.warn("Failed to read response body: {}", e.getMessage());
             return new byte[0];
