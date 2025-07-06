@@ -34,6 +34,7 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
+            <scope>compiler</scope>
         </dependency>
         <dependency>
             <groupId>tech.msop</groupId>
