@@ -18,10 +18,11 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.model.RequestLogInfo;
+import tech.request.core.request.handler.RequestLogHandler;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,7 +74,8 @@ public class RestTemplateRequestInterceptor implements ClientHttpRequestIntercep
             return execution.execute(request, body);
         }
         
-        RequestLogInfo logInfo = new RequestLogInfo();
+        // 记录开始时间
+        LocalDateTime startTime = LocalDateTime.now();
         
         // 提取请求信息
         String method = request.getMethod().name();
@@ -81,26 +83,35 @@ public class RestTemplateRequestInterceptor implements ClientHttpRequestIntercep
         Map<String, String> headers = extractHeaders(request);
         String requestBody = extractRequestBody(body);
         
-        // 处理请求开始事件
-        requestLogHandler.handleRequestStart(logInfo, method, url, headers, null, requestBody, CLIENT_TYPE);
-        
         ClientHttpResponse response;
+        LocalDateTime endTime = null;
+        boolean success = true;
+        String errorMessage = null;
+        int statusCode = 0;
+        Map<String, String> responseHeaders = null;
+        String responseBody = null;
+        
         try {
             // 执行请求
             response = execution.execute(request, body);
+            endTime = LocalDateTime.now();
+            
+            // 提取响应信息
+            statusCode = response.getStatusCode().value();
+            responseHeaders = extractResponseHeaders(response);
+            responseBody = extractResponseBody(response);
+            
+            success = statusCode >= 200 && statusCode < 300;
         } catch (IOException e) {
-            // 处理请求异常
-            requestLogHandler.handleRequestComplete(logInfo, null, null, null, e);
+            endTime = LocalDateTime.now();
+            success = false;
+            errorMessage = e.getMessage();
             throw e;
+        } finally {
+            // 记录请求日志
+            requestLogHandler.handleRequestLog(CLIENT_TYPE, method, url, headers, requestBody,
+                    statusCode, responseHeaders, responseBody, startTime, endTime, success, errorMessage);
         }
-        
-        // 提取响应信息
-        int statusCode = response.getStatusCode().value();
-        Map<String, String> responseHeaders = extractResponseHeaders(response);
-        String responseBody = extractResponseBody(response);
-        
-        // 处理请求完成事件
-        requestLogHandler.handleRequestComplete(logInfo, statusCode, responseHeaders, responseBody, null);
         
         // 返回原始响应
         return response;

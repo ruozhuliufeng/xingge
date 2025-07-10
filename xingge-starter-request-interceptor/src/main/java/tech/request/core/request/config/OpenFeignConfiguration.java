@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.interceptor.FeignResponseInterceptor;
 import tech.request.core.request.interceptor.OpenFeignRequestInterceptor;
-import tech.request.core.request.interceptor.RequestLogHandler;
+import tech.request.core.request.handler.RequestLogHandler;
 
 /**
  * OpenFeign客户端拦截器配置类

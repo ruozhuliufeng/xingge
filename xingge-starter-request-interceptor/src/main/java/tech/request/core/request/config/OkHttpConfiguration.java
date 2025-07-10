@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.interceptor.OkHttpRequestInterceptor;
-import tech.request.core.request.interceptor.RequestLogHandler;
+import tech.request.core.request.handler.RequestLogHandler;
 
 /**
  * OkHttp客户端拦截器配置类
@@ -57,7 +57,7 @@ public class OkHttpConfiguration {
      */
     @Bean
     @ConditionalOnClass(OkHttpClient.class)
-    public OkHttpClient.Builder okHttpClientBuilder(OkHttpRequestInterceptor interceptor) {
+    public OkHttpClient.Builder xinggeOkHttpClientBuilder(OkHttpRequestInterceptor interceptor) {
         return new OkHttpClient.Builder()
                 .addInterceptor(interceptor);
     }

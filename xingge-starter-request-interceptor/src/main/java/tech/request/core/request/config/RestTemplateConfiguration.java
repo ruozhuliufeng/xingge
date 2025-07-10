@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.interceptor.RequestLogHandler;
+import tech.request.core.request.handler.RequestLogHandler;
 import tech.request.core.request.interceptor.RestTemplateRequestInterceptor;
 
 import java.util.ArrayList;

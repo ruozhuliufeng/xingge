@@ -15,9 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.model.RequestLogInfo;
+import tech.request.core.request.handler.RequestLogHandler;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +53,9 @@ public class OpenFeignRequestInterceptor implements RequestInterceptor {
     private final RequestInterceptorProperty property;
     
     /**
-     * 线程本地变量，用于存储请求日志信息
+     * 线程本地变量，用于存储请求开始时间
      */
-    private final ThreadLocal<RequestLogInfo> requestLogInfoThreadLocal = new ThreadLocal<>();
+    private final ThreadLocal<LocalDateTime> requestStartTimeThreadLocal = new ThreadLocal<>();
     
     /**
      * 构造函数
@@ -74,21 +75,13 @@ public class OpenFeignRequestInterceptor implements RequestInterceptor {
             return;
         }
         
-        RequestLogInfo logInfo = new RequestLogInfo();
-        requestLogInfoThreadLocal.set(logInfo);
-        
-        // 提取请求信息
-        String method = template.method();
-        String url = template.feignTarget().url() + template.path();
-        Map<String, String> headers = extractHeaders(template);
-        String requestBody = extractRequestBody(template);
-        Map<String, Object> params = extractQueryParams(template);
-        
-        // 处理请求开始事件
-        requestLogHandler.handleRequestStart(logInfo, method, url, headers, params, requestBody, CLIENT_TYPE);
+        // 记录请求开始时间
+        LocalDateTime startTime = LocalDateTime.now();
+        requestStartTimeThreadLocal.set(startTime);
         
         // 添加请求ID到请求头，用于跟踪
-        template.header("X-Request-ID", logInfo.getRequestId());
+        String requestId = System.currentTimeMillis() + "-" + Thread.currentThread().getId();
+        template.header("X-Request-ID", requestId);
     }
     
     /**
@@ -164,20 +157,35 @@ public class OpenFeignRequestInterceptor implements RequestInterceptor {
     /**
      * 处理响应信息
      * 
+     * @param method 请求方法
+     * @param url 请求URL
+     * @param requestHeaders 请求头
+     * @param requestParams 请求参数
+     * @param requestBody 请求体
      * @param statusCode 响应状态码
-     * @param headers 响应头
-     * @param body 响应体
+     * @param responseHeaders 响应头
+     * @param responseBody 响应体
      * @param error 异常信息
      */
-    public void handleResponse(Integer statusCode, Map<String, String> headers, String body, Throwable error) {
-        RequestLogInfo logInfo = requestLogInfoThreadLocal.get();
-        if (logInfo != null) {
+    public void handleResponse(String method, String url, Map<String, String> requestHeaders, 
+                              Map<String, Object> requestParams, String requestBody,
+                              Integer statusCode, Map<String, String> responseHeaders, 
+                              String responseBody, Throwable error) {
+        LocalDateTime startTime = requestStartTimeThreadLocal.get();
+        if (startTime != null) {
             try {
-                // 处理请求完成事件
-                requestLogHandler.handleRequestComplete(logInfo, statusCode, headers, body, error);
+                LocalDateTime endTime = LocalDateTime.now();
+                boolean success = error == null && (statusCode == null || statusCode < 400);
+                String errorMessage = error != null ? error.getMessage() : null;
+                
+                // 记录请求日志
+                requestLogHandler.handleRequestLog(CLIENT_TYPE, method, url, 
+                    requestHeaders, requestBody, statusCode != null ? statusCode : 0, 
+                    responseHeaders, responseBody, startTime, endTime, 
+                    success, errorMessage);
             } finally {
                 // 清理线程本地变量
-                requestLogInfoThreadLocal.remove();
+                requestStartTimeThreadLocal.remove();
             }
         }
     }

@@ -76,19 +76,26 @@ public class FeignResponseInterceptor implements Client {
             return delegate.execute(request, options);
         }
         
+        // 提取请求信息
+        String method = request.httpMethod().name();
+        String url = request.url();
+        Map<String, String> requestHeaders = extractRequestHeaders(request);
+        Map<String, Object> requestParams = extractQueryParams(url);
+        String requestBody = extractRequestBody(request);
+        
         Response response;
         try {
             // 执行请求
             response = delegate.execute(request, options);
         } catch (IOException e) {
             // 处理请求异常
-            requestInterceptor.handleResponse(null, null, null, e);
+            requestInterceptor.handleResponse(method, url, requestHeaders, requestParams, requestBody, null, null, null, e);
             throw e;
         }
         
         // 提取响应信息
         int statusCode = response.status();
-        Map<String, String> headers = extractHeaders(response);
+        Map<String, String> responseHeaders = extractHeaders(response);
         
         // 克隆响应体，避免消费原始响应体
         Response.Body originalBody = response.body();
@@ -96,7 +103,7 @@ public class FeignResponseInterceptor implements Client {
         String responseBody = extractResponseBody(bodyData);
         
         // 处理响应信息
-        requestInterceptor.handleResponse(statusCode, headers, responseBody, null);
+        requestInterceptor.handleResponse(method, url, requestHeaders, requestParams, requestBody, statusCode, responseHeaders, responseBody, null);
         
         // 创建新的响应对象，包含原始响应体
         return Response.builder()
@@ -174,6 +181,80 @@ public class FeignResponseInterceptor implements Client {
         } catch (Exception e) {
             log.warn("Failed to extract response body: {}", e.getMessage());
             return "[Failed to extract response body]";
+        }
+    }
+    
+    /**
+     * 提取请求头信息
+     * 
+     * @param request 请求对象
+     * @return 请求头Map
+     */
+    private Map<String, String> extractRequestHeaders(Request request) {
+        if (!property.isIncludeHeaders() || request.headers().isEmpty()) {
+            return null;
+        }
+        
+        Map<String, String> headerMap = new HashMap<>();
+        request.headers().forEach((name, values) -> {
+            if (!values.isEmpty()) {
+                headerMap.put(name, String.join(", ", values));
+            }
+        });
+        return headerMap;
+    }
+    
+    /**
+     * 提取查询参数
+     * 
+     * @param url 请求URL
+     * @return 查询参数Map
+     */
+    private Map<String, Object> extractQueryParams(String url) {
+        if (!StringUtils.hasText(url) || !url.contains("?")) {
+            return null;
+        }
+        
+        try {
+            String queryString = url.substring(url.indexOf("?") + 1);
+            Map<String, Object> params = new HashMap<>();
+            String[] pairs = queryString.split("&");
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=", 2);
+                if (keyValue.length == 2) {
+                    params.put(keyValue[0], keyValue[1]);
+                }
+            }
+            return params.isEmpty() ? null : params;
+        } catch (Exception e) {
+            log.warn("Failed to extract query params: {}", e.getMessage());
+            return null;
+        }
+    }
+    
+    /**
+     * 提取请求体
+     * 
+     * @param request 请求对象
+     * @return 请求体字符串
+     */
+    private String extractRequestBody(Request request) {
+        if (!property.isIncludeRequestBody() || request.body() == null || request.body().length == 0) {
+            return null;
+        }
+        
+        try {
+            String content = new String(request.body(), StandardCharsets.UTF_8);
+            
+            // 限制请求体大小
+            if (StringUtils.hasText(content) && content.length() > property.getMaxBodySize()) {
+                return content.substring(0, (int) property.getMaxBodySize()) + "... (truncated)";
+            }
+            
+            return content;
+        } catch (Exception e) {
+            log.warn("Failed to extract request body: {}", e.getMessage());
+            return "[Failed to extract request body]";
         }
     }
 }
