@@ -20,10 +20,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.model.RequestLogInfo;
+import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
@@ -63,10 +62,9 @@ import java.util.concurrent.Executors;
  * </pre>
  * 
  * @author 若竹流风
- * @version 1.0.0
- * @since 2024-01-01
+ * @version 0.0.2
+ * @since 2025-07-11
  */
-@Component
 @ConditionalOnProperty(name = "xg.request.mongo.enabled", havingValue = "true")
 public class MongoRequestLogStorage implements RequestLogStorage {
     

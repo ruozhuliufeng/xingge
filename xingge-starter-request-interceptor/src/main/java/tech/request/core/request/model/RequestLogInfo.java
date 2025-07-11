@@ -11,6 +11,7 @@ package tech.request.core.request.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import tech.request.core.request.annotation.LogIndex;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -36,8 +37,8 @@ import java.util.Map;
  * </ul>
  * 
  * @author 若竹流风
- * @version 1.0.0
- * @since 2024-01-01
+ * @version 0.0.2
+ * @since 2025-07-11
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestLogInfo implements Serializable {
@@ -47,6 +48,7 @@ public class RequestLogInfo implements Serializable {
     /**
      * 请求唯一标识
      */
+    @LogIndex(name = "requestId", prefix = "REQ_", description = "请求唯一标识")
     private String requestId;
     
     /**
@@ -69,16 +71,19 @@ public class RequestLogInfo implements Serializable {
     /**
      * HTTP客户端类型
      */
+    @LogIndex(name = "clientType", prefix = "CLIENT_", description = "HTTP客户端类型")
     private String clientType;
     
     /**
      * 请求方法
      */
+    @LogIndex(name = "method", prefix = "HTTP_", description = "HTTP请求方法")
     private String method;
     
     /**
      * 请求URL
      */
+    @LogIndex(name = "url", prefix = "URL_", description = "请求URL地址")
     private String url;
     
     /**
@@ -124,6 +129,7 @@ public class RequestLogInfo implements Serializable {
     /**
      * 客户端IP地址
      */
+    @LogIndex(name = "clientIp", prefix = "IP_", description = "客户端IP地址")
     private String clientIp;
     
     /**

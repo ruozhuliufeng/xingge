@@ -12,9 +12,8 @@ package tech.request.core.request.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.model.RequestLogInfo;
+import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
@@ -43,10 +42,9 @@ import java.util.concurrent.CompletableFuture;
  * </ol>
  * 
  * @author 若竹流风
- * @version 1.0.0
- * @since 2024-01-01
+ * @version 0.0.2
+ * @since 2025-07-11
  */
-@Component
 public class RequestLogHandler {
     
     private static final Logger logger = LoggerFactory.getLogger(RequestLogHandler.class);
@@ -178,10 +176,23 @@ public class RequestLogHandler {
         // 基本信息
         logInfo.setRequestId(UUID.randomUUID().toString());
         logInfo.setClientType(clientType);
-        logInfo.setMethod(method);
-        logInfo.setUrl(url);
-        logInfo.setRequestTime(startTime);
-        logInfo.setResponseTime(endTime);
+        
+        // 根据配置决定是否包含请求方法
+        if (properties.isIncludeRequestMethod()) {
+            logInfo.setMethod(method);
+        }
+        
+        // 根据配置决定是否包含请求URL
+        if (properties.isIncludeRequestUrl()) {
+            logInfo.setUrl(url);
+        }
+        
+        // 根据配置决定是否包含时间戳
+        if (properties.isIncludeTimestamp()) {
+            logInfo.setRequestTime(startTime);
+            logInfo.setResponseTime(endTime);
+        }
+        
         logInfo.setSuccess(success);
         logInfo.setErrorMessage(errorMessage);
         
@@ -189,6 +200,26 @@ public class RequestLogHandler {
         if (startTime != null && endTime != null) {
             long duration = java.time.Duration.between(startTime, endTime).toMillis();
             logInfo.setDuration(duration);
+        }
+        
+        // 根据配置决定是否包含客户端IP
+        if (properties.isIncludeClientIp() && requestHeaders != null) {
+            // 尝试从请求头中获取客户端IP
+            String clientIp = getClientIpFromHeaders(requestHeaders);
+            if (clientIp != null) {
+                logInfo.setClientIp(clientIp);
+            }
+        }
+        
+        // 根据配置决定是否包含User-Agent
+        if (properties.isIncludeUserAgent() && requestHeaders != null) {
+            String userAgent = requestHeaders.get("User-Agent");
+            if (userAgent == null) {
+                userAgent = requestHeaders.get("user-agent");
+            }
+            if (userAgent != null) {
+                logInfo.setUserAgent(userAgent);
+            }
         }
         
         // 请求信息（根据配置决定是否包含）
@@ -222,6 +253,48 @@ public class RequestLogHandler {
         }
         
         return logInfo;
+    }
+    
+    /**
+     * 从请求头中获取客户端IP地址
+     * 
+     * @param requestHeaders 请求头
+     * @return 客户端IP地址
+     */
+    private String getClientIpFromHeaders(Map<String, String> requestHeaders) {
+        // 按优先级顺序检查各种可能包含客户端IP的请求头
+        String[] ipHeaders = {
+            "X-Forwarded-For",
+            "X-Real-IP",
+            "X-Original-Forwarded-For",
+            "Proxy-Client-IP",
+            "WL-Proxy-Client-IP",
+            "HTTP_X_FORWARDED_FOR",
+            "HTTP_X_FORWARDED",
+            "HTTP_X_CLUSTER_CLIENT_IP",
+            "HTTP_CLIENT_IP",
+            "HTTP_FORWARDED_FOR",
+            "HTTP_FORWARDED",
+            "HTTP_VIA",
+            "REMOTE_ADDR"
+        };
+        
+        for (String header : ipHeaders) {
+            String ip = requestHeaders.get(header);
+            if (ip == null) {
+                // 尝试小写形式
+                ip = requestHeaders.get(header.toLowerCase());
+            }
+            if (ip != null && !ip.isEmpty() && !"unknown".equalsIgnoreCase(ip)) {
+                // X-Forwarded-For可能包含多个IP，取第一个
+                if (ip.contains(",")) {
+                    ip = ip.split(",")[0].trim();
+                }
+                return ip;
+            }
+        }
+        
+        return null;
     }
     
     /**

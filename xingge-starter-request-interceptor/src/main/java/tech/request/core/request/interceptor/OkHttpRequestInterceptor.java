@@ -37,8 +37,8 @@ import java.util.Set;
  * </ul>
  * 
  * @author 若竹流风
- * @version 1.0.0
- * @since 2024-01-01
+ * @version 0.0.2
+ * @since 2025-07-11
  */
 public class OkHttpRequestInterceptor implements Interceptor {
     

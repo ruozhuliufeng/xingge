@@ -12,15 +12,17 @@ package tech.request.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
-import tech.request.core.request.properties.RequestInterceptorProperty;
+import tech.request.core.request.annotation.LogIndex;
 import tech.request.core.request.model.RequestLogInfo;
+import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.lang.reflect.Field;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -51,10 +53,9 @@ import java.util.concurrent.Executors;
  * </pre>
  * 
  * @author 若竹流风
- * @version 1.0.0
- * @since 2024-01-01
+ * @version 0.0.2
+ * @since 2025-07-11
  */
-@Component
 @ConditionalOnProperty(name = "xg.request.log.enabled", havingValue = "true")
 public class LogRequestLogStorage implements RequestLogStorage {
     
@@ -129,6 +130,9 @@ public class LogRequestLogStorage implements RequestLogStorage {
     @Override
     public void store(RequestLogInfo logInfo) throws Exception {
         try {
+            // 设置MDC日志索引
+            setMdcLogIndex(logInfo);
+            
             String formattedLog = formatLogInfo(logInfo);
             String pattern = properties.getLog().getPattern();
             String finalLog = String.format(pattern, formattedLog);
@@ -155,6 +159,9 @@ public class LogRequestLogStorage implements RequestLogStorage {
         } catch (Exception e) {
             logger.error("输出请求日志失败: {}", logInfo.getRequestId(), e);
             throw e;
+        } finally {
+            // 清理MDC
+            clearMdcLogIndex();
         }
     }
     
@@ -171,6 +178,9 @@ public class LogRequestLogStorage implements RequestLogStorage {
         }
         
         try {
+            // 对于批量日志，使用第一条记录的索引信息
+            setMdcLogIndex(logInfoList.get(0));
+
             StringBuilder batchLog = new StringBuilder();
             batchLog.append("\n").append(SEPARATOR).append("\n");
             batchLog.append("批量请求日志输出 - 共 ").append(logInfoList.size()).append(" 条记录\n");
@@ -292,13 +302,58 @@ public class LogRequestLogStorage implements RequestLogStorage {
                 logger.info("日志请求日志存储异步执行器已关闭");
             }
         } catch (Exception e) {
-            logger.error("销毁日志请求日志存储服务失败", e);
+            logger.error("批量输出请求日志失败", e);
             throw e;
+        } finally {
+            // 清理MDC
+            clearMdcLogIndex();
         }
     }
     
     /**
-     * 格式化请求日志信息为可读的字符串
+     * 设置MDC日志索引
+     * 
+     * @param logInfo 请求日志信息
+     */
+    private void setMdcLogIndex(RequestLogInfo logInfo) {
+        try {
+            Class<?> clazz = logInfo.getClass();
+            Field[] fields = clazz.getDeclaredFields();
+            
+            for (Field field : fields) {
+                LogIndex logIndex = field.getAnnotation(LogIndex.class);
+                if (logIndex != null && logIndex.enabled()) {
+                    field.setAccessible(true);
+                    Object value = field.get(logInfo);
+                    
+                    if (value != null) {
+                        String indexName = logIndex.name().isEmpty() ? field.getName() : logIndex.name();
+                        String prefix = logIndex.prefix();
+                        String indexValue = prefix.isEmpty() ? value.toString() : prefix + value.toString();
+                        
+                        MDC.put(indexName, indexValue);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("设置MDC日志索引失败", e);
+        }
+    }
+    
+    /**
+     * 清理MDC日志索引
+     */
+    private void clearMdcLogIndex() {
+        try {
+            // 清理所有MDC内容
+            MDC.clear();
+        } catch (Exception e) {
+            logger.warn("清理MDC日志索引失败", e);
+        }
+    }
+    
+    /**
+     * 格式化请求日志信息
      * 
      * @param logInfo 请求日志信息
      * @return 格式化后的日志字符串
