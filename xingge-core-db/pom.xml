@@ -101,13 +101,6 @@
             <optional>true</optional>
         </dependency>
         
-        <!-- 测试依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
         <!-- H2数据库用于测试 -->
         <dependency>
             <groupId>com.h2database</groupId>

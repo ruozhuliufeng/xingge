@@ -30,7 +30,7 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
-            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>tech.msop</groupId>

@@ -17,9 +17,36 @@
         支持自定义日志注解，自定义日志保存的方式，如本地日志记录、数据库保存、接口推送等
     </description>
     <dependencies>
+        <!-- 行歌核心自动配置 -->
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter AOP - 支持切面编程 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter Logging - 日志支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        
+        <!-- Lombok - 简化代码编写 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- Spring Boot Configuration Processor - 配置属性支持 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

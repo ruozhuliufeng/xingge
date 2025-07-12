@@ -1,0 +1,176 @@
+# LogIndex注解配置示例
+# 该文件展示了如何配置LogIndex切面的各种参数
+
+# 行歌日志模块配置
+xg:
+  log:
+    # 是否启用日志模块（默认：true）
+    enabled: true
+    
+    # LogIndex切面配置
+    log-index:
+      # 是否启用LogIndex切面（默认：true）
+      enabled: true
+      
+      # 是否在方法执行后清理MDC（默认：true）
+      # 建议保持启用以避免内存泄漏和上下文污染
+      clear-after-method: true
+      
+      # 是否启用调试日志（默认：false）
+      # 开启后会输出详细的切面处理日志
+      debug-enabled: false
+      
+      # 索引键的最大长度（默认：100）
+      # 超过此长度的索引键会被截断
+      max-key-length: 100
+      
+      # 索引值的最大长度（默认：500）
+      # 超过此长度的索引值会被截断
+      max-value-length: 500
+      
+      # 是否启用嵌套对象扫描（默认：false）
+      # 开启后会递归扫描对象内部的LogIndex字段
+      # 注意：可能影响性能，建议仅在必要时启用
+      enable-nested-scan: false
+
+# Spring Boot日志配置
+logging:
+  level:
+    # 设置LogIndex切面的日志级别
+    tech.msop.core.log.aspect.LogIndexAspect: INFO
+    
+    # 设置示例类的日志级别
+    tech.msop.core.log.example: INFO
+    
+    # 根日志级别
+    root: INFO
+  
+  # 日志格式配置，包含MDC信息
+  pattern:
+    # 控制台日志格式
+    # %X{key} 用于显示MDC中的值
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{requestId:-}] [%X{userId:-}] [%X{CLIENT_type:-}] %logger{36} - %msg%n"
+    
+    # 文件日志格式
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{requestId:-}] [%X{userId:-}] [%X{sessionId:-}] [%X{OP_operationId:-}] [%X{opType:-}] [%X{BIZ_module:-}] %logger{36} - %msg%n"
+  
+  # 日志文件配置
+  file:
+    name: logs/xingge-log-index.log
+    max-size: 100MB
+    max-history: 30
+
+# 开发环境配置示例
+---
+spring:
+  profiles: dev
+  
+xg:
+  log:
+    log-index:
+      # 开发环境启用调试日志
+      debug-enabled: true
+      
+      # 开发环境启用嵌套扫描
+      enable-nested-scan: true
+      
+      # 开发环境使用较小的长度限制便于调试
+      max-key-length: 50
+      max-value-length: 200
+
+logging:
+  level:
+    tech.msop.core.log.aspect.LogIndexAspect: DEBUG
+    tech.msop.core.log.example: DEBUG
+
+# 生产环境配置示例
+---
+spring:
+  profiles: prod
+  
+xg:
+  log:
+    log-index:
+      # 生产环境关闭调试日志
+      debug-enabled: false
+      
+      # 生产环境关闭嵌套扫描以提升性能
+      enable-nested-scan: false
+      
+      # 生产环境使用较大的长度限制
+      max-key-length: 200
+      max-value-length: 1000
+
+logging:
+  level:
+    tech.msop.core.log.aspect.LogIndexAspect: WARN
+    root: INFO
+  
+  # 生产环境日志文件配置
+  file:
+    name: /var/log/xingge/xingge-log-index.log
+    max-size: 500MB
+    max-history: 90
+
+# 测试环境配置示例
+---
+spring:
+  profiles: test
+  
+xg:
+  log:
+    log-index:
+      # 测试环境启用调试日志
+      debug-enabled: true
+      
+      # 测试环境不清理MDC，便于测试验证
+      clear-after-method: false
+      
+      # 测试环境启用嵌套扫描
+      enable-nested-scan: true
+
+logging:
+  level:
+    tech.msop.core.log.aspect.LogIndexAspect: DEBUG
+    tech.msop.core.log.example: DEBUG
+    root: DEBUG
+
+# 性能优化配置示例
+---
+spring:
+  profiles: performance
+  
+xg:
+  log:
+    log-index:
+      # 性能优化：关闭调试日志
+      debug-enabled: false
+      
+      # 性能优化：关闭嵌套扫描
+      enable-nested-scan: false
+      
+      # 性能优化：使用较小的长度限制
+      max-key-length: 50
+      max-value-length: 200
+      
+      # 性能优化：启用MDC清理
+      clear-after-method: true
+
+logging:
+  level:
+    tech.msop.core.log.aspect.LogIndexAspect: ERROR
+    root: WARN
+
+# 完全禁用LogIndex功能的配置示例
+---
+spring:
+  profiles: disable-log-index
+  
+xg:
+  log:
+    # 完全禁用日志模块
+    enabled: false
+    
+    log-index:
+      # 或者只禁用LogIndex切面
+      enabled: false
