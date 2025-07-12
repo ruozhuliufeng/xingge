@@ -239,6 +239,31 @@ public class XingGeDataBaseCconfig {
         private boolean continueOnError = true;
 
         /**
+         * 是否启用异步处理
+         */
+        private boolean asyncEnabled = true;
+
+        /**
+         * 异步线程池核心线程数
+         */
+        private int asyncCorePoolSize = 2;
+
+        /**
+         * 异步线程池最大线程数
+         */
+        private int asyncMaxPoolSize = 4;
+
+        /**
+         * 异步线程池队列容量
+         */
+        private int asyncQueueCapacity = 100;
+
+        /**
+         * 异步线程池线程名前缀
+         */
+        private String asyncThreadNamePrefix = "table-maintenance-";
+
+        /**
          * 备份相关配置
          */
         private BackupConfig backup = new BackupConfig();
@@ -583,6 +608,96 @@ public class XingGeDataBaseCconfig {
          */
         public void setBackup(BackupConfig backup) {
             this.backup = backup;
+        }
+
+        /**
+         * 获取是否启用异步处理
+         *
+         * @return 是否启用异步处理
+         */
+        public boolean isAsyncEnabled() {
+            return asyncEnabled;
+        }
+
+        /**
+         * 设置是否启用异步处理
+         *
+         * @param asyncEnabled 是否启用异步处理
+         */
+        public void setAsyncEnabled(boolean asyncEnabled) {
+            this.asyncEnabled = asyncEnabled;
+        }
+
+        /**
+         * 获取异步线程池核心线程数
+         *
+         * @return 核心线程数
+         */
+        public int getAsyncCorePoolSize() {
+            return asyncCorePoolSize;
+        }
+
+        /**
+         * 设置异步线程池核心线程数
+         *
+         * @param asyncCorePoolSize 核心线程数
+         */
+        public void setAsyncCorePoolSize(int asyncCorePoolSize) {
+            this.asyncCorePoolSize = asyncCorePoolSize;
+        }
+
+        /**
+         * 获取异步线程池最大线程数
+         *
+         * @return 最大线程数
+         */
+        public int getAsyncMaxPoolSize() {
+            return asyncMaxPoolSize;
+        }
+
+        /**
+         * 设置异步线程池最大线程数
+         *
+         * @param asyncMaxPoolSize 最大线程数
+         */
+        public void setAsyncMaxPoolSize(int asyncMaxPoolSize) {
+            this.asyncMaxPoolSize = asyncMaxPoolSize;
+        }
+
+        /**
+         * 获取异步线程池队列容量
+         *
+         * @return 队列容量
+         */
+        public int getAsyncQueueCapacity() {
+            return asyncQueueCapacity;
+        }
+
+        /**
+         * 设置异步线程池队列容量
+         *
+         * @param asyncQueueCapacity 队列容量
+         */
+        public void setAsyncQueueCapacity(int asyncQueueCapacity) {
+            this.asyncQueueCapacity = asyncQueueCapacity;
+        }
+
+        /**
+         * 获取异步线程池线程名前缀
+         *
+         * @return 线程名前缀
+         */
+        public String getAsyncThreadNamePrefix() {
+            return asyncThreadNamePrefix;
+        }
+
+        /**
+         * 设置异步线程池线程名前缀
+         *
+         * @param asyncThreadNamePrefix 线程名前缀
+         */
+        public void setAsyncThreadNamePrefix(String asyncThreadNamePrefix) {
+            this.asyncThreadNamePrefix = asyncThreadNamePrefix;
         }
     }
 

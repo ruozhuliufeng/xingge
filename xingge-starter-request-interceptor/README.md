@@ -5,11 +5,12 @@
 ## 功能特性
 
 - 🚀 **多客户端支持**：支持OkHttp、RestTemplate、OpenFeign等HTTP客户端
-- 📊 **多存储方式**：支持日志输出、MongoDB存储等多种存储方式
-- ⚡ **异步处理**：支持同步和异步存储模式，不影响业务性能
+- 📊 **多存储方式**：支持日志输出、MongoDB存储、数据库存储等多种存储方式
+- ⚡ **统一异步处理**：集成XingGe异步处理器，统一管理异步任务，优化性能
 - 🔧 **灵活配置**：丰富的配置选项，可根据需求自定义
 - 📝 **格式化输出**：美观的日志格式，便于查看和调试
 - 🛡️ **数据过滤**：支持配置请求体、响应体大小限制
+- 🎯 **资源优化**：使用统一线程池，避免资源浪费
 
 ## 快速开始
 
@@ -18,10 +19,18 @@
 在你的Spring Boot项目中添加以下依赖：
 
 ```xml
+<!-- 请求拦截器模块 -->
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-starter-request-interceptor</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.2</version>
+</dependency>
+
+<!-- 核心工具模块（包含异步处理器，自动引入） -->
+<dependency>
+    <groupId>tech.msop</groupId>
+    <artifactId>xingge-core-tool</artifactId>
+    <version>0.0.2</version>
 </dependency>
 ```
 
@@ -30,11 +39,20 @@
 在`application.yml`中添加配置：
 
 ```yaml
+# 异步处理器配置（可选，使用默认配置）
+xingge:
+  async:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 200
+    thread-name-prefix: "xingge-async-"
+
+# 请求拦截器配置
 xg:
   request:
     # 启用请求拦截器
     enabled: true
-    # 存储类型：LOG（日志）、MONGO（MongoDB）
+    # 存储类型：LOG（日志）、MONGO（MongoDB）、DATABASE（数据库）
     storage-type: LOG
     # 是否包含请求头
     include-headers: true
@@ -79,6 +97,46 @@ public class TestController {
 ```
 
 **注意**：无需添加任何注解，框架会通过Spring Boot自动配置机制自动启用。
+
+## ⚡ 异步处理优势
+
+从版本 0.0.2 开始，请求拦截器集成了XingGe异步处理器，带来以下优势：
+
+### 统一线程池管理
+- **之前**：每个存储实现都创建独立的线程池，资源浪费
+- **现在**：所有异步任务使用统一的异步处理器，资源利用率更高
+
+### 更好的异常处理
+- **自动异常捕获**：异步任务异常不会影响主业务流程
+- **详细日志记录**：提供任务级别的日志追踪
+- **任务命名**：每个异步任务都有明确的名称，便于调试
+
+### 配置更灵活
+- **全局配置**：通过 `xingge.async` 配置项统一管理线程池参数
+- **动态调整**：可根据业务需求调整线程池大小
+- **监控友好**：提供详细的执行日志，便于性能监控
+
+### 性能提升示例
+
+```java
+// 异步存储请求日志，不阻塞主业务
+@RestController
+public class ApiController {
+    
+    @GetMapping("/api/users")
+    public List<User> getUsers() {
+        // 1. 执行主业务逻辑
+        List<User> users = userService.getAllUsers();
+        
+        // 2. 请求信息会被异步拦截和存储，不影响响应时间
+        return users;
+    }
+}
+```
+
+**性能对比**：
+- **同步存储**：响应时间 = 业务处理时间 + 日志存储时间
+- **异步存储**：响应时间 ≈ 业务处理时间（日志存储异步执行）
 ```
 
 ## 存储方式配置

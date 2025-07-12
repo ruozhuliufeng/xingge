@@ -13,14 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.request.core.request.model.RequestLogInfo;
 import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.tool.async.AsyncProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 复合请求日志存储实现
@@ -54,9 +54,10 @@ public class CompositeRequestLogStorage implements RequestLogStorage {
     private final List<RequestLogStorage> storageList;
     
     /**
-     * 异步执行器
+     * 异步处理器
      */
-    private ExecutorService executorService;
+    @Autowired
+    private AsyncProcessor asyncProcessor;
     
     /**
      * 构造函数
@@ -108,16 +109,6 @@ public class CompositeRequestLogStorage implements RequestLogStorage {
     @Override
     public void initialize() throws Exception {
         try {
-            // 初始化异步执行器
-            executorService = Executors.newFixedThreadPool(
-                Math.max(2, storageList.size()), 
-                r -> {
-                    Thread thread = new Thread(r, "composite-storage-");
-                    thread.setDaemon(true);
-                    return thread;
-                }
-            );
-            
             // 初始化所有存储实现
             for (RequestLogStorage storage : storageList) {
                 try {
@@ -214,14 +205,16 @@ public class CompositeRequestLogStorage implements RequestLogStorage {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         
         for (RequestLogStorage storage : storageList) {
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            CompletableFuture<Void> future = asyncProcessor.executeAsyncWithResult(() -> {
                 try {
                     storage.store(logInfo);
+                    return null;
                 } catch (Exception e) {
                     logger.error("异步存储失败 - 存储类型: {}, 请求ID: {}", 
                             storage.getStorageType(), logInfo.getRequestId(), e);
+                    return null;
                 }
-            }, executorService);
+            });
             futures.add(future);
         }
         
@@ -249,14 +242,16 @@ public class CompositeRequestLogStorage implements RequestLogStorage {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         
         for (RequestLogStorage storage : storageList) {
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            CompletableFuture<Void> future = asyncProcessor.executeAsyncWithResult(() -> {
                 try {
                     storage.batchStore(logInfoList);
+                    return null;
                 } catch (Exception e) {
                     logger.error("异步批量存储失败 - 存储类型: {}, 数量: {}", 
                             storage.getStorageType(), logInfoList.size(), e);
+                    return null;
                 }
-            }, executorService);
+            });
             futures.add(future);
         }
         
@@ -323,12 +318,6 @@ public class CompositeRequestLogStorage implements RequestLogStorage {
                     logger.error("存储实现销毁失败: {}", storage.getStorageType(), e);
                     // 继续销毁其他存储实现
                 }
-            }
-            
-            // 关闭异步执行器
-            if (executorService != null && !executorService.isShutdown()) {
-                executorService.shutdown();
-                logger.info("复合存储异步执行器已关闭");
             }
             
             logger.info("复合请求日志存储销毁成功");

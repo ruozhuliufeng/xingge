@@ -8,6 +8,7 @@ package tech.msop.core.db.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,12 +19,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import tech.msop.core.db.dialect.Dialect;
+import tech.msop.core.db.dialect.DialectFactory;
 import tech.msop.core.db.parser.EntityMetadataParser;
 import tech.msop.core.db.scanner.EntityScanner;
 import tech.msop.core.db.service.TableMaintenanceService;
+import tech.msop.core.db.service.AsyncTableMaintenanceService;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import tech.msop.core.tool.async.AsyncProcessor;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 /**
  * 表结构自动维护自动配置类
@@ -33,9 +40,12 @@ import java.util.List;
 @ConditionalOnClass({DataSource.class})
 @ConditionalOnProperty(prefix = "xg.db.table-maintenance", name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(XingGeDataBaseCconfig.class)
+@EnableAsync
 public class XingGeDataBaseAutoConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(XingGeDataBaseAutoConfiguration.class);
+    @Autowired
+    private AsyncProcessor asyncProcessor;
 
     /**
      * 创建实体元数据解析器Bean
@@ -47,6 +57,26 @@ public class XingGeDataBaseAutoConfiguration {
     public EntityMetadataParser entityMetadataParser() {
         logger.info("创建实体元数据解析器");
         return new EntityMetadataParser();
+    }
+
+    /**
+     * 创建数据库方言Bean
+     *
+     * @param dataSource 数据源
+     * @return 数据库方言
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public Dialect dialect(DataSource dataSource) {
+        try {
+            logger.info("创建数据库方言");
+            Dialect dialect = DialectFactory.getDialect(dataSource);
+            logger.info("使用数据库方言: {}", dialect.getClass().getSimpleName());
+            return dialect;
+        } catch (Exception e) {
+            logger.error("创建数据库方言失败", e);
+            throw new RuntimeException("创建数据库方言失败", e);
+        }
     }
 
     /**
@@ -65,8 +95,8 @@ public class XingGeDataBaseAutoConfiguration {
     /**
      * 创建表维护服务Bean
      *
-     * @param dataSource 数据源
-     * @param dialect 数据库方言
+     * @param dataSource           数据源
+     * @param dialect              数据库方言
      * @param entityMetadataParser 实体元数据解析器
      * @return 表维护服务
      */
@@ -81,12 +111,64 @@ public class XingGeDataBaseAutoConfiguration {
     }
 
     /**
+     * 创建异步表维护服务Bean
+     *
+     * @param dataSource              数据源
+     * @param dialect                 数据库方言
+     * @param entityMetadataParser    实体元数据解析器
+     * @param tableMaintenanceService 表维护服务
+     * @param config                  配置
+     * @return 异步表维护服务
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public AsyncTableMaintenanceService asyncTableMaintenanceService(
+            DataSource dataSource,
+            Dialect dialect,
+            EntityMetadataParser entityMetadataParser,
+            TableMaintenanceService tableMaintenanceService,
+            XingGeDataBaseCconfig config) {
+        logger.info("创建异步表维护服务");
+        return new AsyncTableMaintenanceService(dataSource, dialect, entityMetadataParser, tableMaintenanceService, config, asyncProcessor);
+    }
+
+    /**
+     * 表结构维护专用线程池
+     * 用于异步执行表结构维护任务
+     *
+     * @param config 配置
+     * @return 线程池执行器
+     */
+    @Bean(name = "tableMaintenanceExecutor")
+    @ConditionalOnMissingBean(name = "tableMaintenanceExecutor")
+    public Executor tableMaintenanceExecutor(XingGeDataBaseCconfig config) {
+        logger.info("创建表结构维护专用线程池");
+        XingGeDataBaseCconfig.TableMaintenanceConfig maintenanceConfig = config.getTableMaintenance();
+
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(maintenanceConfig.getAsyncCorePoolSize());
+        executor.setMaxPoolSize(maintenanceConfig.getAsyncMaxPoolSize());
+        executor.setQueueCapacity(maintenanceConfig.getAsyncQueueCapacity());
+        executor.setThreadNamePrefix(maintenanceConfig.getAsyncThreadNamePrefix());
+
+        // 设置拒绝策略：调用者运行策略，确保任务不会丢失
+        executor.setRejectedExecutionHandler(new java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy());
+
+        // 设置线程池关闭时等待任务完成
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(60);
+
+        executor.initialize();
+        return executor;
+    }
+
+    /**
      * 创建表维护启动监听器Bean
      *
      * @param tableMaintenanceService 表维护服务
-     * @param entityScanner 实体扫描器
-     * @param config 表维护配置
-     * @param environment Spring环境
+     * @param entityScanner           实体扫描器
+     * @param config                  表维护配置
+     * @param environment             Spring环境
      * @return 表维护启动监听器
      */
     @Bean
@@ -118,9 +200,9 @@ public class XingGeDataBaseAutoConfiguration {
          * 构造函数
          *
          * @param tableMaintenanceService 表维护服务
-         * @param entityScanner 实体扫描器
-         * @param config 表维护配置
-         * @param environment Spring环境
+         * @param entityScanner           实体扫描器
+         * @param config                  表维护配置
+         * @param environment             Spring环境
          */
         public TableMaintenanceStartupListener(
                 TableMaintenanceService tableMaintenanceService,

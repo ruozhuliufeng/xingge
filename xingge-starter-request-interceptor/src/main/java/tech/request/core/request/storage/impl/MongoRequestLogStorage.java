@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import tech.request.core.request.model.RequestLogInfo;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.tool.async.AsyncProcessor;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -32,8 +33,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * MongoDB请求日志存储实现类
@@ -98,9 +97,10 @@ public class MongoRequestLogStorage implements RequestLogStorage {
     private MongoCollection<Document> collection;
     
     /**
-     * 异步执行器
+     * 异步处理器
      */
-    private ExecutorService executorService;
+    @Autowired
+    private AsyncProcessor asyncProcessor;
     
     /**
      * 日期时间格式化器
@@ -116,13 +116,6 @@ public class MongoRequestLogStorage implements RequestLogStorage {
     @Override
     public void initialize() throws Exception {
         try {
-            // 初始化异步执行器
-            executorService = Executors.newFixedThreadPool(5, r -> {
-                Thread thread = new Thread(r, "mongo-request-log-");
-                thread.setDaemon(true);
-                return thread;
-            });
-            
             RequestInterceptorProperty.MongoConfig mongoConfig = properties.getMongo();
             
             // 检查是否配置了自定义MongoDB URI
@@ -205,14 +198,16 @@ public class MongoRequestLogStorage implements RequestLogStorage {
      */
     @Override
     public CompletableFuture<Void> storeAsync(RequestLogInfo logInfo) {
-        return CompletableFuture.runAsync(() -> {
+        return asyncProcessor.executeAsyncWithResult(() -> {
             try {
                 store(logInfo);
+                return null;
             } catch (Exception e) {
                 // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步存储请求日志到MongoDB失败: {}", logInfo.getRequestId(), e);
+                return null;
             }
-        }, executorService);
+        });
     }
     
     /**
@@ -225,15 +220,17 @@ public class MongoRequestLogStorage implements RequestLogStorage {
      */
     @Override
     public CompletableFuture<Void> batchStoreAsync(List<RequestLogInfo> logInfoList) {
-        return CompletableFuture.runAsync(() -> {
+        return asyncProcessor.executeAsyncWithResult(() -> {
             try {
                 batchStore(logInfoList);
+                return null;
             } catch (Exception e) {
                 // 异常通过日志输出，不抛出异常以避免阻碍业务流程
                 logger.error("异步批量存储请求日志到MongoDB失败，数量: {}", 
                         logInfoList != null ? logInfoList.size() : 0, e);
+                return null;
             }
-        }, executorService);
+        });
     }
     
     /**
@@ -275,17 +272,12 @@ public class MongoRequestLogStorage implements RequestLogStorage {
     @Override
     public void destroy() throws Exception {
         try {
-            // 关闭异步执行器
-            if (executorService != null && !executorService.isShutdown()) {
-                executorService.shutdown();
-                logger.info("MongoDB请求日志存储异步执行器已关闭");
-            }
-            
             // 关闭自定义MongoDB客户端
             if (customMongoClient != null) {
                 customMongoClient.close();
                 logger.info("自定义MongoDB客户端已关闭");
             }
+            logger.info("MongoDB请求日志存储服务已销毁");
         } catch (Exception e) {
             logger.error("销毁MongoDB请求日志存储服务失败", e);
             throw e;

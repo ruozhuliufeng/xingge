@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import tech.msop.core.tool.async.AsyncProcessor;
 import tech.request.core.request.annotation.LogIndex;
 import tech.request.core.request.model.RequestLogInfo;
 import tech.request.core.request.properties.RequestInterceptorProperty;
@@ -26,8 +27,6 @@ import java.lang.reflect.Field;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 日志请求日志存储实现类
@@ -68,9 +67,10 @@ public class LogRequestLogStorage implements RequestLogStorage {
     private RequestInterceptorProperty properties;
     
     /**
-     * 异步执行器
+     * 异步处理器
      */
-    private ExecutorService executorService;
+    @Autowired
+    private AsyncProcessor asyncProcessor;
     
     /**
      * 日期时间格式化器
@@ -107,13 +107,6 @@ public class LogRequestLogStorage implements RequestLogStorage {
     @Override
     public void initialize() throws Exception {
         try {
-            // 初始化异步执行器
-            executorService = Executors.newFixedThreadPool(3, r -> {
-                Thread thread = new Thread(r, "log-request-storage-");
-                thread.setDaemon(true);
-                return thread;
-            });
-            
             logger.info("日志请求日志存储初始化成功，日志级别: {}", properties.getLog().getLevel());
         } catch (Exception e) {
             logger.error("日志请求日志存储初始化失败", e);
@@ -235,14 +228,19 @@ public class LogRequestLogStorage implements RequestLogStorage {
      */
     @Override
     public CompletableFuture<Void> storeAsync(RequestLogInfo logInfo) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                store(logInfo);
-            } catch (Exception e) {
-                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
-                logger.error("异步输出请求日志失败: {}", logInfo.getRequestId(), e);
-            }
-        }, executorService);
+        return asyncProcessor.executeAsyncWithResult(
+            () -> {
+                try {
+                    store(logInfo);
+                    return null;
+                } catch (Exception e) {
+                    // 异常通过日志输出，不抛出异常以避免阻碍业务流程
+                    logger.error("异步输出请求日志失败: {}", logInfo.getRequestId(), e);
+                    throw new RuntimeException(e);
+                }
+            },
+            "日志输出请求日志-" + logInfo.getRequestId()
+        );
     }
     
     /**
@@ -255,15 +253,20 @@ public class LogRequestLogStorage implements RequestLogStorage {
      */
     @Override
     public CompletableFuture<Void> batchStoreAsync(List<RequestLogInfo> logInfoList) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                batchStore(logInfoList);
-            } catch (Exception e) {
-                // 异常通过日志输出，不抛出异常以避免阻碍业务流程
-                logger.error("异步批量输出请求日志失败，数量: {}", 
-                        logInfoList != null ? logInfoList.size() : 0, e);
-            }
-        }, executorService);
+        return asyncProcessor.executeAsyncWithResult(
+            () -> {
+                try {
+                    batchStore(logInfoList);
+                    return null;
+                } catch (Exception e) {
+                    // 异常通过日志输出，不抛出异常以避免阻碍业务流程
+                    logger.error("异步批量输出请求日志失败，数量: {}", 
+                            logInfoList != null ? logInfoList.size() : 0, e);
+                    throw new RuntimeException(e);
+                }
+            },
+            "日志批量输出请求日志-" + (logInfoList != null ? logInfoList.size() : 0) + "条"
+        );
     }
     
     /**
@@ -296,17 +299,12 @@ public class LogRequestLogStorage implements RequestLogStorage {
     @Override
     public void destroy() throws Exception {
         try {
-            // 关闭异步执行器
-            if (executorService != null && !executorService.isShutdown()) {
-                executorService.shutdown();
-                logger.info("日志请求日志存储异步执行器已关闭");
-            }
-        } catch (Exception e) {
-            logger.error("批量输出请求日志失败", e);
-            throw e;
-        } finally {
             // 清理MDC
             clearMdcLogIndex();
+            logger.info("日志请求日志存储服务已销毁");
+        } catch (Exception e) {
+            logger.error("销毁日志请求日志存储服务失败", e);
+            throw e;
         }
     }
     
@@ -403,9 +401,7 @@ public class LogRequestLogStorage implements RequestLogStorage {
         // 响应头信息
         if (properties.isIncludeHeaders() && logInfo.getResponseHeaders() != null && !logInfo.getResponseHeaders().isEmpty()) {
             sb.append("├─ 响应头 ─────────────────────────────────────────────────────────────\n");
-            logInfo.getResponseHeaders().forEach((key, value) -> {
-                sb.append("│ ").append(key).append(": ").append(value).append("\n");
-            });
+            logInfo.getResponseHeaders().forEach((key, value) -> sb.append("│ ").append(key).append(": ").append(value).append("\n"));
         }
         
         // 响应体信息

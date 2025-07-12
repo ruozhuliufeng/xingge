@@ -9,6 +9,7 @@
 - 🚀 **多数据库支持**: 支持 MySQL、PostgreSQL、SQL Server、Oracle
 - 📝 **注解驱动**: 通过注解定义表结构，简单易用
 - 🔄 **自动维护**: 应用启动时自动检查并更新表结构
+- ⚡ **异步处理**: 集成异步处理器，表结构维护操作异步执行，不阻塞应用启动
 - 🛡️ **安全可靠**: 支持备份、验证、回滚等安全机制
 - ⚙️ **高度可配置**: 丰富的配置选项，满足不同场景需求
 - 📊 **详细日志**: 完整的操作日志，便于问题排查
@@ -20,10 +21,18 @@
 在你的 `pom.xml` 中添加依赖：
 
 ```xml
+<!-- 数据库自动维护模块 -->
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-core-db</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.2</version>
+</dependency>
+
+<!-- 核心工具模块（包含异步处理器） -->
+<dependency>
+    <groupId>tech.msop</groupId>
+    <artifactId>xingge-core-tool</artifactId>
+    <version>0.0.2</version>
 </dependency>
 ```
 
@@ -45,6 +54,14 @@ spring:
 在 `application.yml` 中添加配置：
 
 ```yaml
+# 异步处理器配置（可选，使用默认配置）
+xingge:
+  async:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 200
+
+# 数据库表结构自动维护配置
 xg:
   db:
     table-maintenance:
@@ -53,6 +70,8 @@ xg:
       entity-packages:
         - com.example.entity
       print-sql: true
+      # 异步执行表结构维护（推荐）
+      async-execution: true
 ```
 
 ### 4. 创建实体类

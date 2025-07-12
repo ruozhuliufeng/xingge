@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import tech.msop.core.tool.async.AsyncProcessor;
 import tech.request.core.request.model.RequestLogInfo;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
@@ -30,9 +31,6 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 数据库请求日志存储实现
@@ -84,9 +82,10 @@ public class DatabaseRequestLogStorage implements RequestLogStorage {
     private DataSource dataSource;
     
     /**
-     * 异步执行器
+     * 异步处理器
      */
-    private ExecutorService executorService;
+    @Autowired
+    private AsyncProcessor asyncProcessor;
     
     /**
      * 初始化方法
@@ -98,18 +97,10 @@ public class DatabaseRequestLogStorage implements RequestLogStorage {
             return;
         }
         
-        // 创建异步执行器
-        int threadPoolSize = properties.getThreadPoolSize();
-        this.executorService = Executors.newFixedThreadPool(threadPoolSize, r -> {
-            Thread thread = new Thread(r, "db-request-log-" + System.currentTimeMillis());
-            thread.setDaemon(true);
-            return thread;
-        });
-        
         // 初始化表结构
         initializeTable();
         
-        logger.info("数据库请求日志存储初始化完成，表名: {}, 线程池大小: {}", TABLE_NAME, threadPoolSize);
+        logger.info("数据库请求日志存储初始化完成，表名: {}", TABLE_NAME);
     }
     
     /**
@@ -117,18 +108,8 @@ public class DatabaseRequestLogStorage implements RequestLogStorage {
      */
     @PreDestroy
     public void destroy() {
-        if (executorService != null && !executorService.isShutdown()) {
-            executorService.shutdown();
-            try {
-                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
-                    executorService.shutdownNow();
-                }
-            } catch (InterruptedException e) {
-                executorService.shutdownNow();
-                Thread.currentThread().interrupt();
-            }
-        }
-        logger.info("数据库请求日志存储已销毁");
+        // AsyncProcessor由Spring容器管理，无需手动销毁
+        logger.info("数据库请求日志存储销毁完成");
     }
     
     /**
@@ -306,25 +287,35 @@ public class DatabaseRequestLogStorage implements RequestLogStorage {
     
     @Override
     public CompletableFuture<Void> storeAsync(RequestLogInfo logInfo) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                store(logInfo);
-            } catch (Exception e) {
-                logger.error("异步保存请求日志到数据库失败: {}", logInfo.getRequestId(), e);
-            }
-        }, executorService);
+        return asyncProcessor.executeAsyncWithResult(
+            () -> {
+                try {
+                    store(logInfo);
+                    return null;
+                } catch (Exception e) {
+                    logger.error("异步保存请求日志到数据库失败: {}", logInfo.getRequestId(), e);
+                    throw new RuntimeException(e);
+                }
+            },
+            "数据库存储请求日志-" + logInfo.getRequestId()
+        );
     }
     
     @Override
     public CompletableFuture<Void> batchStoreAsync(List<RequestLogInfo> logInfoList) {
-        return CompletableFuture.runAsync(() -> {
-            try {
-                batchStore(logInfoList);
-            } catch (Exception e) {
-                logger.error("异步批量保存请求日志到数据库失败，数量: {}", 
-                           logInfoList != null ? logInfoList.size() : 0, e);
-            }
-        }, executorService);
+        return asyncProcessor.executeAsyncWithResult(
+            () -> {
+                try {
+                    batchStore(logInfoList);
+                    return null;
+                } catch (Exception e) {
+                    logger.error("异步批量保存请求日志到数据库失败，数量: {}", 
+                               logInfoList != null ? logInfoList.size() : 0, e);
+                    throw new RuntimeException(e);
+                }
+            },
+            "数据库批量存储请求日志-" + (logInfoList != null ? logInfoList.size() : 0) + "条"
+        );
     }
     
     @Override

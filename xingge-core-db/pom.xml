@@ -31,6 +31,13 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
+        <!-- XingGe 核心工具模块 - 提供异步处理器等工具类 -->
+        <dependency>
+            <groupId>tech.msop</groupId>
+            <artifactId>xingge-core-tool</artifactId>
         </dependency>
         
         <!-- Spring Boot配置处理器 -->
