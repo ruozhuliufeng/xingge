@@ -65,13 +65,7 @@
             <artifactId>reflections</artifactId>
             <version>${reflections.version}</version>
         </dependency>
-        
-        <!-- MyBatis -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-        
+    
         <!-- Druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
