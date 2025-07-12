@@ -18,11 +18,28 @@
         添加数据库依赖，基于JDBC，实现不同数据库的表结构自动处理，包括新增与更新表结构。
     </description>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- 工具库版本 -->
+        <reflections.version>0.10.2</reflections.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
         </dependency>
+        
+        <!-- Spring Boot配置处理器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -34,35 +51,67 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
+        <!-- 反射工具 -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections.version}</version>
+        </dependency>
+        
         <!-- MyBatis -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+        
         <!-- Druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
+        
+        <!-- 数据库驱动 -->
         <!-- Mysql -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <optional>true</optional>
         </dependency>
+        
         <!-- Oracle -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
+            <optional>true</optional>
         </dependency>
+        
         <!-- PostgreSql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <optional>true</optional>
         </dependency>
+        
         <!-- SqlServer -->
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
+            <optional>true</optional>
+        </dependency>
+        
+        <!-- 测试依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- H2数据库用于测试 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

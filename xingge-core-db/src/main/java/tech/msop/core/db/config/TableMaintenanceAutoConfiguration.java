@@ -1,0 +1,212 @@
+/**
+ * 表结构自动维护自动配置类
+ * 
+ * @author xingge-core-db
+ * @since 1.0.0
+ */
+package tech.msop.core.db.config;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import tech.msop.core.db.dialect.Dialect;
+import tech.msop.core.db.parser.EntityMetadataParser;
+import tech.msop.core.db.scanner.EntityScanner;
+import tech.msop.core.db.service.TableMaintenanceService;
+
+import javax.sql.DataSource;
+import java.util.List;
+
+/**
+ * 表结构自动维护自动配置类
+ * 用于自动配置表结构维护相关的Bean和功能
+ */
+@Configuration
+@ConditionalOnClass({DataSource.class})
+@ConditionalOnProperty(prefix = "xg.db.table-maintenance", name = "enabled", havingValue = "true")
+@EnableConfigurationProperties(TableMaintenanceConfig.class)
+public class TableMaintenanceAutoConfiguration {
+    
+    private static final Logger logger = LoggerFactory.getLogger(TableMaintenanceAutoConfiguration.class);
+    
+    /**
+     * 创建实体元数据解析器Bean
+     * 
+     * @return 实体元数据解析器
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public EntityMetadataParser entityMetadataParser() {
+        logger.info("创建实体元数据解析器");
+        return new EntityMetadataParser();
+    }
+    
+    /**
+     * 创建实体扫描器Bean
+     * 
+     * @param config 表维护配置
+     * @return 实体扫描器
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public EntityScanner entityScanner(TableMaintenanceConfig config) {
+        logger.info("创建实体扫描器");
+        return new EntityScanner(config);
+    }
+    
+    /**
+     * 创建表维护服务Bean
+     * 
+     * @param dataSource 数据源
+     * @param dialect 数据库方言
+     * @param entityMetadataParser 实体元数据解析器
+     * @return 表维护服务
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public TableMaintenanceService tableMaintenanceService(
+            DataSource dataSource,
+            Dialect dialect,
+            EntityMetadataParser entityMetadataParser) {
+        logger.info("创建表维护服务");
+        return new TableMaintenanceService(dataSource, dialect, entityMetadataParser);
+    }
+    
+    /**
+     * 创建表维护启动监听器Bean
+     * 
+     * @param tableMaintenanceService 表维护服务
+     * @param entityScanner 实体扫描器
+     * @param config 表维护配置
+     * @param environment Spring环境
+     * @return 表维护启动监听器
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = "xingge.db.table-maintenance", name = "auto-execute-on-startup", havingValue = "true", matchIfMissing = true)
+    public TableMaintenanceStartupListener tableMaintenanceStartupListener(
+            TableMaintenanceService tableMaintenanceService,
+            EntityScanner entityScanner,
+            TableMaintenanceConfig config,
+            Environment environment) {
+        logger.info("创建表维护启动监听器");
+        return new TableMaintenanceStartupListener(tableMaintenanceService, entityScanner, config, environment);
+    }
+    
+    /**
+     * 表维护启动监听器
+     * 在应用启动完成后自动执行表结构维护
+     */
+    public static class TableMaintenanceStartupListener implements ApplicationListener<ApplicationReadyEvent> {
+        
+        private static final Logger logger = LoggerFactory.getLogger(TableMaintenanceStartupListener.class);
+        
+        private final TableMaintenanceService tableMaintenanceService;
+        private final EntityScanner entityScanner;
+        private final TableMaintenanceConfig config;
+        private final Environment environment;
+        
+        /**
+         * 构造函数
+         * 
+         * @param tableMaintenanceService 表维护服务
+         * @param entityScanner 实体扫描器
+         * @param config 表维护配置
+         * @param environment Spring环境
+         */
+        public TableMaintenanceStartupListener(
+                TableMaintenanceService tableMaintenanceService,
+                EntityScanner entityScanner,
+                TableMaintenanceConfig config,
+                Environment environment) {
+            this.tableMaintenanceService = tableMaintenanceService;
+            this.entityScanner = entityScanner;
+            this.config = config;
+            this.environment = environment;
+        }
+        
+        /**
+         * 处理应用启动完成事件
+         * 
+         * @param event 应用启动完成事件
+         */
+        @Override
+        public void onApplicationEvent(ApplicationReadyEvent event) {
+            try {
+                // 检查是否在测试环境
+                if (!config.isExecuteInTestEnvironment() && isTestEnvironment()) {
+                    logger.info("当前为测试环境，跳过表结构自动维护");
+                    return;
+                }
+                
+                logger.info("开始执行表结构自动维护...");
+                
+                // 扫描实体类
+                List<Class<?>> entities = entityScanner.scanEntities();
+                if (entities.isEmpty()) {
+                    logger.warn("未发现任何实体类，跳过表结构维护");
+                    return;
+                }
+                
+                logger.info("发现 {} 个实体类，开始维护表结构", entities.size());
+                
+                // 执行表结构维护
+                long startTime = System.currentTimeMillis();
+                tableMaintenanceService.maintainTables(entities);
+                long endTime = System.currentTimeMillis();
+                
+                logger.info("表结构自动维护完成，耗时: {} ms", endTime - startTime);
+                
+            } catch (Exception e) {
+                logger.error("表结构自动维护失败", e);
+                
+                // 根据配置决定是否抛出异常
+                if (!config.isContinueOnError()) {
+                    throw new RuntimeException("表结构自动维护失败", e);
+                }
+            }
+        }
+        
+        /**
+         * 检查是否为测试环境
+         * 
+         * @return 是否为测试环境
+         */
+        private boolean isTestEnvironment() {
+            String[] activeProfiles = environment.getActiveProfiles();
+            for (String profile : activeProfiles) {
+                if ("test".equalsIgnoreCase(profile) || 
+                    "testing".equalsIgnoreCase(profile) || 
+                    "junit".equalsIgnoreCase(profile)) {
+                    return true;
+                }
+            }
+            
+            // 检查是否在单元测试环境中运行
+            try {
+                Class.forName("org.junit.Test");
+                return true;
+            } catch (ClassNotFoundException e) {
+                // 忽略异常
+            }
+            
+            try {
+                Class.forName("org.junit.jupiter.api.Test");
+                return true;
+            } catch (ClassNotFoundException e) {
+                // 忽略异常
+            }
+            
+            return false;
+        }
+    }
+}
