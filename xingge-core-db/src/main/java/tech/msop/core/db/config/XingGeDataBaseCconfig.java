@@ -7,7 +7,6 @@
 package tech.msop.core.db.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
  * 数据库配置类
  * 提供数据库相关的基础配置
  */
-@Component
 @ConfigurationProperties(prefix = "xg.db")
 public class XingGeDataBaseCconfig {
     
