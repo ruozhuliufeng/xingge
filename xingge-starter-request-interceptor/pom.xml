@@ -40,6 +40,10 @@
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-tool</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tech.msop</groupId>
+            <artifactId>xingge-starter-log</artifactId>
+        </dependency>
         <!-- Spring Boot 依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

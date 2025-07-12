@@ -12,18 +12,15 @@ package tech.request.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import tech.msop.core.tool.async.AsyncProcessor;
-import tech.request.core.request.annotation.LogIndex;
 import tech.request.core.request.model.RequestLogInfo;
 import tech.request.core.request.properties.RequestInterceptorProperty;
 import tech.request.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.lang.reflect.Field;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -123,8 +120,6 @@ public class LogRequestLogStorage implements RequestLogStorage {
     @Override
     public void store(RequestLogInfo logInfo) throws Exception {
         try {
-            // 设置MDC日志索引
-            setMdcLogIndex(logInfo);
             
             String formattedLog = formatLogInfo(logInfo);
             String pattern = properties.getLog().getPattern();
@@ -152,9 +147,6 @@ public class LogRequestLogStorage implements RequestLogStorage {
         } catch (Exception e) {
             logger.error("输出请求日志失败: {}", logInfo.getRequestId(), e);
             throw e;
-        } finally {
-            // 清理MDC
-            clearMdcLogIndex();
         }
     }
     
@@ -171,8 +163,6 @@ public class LogRequestLogStorage implements RequestLogStorage {
         }
         
         try {
-            // 对于批量日志，使用第一条记录的索引信息
-            setMdcLogIndex(logInfoList.get(0));
 
             StringBuilder batchLog = new StringBuilder();
             batchLog.append("\n").append(SEPARATOR).append("\n");
@@ -191,7 +181,7 @@ public class LogRequestLogStorage implements RequestLogStorage {
             batchLog.append("\n").append(SEPARATOR);
             
             String pattern = properties.getLog().getPattern();
-            String finalLog = String.format(pattern, batchLog.toString());
+            String finalLog = String.format(pattern, batchLog);
             
             // 根据配置的日志级别输出
             String level = properties.getLog().getLevel().toUpperCase();
@@ -300,53 +290,10 @@ public class LogRequestLogStorage implements RequestLogStorage {
     public void destroy() throws Exception {
         try {
             // 清理MDC
-            clearMdcLogIndex();
             logger.info("日志请求日志存储服务已销毁");
         } catch (Exception e) {
             logger.error("销毁日志请求日志存储服务失败", e);
             throw e;
-        }
-    }
-    
-    /**
-     * 设置MDC日志索引
-     * 
-     * @param logInfo 请求日志信息
-     */
-    private void setMdcLogIndex(RequestLogInfo logInfo) {
-        try {
-            Class<?> clazz = logInfo.getClass();
-            Field[] fields = clazz.getDeclaredFields();
-            
-            for (Field field : fields) {
-                LogIndex logIndex = field.getAnnotation(LogIndex.class);
-                if (logIndex != null && logIndex.enabled()) {
-                    field.setAccessible(true);
-                    Object value = field.get(logInfo);
-                    
-                    if (value != null) {
-                        String indexName = logIndex.name().isEmpty() ? field.getName() : logIndex.name();
-                        String prefix = logIndex.prefix();
-                        String indexValue = prefix.isEmpty() ? value.toString() : prefix + value.toString();
-                        
-                        MDC.put(indexName, indexValue);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.warn("设置MDC日志索引失败", e);
-        }
-    }
-    
-    /**
-     * 清理MDC日志索引
-     */
-    private void clearMdcLogIndex() {
-        try {
-            // 清理所有MDC内容
-            MDC.clear();
-        } catch (Exception e) {
-            logger.warn("清理MDC日志索引失败", e);
         }
     }
     
@@ -383,9 +330,7 @@ public class LogRequestLogStorage implements RequestLogStorage {
         // 请求头信息
         if (properties.isIncludeHeaders() && logInfo.getRequestHeaders() != null && !logInfo.getRequestHeaders().isEmpty()) {
             sb.append("├─ 请求头 ─────────────────────────────────────────────────────────────\n");
-            logInfo.getRequestHeaders().forEach((key, value) -> {
-                sb.append("│ ").append(key).append(": ").append(value).append("\n");
-            });
+            logInfo.getRequestHeaders().forEach((key, value) -> sb.append("│ ").append(key).append(": ").append(value).append("\n"));
         }
         
         // 请求体信息

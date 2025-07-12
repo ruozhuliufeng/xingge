@@ -289,6 +289,26 @@
                 <artifactId>xingge-core-tool</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-log</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-http</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-mybatis</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-request-interceptor</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

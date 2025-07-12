@@ -11,7 +11,7 @@ package tech.request.core.request.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import tech.request.core.request.annotation.LogIndex;
+import tech.msop.core.log.annotation.LogIndex;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -71,13 +71,11 @@ public class RequestLogInfo implements Serializable {
     /**
      * HTTP客户端类型
      */
-    @LogIndex(name = "clientType", prefix = "CLIENT_", description = "HTTP客户端类型")
     private String clientType;
     
     /**
      * 请求方法
      */
-    @LogIndex(name = "method", prefix = "HTTP_", description = "HTTP请求方法")
     private String method;
     
     /**
