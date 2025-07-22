@@ -1,0 +1,85 @@
+# 审计日志配置示例
+# 此文件展示了如何配置审计日志的各种处理器
+
+xg:
+  log:
+    # 日志模块总开关
+    enabled: true
+    
+    # 审计日志配置
+    audit:
+      # 是否启用审计日志（默认：true）
+      enabled: true
+      
+      # 是否启用调试日志（默认：false）
+      debug-enabled: false
+      
+      # 默认是否异步处理（默认：true）
+      default-async: true
+      
+      # 处理器配置
+      handlers:
+        # 控制台处理器配置
+        console:
+          # 是否启用（默认：true）
+          enabled: true
+          # 日志格式：simple、detailed（默认：detailed）
+          format: detailed
+          # 日志级别：DEBUG、INFO、WARN、ERROR（默认：INFO）
+          level: INFO
+        
+        # Feign接口处理器配置
+        feign:
+          # 是否启用（默认：false）
+          enabled: false
+          # 审计日志接口URL
+          url: http://audit-service/api/audit/logs
+          # 请求超时时间（毫秒，默认：5000）
+          timeout: 5000
+          # 重试次数（默认：3）
+          retry-count: 3
+          # 批量发送大小（默认：10）
+          batch-size: 10
+          # 自定义请求头
+          headers:
+            Authorization: Bearer your-token
+            Content-Type: application/json
+        
+        # 数据库处理器配置
+        database:
+          # 是否启用（默认：false）
+          enabled: false
+          # 审计日志表名（默认：audit_log）
+          table-name: audit_log
+          # 是否自动创建表（默认：true）
+          auto-create-table: true
+          # 批量插入大小（默认：100）
+          batch-size: 100
+          # 数据保留天数（默认：90，0表示不自动清理）
+          retention-days: 90
+
+# 数据源配置（当启用数据库处理器时需要）
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/audit_db?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# Feign配置（当启用Feign处理器时需要）
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: basic
+
+# 日志配置
+logging:
+  level:
+    tech.msop.core.log: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"

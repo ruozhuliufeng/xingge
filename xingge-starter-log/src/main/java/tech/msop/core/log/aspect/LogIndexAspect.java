@@ -10,7 +10,6 @@
  */
 package tech.msop.core.log.aspect;
 
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -53,7 +52,6 @@ import java.util.Map;
  * @version 1.0.0
  * @since 2025-01-20
  */
-@Slf4j
 @Aspect
 @Component
 @Order(1)
@@ -100,12 +98,12 @@ public class LogIndexAspect {
             if (!mdcKeys.isEmpty()) {
                 MDC_KEYS_HOLDER.set(mdcKeys);
                 if (isDebugEnabled()) {
-                    log.debug("LogIndex切面处理完成，添加了{}个MDC索引", mdcKeys.size());
+                    System.out.println("LogIndex切面处理完成，添加了" + mdcKeys.size() + "个MDC索引");
                 }
             }
             
         } catch (Exception e) {
-            log.warn("LogIndex切面处理异常", e);
+            System.err.println("LogIndex切面处理异常: " + e.getMessage());
         }
     }
     
@@ -132,11 +130,11 @@ public class LogIndexAspect {
                     MDC.remove(key);
                 }
                 if (isDebugEnabled()) {
-                    log.debug("LogIndex切面清理完成，移除了{}个MDC索引", mdcKeys.size());
+                    System.out.println("LogIndex切面清理完成，移除了" + mdcKeys.size() + "个MDC索引");
                 }
             }
         } catch (Exception e) {
-            log.warn("LogIndex切面清理异常", e);
+            System.err.println("LogIndex切面清理异常: " + e.getMessage());
         } finally {
             // 清理线程本地存储
             MDC_KEYS_HOLDER.remove();
@@ -218,12 +216,12 @@ public class LogIndexAspect {
                 mdcKeys.put(indexKey, indexValue);
                 
                 if (isDebugEnabled()) {
-                    log.debug("添加日志索引: {} = {}", indexKey, indexValue);
+                    System.out.println("添加日志索引: " + indexKey + " = " + indexValue);
                 }
             }
             
         } catch (Exception e) {
-            log.warn("处理LogIndex字段异常: {}", field.getName(), e);
+            System.err.println("处理LogIndex字段异常: " + field.getName() + ", " + e.getMessage());
         }
     }
     

@@ -1,0 +1,75 @@
+# 测试环境配置文件
+# 用于审计日志功能测试
+
+spring:
+  profiles:
+    active: test
+  application:
+    name: xingge-log-test
+
+# 星歌日志配置
+xg:
+  log:
+    # 启用日志模块
+    enabled: true
+    
+    # 审计日志配置
+    audit:
+      # 启用审计日志
+      enabled: true
+      # 启用调试日志
+      debug-enabled: true
+      # 默认异步处理
+      default-async: false  # 测试环境使用同步处理便于验证
+      
+      # 处理器配置
+      handlers:
+        # 控制台处理器
+        console:
+          enabled: true
+          format: detailed
+          level: INFO
+        
+        # Feign处理器（测试环境关闭）
+        feign:
+          enabled: false
+          url: http://localhost:8080/api/audit/logs
+          timeout: 3000
+          retry-count: 2
+          batch-size: 5
+        
+        # 数据库处理器（测试环境关闭）
+        database:
+          enabled: false
+          table-name: audit_log_test
+          auto-create-table: true
+          batch-size: 50
+          retention-days: 30
+    
+    # LogIndex配置
+    log-index:
+      enabled: true
+      mdc-cleanup: true
+      debug-enabled: true
+      max-key-length: 50
+      max-value-length: 200
+      enable-nested-scan: false
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    tech.msop.core.log: DEBUG
+    org.springframework: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
+  
+# 管理端点配置（用于监控）
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

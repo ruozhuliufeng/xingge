@@ -14,7 +14,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import tech.msop.core.log.aspect.LogIndexAspect;
+import tech.msop.core.log.aspect.AuditLogAspect;
+import tech.msop.core.log.handler.impl.ConsoleAuditLogHandler;
+import tech.msop.core.log.handler.impl.DatabaseAuditLogHandler;
+import tech.msop.core.log.handler.impl.FeignAuditLogHandler;
 import tech.msop.core.log.property.XingGeLogProperty;
 
 /**
@@ -40,6 +45,7 @@ import tech.msop.core.log.property.XingGeLogProperty;
 @Configuration
 @EnableConfigurationProperties(XingGeLogProperty.class)
 @EnableAspectJAutoProxy
+@Import({ConsoleAuditLogHandler.class, FeignAuditLogHandler.class, DatabaseAuditLogHandler.class})
 public class XingGeLogConfig {
     
     /**
@@ -59,5 +65,17 @@ public class XingGeLogConfig {
     )
     public LogIndexAspect logIndexAspect() {
         return new LogIndexAspect();
+    }
+    
+    /**
+     * 配置审计日志切面
+     * 只有在启用审计日志功能时才会注册此Bean
+     *
+     * @return 审计日志切面实例
+     */
+    @Bean
+    @ConditionalOnProperty(name = "xg.log.audit.enabled", havingValue = "true", matchIfMissing = true)
+    public AuditLogAspect auditLogAspect() {
+        return new AuditLogAspect();
     }
 }

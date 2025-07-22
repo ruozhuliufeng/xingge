@@ -1,0 +1,6 @@
+# Spring Boot Auto Configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+tech.msop.core.log.config.XingGeLogConfig,\
+tech.msop.core.log.handler.impl.ConsoleAuditLogHandler,\
+tech.msop.core.log.handler.impl.FeignAuditLogHandler,\
+tech.msop.core.log.handler.impl.DatabaseAuditLogHandler
