@@ -99,6 +99,7 @@
         <mybatis.plus.dynamic.version>3.3.6</mybatis.plus.dynamic.version>
         <protostuff.version>1.6.0</protostuff.version>
         <disruptor.version>3.4.2</disruptor.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <logstash.version>6.2</logstash.version>
         <druid.version>1.2.8</druid.version>
         <jackson.version>2.11.4</jackson.version>
@@ -276,7 +277,11 @@
                 <artifactId>lombok</artifactId>
                 <version>1.18.30</version>
             </dependency>
-            
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
             <!-- ================================ 项目内部模块依赖 ================================ -->
             <!-- 项目核心模块 - 提供基础工具类和通用功能 -->
             <dependency>
@@ -312,6 +317,16 @@
             <dependency>
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-starter-actuate</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-api-crypto</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-mybatis-encrypt</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
         </dependencies>

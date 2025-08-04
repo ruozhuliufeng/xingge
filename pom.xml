@@ -55,6 +55,7 @@
         <module>xingge-starter-log</module>
         <module>xingge-starter-actuate</module>
         <module>xingge-starter-api-crypto</module>
+        <module>xingge-starter-mybatis-encrypt</module>
     </modules>
 
     <!-- 依赖版本管理 - 引入 xingge-bom 作为整个项目的版本管理模块 -->
