@@ -45,7 +45,7 @@
                     <proc>none</proc>
                 </configuration>
             </plugin>
-            
+
             <!-- 跳过源码插件执行，避免重复配置冲突 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

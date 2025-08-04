@@ -11,7 +11,7 @@ package tech.request.core.request.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import tech.msop.core.log.annotation.LogIndex;
+import tech.msop.core.annotation.LogIndex;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

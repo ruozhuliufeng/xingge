@@ -53,6 +53,7 @@
         <module>xingge-starter-request-interceptor</module>
         <module>xingge-starter-mybatis</module>
         <module>xingge-starter-log</module>
+        <module>xingge-starter-actuate</module>
     </modules>
 
     <!-- 依赖版本管理 - 引入 xingge-bom 作为整个项目的版本管理模块 -->

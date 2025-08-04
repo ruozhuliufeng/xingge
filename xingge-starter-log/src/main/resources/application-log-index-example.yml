@@ -37,7 +37,7 @@ xg:
 logging:
   level:
     # 设置LogIndex切面的日志级别
-    tech.msop.core.log.aspect.LogIndexAspect: INFO
+    tech.msop.core.log.aspect.tech.msop.core.core.log.aspect.LogIndexAspect: INFO
     
     # 设置示例类的日志级别
     tech.msop.core.log.example: INFO
@@ -80,7 +80,7 @@ xg:
 
 logging:
   level:
-    tech.msop.core.log.aspect.LogIndexAspect: DEBUG
+    tech.msop.core.log.aspect.tech.msop.core.core.log.aspect.LogIndexAspect: DEBUG
     tech.msop.core.log.example: DEBUG
 
 # 生产环境配置示例
@@ -103,7 +103,7 @@ xg:
 
 logging:
   level:
-    tech.msop.core.log.aspect.LogIndexAspect: WARN
+    tech.msop.core.log.aspect.tech.msop.core.core.log.aspect.LogIndexAspect: WARN
     root: INFO
   
   # 生产环境日志文件配置
@@ -131,7 +131,7 @@ xg:
 
 logging:
   level:
-    tech.msop.core.log.aspect.LogIndexAspect: DEBUG
+    tech.msop.core.log.aspect.tech.msop.core.core.log.aspect.LogIndexAspect: DEBUG
     tech.msop.core.log.example: DEBUG
     root: DEBUG
 
@@ -158,7 +158,7 @@ xg:
 
 logging:
   level:
-    tech.msop.core.log.aspect.LogIndexAspect: ERROR
+    tech.msop.core.log.aspect.tech.msop.core.core.log.aspect.LogIndexAspect: ERROR
     root: WARN
 
 # 完全禁用LogIndex功能的配置示例

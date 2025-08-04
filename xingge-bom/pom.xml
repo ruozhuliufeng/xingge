@@ -309,6 +309,11 @@
                 <artifactId>xingge-starter-request-interceptor</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-actuate</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
