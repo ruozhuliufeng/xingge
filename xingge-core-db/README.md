@@ -25,14 +25,14 @@
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-core-db</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 
 <!-- 核心工具模块（包含异步处理器） -->
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-core-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -433,7 +433,7 @@ xg:
 
 ## 更新日志
 
-### v0.0.2
+### v0.0.3
 - 初始版本发布
 - 支持 MySQL、PostgreSQL、SQL Server、Oracle
 - 基础的表结构自动维护功能

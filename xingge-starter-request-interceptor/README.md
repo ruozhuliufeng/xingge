@@ -23,14 +23,14 @@
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-starter-request-interceptor</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 
 <!-- 核心工具模块（包含异步处理器，自动引入） -->
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-core-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -100,7 +100,7 @@ public class TestController {
 
 ## ⚡ 异步处理优势
 
-从版本 0.0.2 开始，请求拦截器集成了XingGe异步处理器，带来以下优势：
+从版本 0.0.3 开始，请求拦截器集成了XingGe异步处理器，带来以下优势：
 
 ### 统一线程池管理
 - **之前**：每个存储实现都创建独立的线程池，资源浪费

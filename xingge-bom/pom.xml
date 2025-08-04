@@ -14,7 +14,7 @@
             <dependency>
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-bom</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -30,7 +30,7 @@
     <!-- 当前模块信息 -->
     <groupId>tech.msop</groupId>
     <artifactId>xingge-bom</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <name>xingge-bom</name>
     <description>行歌项目依赖版本管理 - 统一管理所有第三方依赖的版本号</description>
     <url>https://github.com/ruozhuliufeng/xingge</url>
@@ -90,7 +90,7 @@
         <!-- ================================ 监控相关 ================================ -->
         <!-- Micrometer 1.10.13 - 应用监控指标库，支持Prometheus等监控系统 -->
         <micrometer.version>1.10.13</micrometer.version>
-        <xingge.version>0.0.2</xingge.version>
+        <xingge.version>0.0.3</xingge.version>
         <guava.version>30.0-jre</guava.version>
         <swagger.version>2.10.5</swagger.version>
         <swagger.models.version>1.6.2</swagger.models.version>

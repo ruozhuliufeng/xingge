@@ -43,7 +43,7 @@ import org.springframework.web.client.RestTemplate;
  * </ul>
  * 
  * @author 若竹流风
- * @version 0.0.2
+ * @version 0.0.3
  * @since 2025-07-11
  */
 @SpringBootApplication(scanBasePackages = {"tech.msop"})
