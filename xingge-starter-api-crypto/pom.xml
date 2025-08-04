@@ -8,13 +8,13 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>xingge-starter-actuate</artifactId>
+    <artifactId>xingge-starter-api-crypto</artifactId>
     <packaging>jar</packaging>
-    <description>行歌-请求缓存配置</description>
-
+    <description>行歌-请求加密类</description>
+    <name>xingge-starter-api-crypto</name>
 
     <dependencies>
-        <!-- 行歌工具类 -->
+        <!-- 行歌工具 -->
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-tool</artifactId>
@@ -23,6 +23,11 @@
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-auto</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!-- Spring Cloud Context -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
         </dependency>
     </dependencies>
 </project>
