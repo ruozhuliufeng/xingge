@@ -10,6 +10,7 @@
 
     <artifactId>xingge-starter-actuate</artifactId>
     <packaging>jar</packaging>
+    <name>xingge-starter-actuate</name>
     <description>行歌-请求缓存配置</description>
 
 
