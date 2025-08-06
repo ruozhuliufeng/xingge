@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "ms.zookeeper")
+@ConfigurationProperties(prefix = "xg.zookeeper")
 public class ZookeeperProperties {
     /**
      * ZK连接集群，多个用逗号隔开

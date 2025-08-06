@@ -12,7 +12,7 @@ import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.util.Assert;
 import tech.msop.core.tool.constant.CharConstant;
-import tech.msop.core.tool.spel.MsExpressionEvaluator;
+import tech.msop.core.tool.spel.XingGeExpressionEvaluator;
 import tech.msop.core.tool.utils.StringUtil;
 
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ public class RedisRateLimiterAspect implements ApplicationContextAware {
     /**
      * Spring EL 表达式处理
      */
-    private final MsExpressionEvaluator EVALUATOR = new MsExpressionEvaluator();
+    private final XingGeExpressionEvaluator EVALUATOR = new XingGeExpressionEvaluator();
 
     /**
      * Redis 限流服务

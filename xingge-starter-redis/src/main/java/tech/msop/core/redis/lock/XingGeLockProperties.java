@@ -11,9 +11,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties(MsLockProperties.PREFIX)
-public class MsLockProperties {
-    public static final String PREFIX = "ms.lock";
+@ConfigurationProperties(XingGeLockProperties.PREFIX)
+public class XingGeLockProperties {
+    public static final String PREFIX = "xg.lock";
     /**
      * 是否开启，默认为false
      */

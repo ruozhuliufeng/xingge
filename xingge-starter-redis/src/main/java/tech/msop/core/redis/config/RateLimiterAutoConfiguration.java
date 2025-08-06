@@ -21,7 +21,7 @@ import java.util.List;
  * @author ruozhuliufeng
  */
 @AutoConfiguration
-@ConditionalOnProperty(value = "ms.redis.rate-limiter.enabled",havingValue = "true")
+@ConditionalOnProperty(value = "xg.redis.rate-limiter.enabled",havingValue = "true")
 public class RateLimiterAutoConfiguration {
 
     @SuppressWarnings("unchecked")

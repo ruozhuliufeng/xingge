@@ -21,8 +21,8 @@ import tech.msop.core.redis.serializer.RedisKeySerializer;
  */
 @EnableCaching
 @AutoConfiguration(before = {RedisAutoConfiguration.class})
-@EnableConfigurationProperties(MsRedisProperties.class)
-public class RedisTemplateConfiguration implements MsRedisSerializerConfigAble {
+@EnableConfigurationProperties(XingGeRedisProperties.class)
+public class RedisTemplateConfiguration implements XingGeRedisSerializerConfigAble {
 
     /**
      * value 值 序列化
@@ -33,7 +33,7 @@ public class RedisTemplateConfiguration implements MsRedisSerializerConfigAble {
     @Bean
     @ConditionalOnMissingBean(RedisSerializer.class)
     @Override
-    public RedisSerializer<Object> redisSerializer(MsRedisProperties properties) {
+    public RedisSerializer<Object> redisSerializer(XingGeRedisProperties properties) {
         return defaultRedisSerializer(properties);
     }
 

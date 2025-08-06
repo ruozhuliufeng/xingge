@@ -14,7 +14,7 @@ import tech.msop.core.redis.serializer.ProtostuffSerializer;
  */
 @AutoConfiguration(before = RedisTemplateConfiguration.class)
 @ConditionalOnClass(name = "io.protostuff.Schema")
-public class ProtoStuffSerializerConfiguration implements MsRedisSerializerConfigAble{
+public class ProtoStuffSerializerConfiguration implements XingGeRedisSerializerConfigAble {
     /**
      * 序列化接口
      *
@@ -24,8 +24,8 @@ public class ProtoStuffSerializerConfiguration implements MsRedisSerializerConfi
     @Bean
     @ConditionalOnMissingBean
     @Override
-    public RedisSerializer<Object> redisSerializer(MsRedisProperties properties) {
-        if (MsRedisProperties.SerializerType.ProtoStuff == properties.getSerializerType()){
+    public RedisSerializer<Object> redisSerializer(XingGeRedisProperties properties) {
+        if (XingGeRedisProperties.SerializerType.ProtoStuff == properties.getSerializerType()){
             return new ProtostuffSerializer();
         }
         return defaultRedisSerializer(properties);

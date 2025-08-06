@@ -9,7 +9,7 @@ import tech.msop.core.tool.constant.StringConstant;
 import tech.msop.core.tool.exception.LockException;
 import tech.msop.core.tool.lock.DistributedLock;
 import tech.msop.core.tool.lock.LockType;
-import tech.msop.core.tool.lock.MLock;
+import tech.msop.core.tool.lock.XingGeLock;
 
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +23,9 @@ import java.util.concurrent.TimeUnit;
 public class ZookeeperDistributedLock implements DistributedLock {
     @Resource
     private CuratorFramework client;
-    private MLock getLock(String lockName){
+    private XingGeLock getLock(String lockName){
         InterProcessMutex lock = new InterProcessMutex(client,lockName);
-        return new MLock(lock,this);
+        return new XingGeLock(lock,this);
     }
 
     /**
@@ -38,11 +38,11 @@ public class ZookeeperDistributedLock implements DistributedLock {
      * @return 锁对象
      */
     @Override
-    public MLock lock(String lockName, long leaseTime, TimeUnit timeUnit, LockType lockType) throws Exception {
-        MLock mLock = getLock(lockName);
-        InterProcessMutex ipm = (InterProcessMutex) mLock.getLock();
+    public XingGeLock lock(String lockName, long leaseTime, TimeUnit timeUnit, LockType lockType) throws Exception {
+        XingGeLock xgLock = getLock(lockName);
+        InterProcessMutex ipm = (InterProcessMutex) xgLock.getLock();
         ipm.acquire();
-        return mLock;
+        return xgLock;
     }
 
     /**
@@ -57,11 +57,11 @@ public class ZookeeperDistributedLock implements DistributedLock {
      * @return 锁对象，如果获取锁失败则为null
      */
     @Override
-    public MLock tryLock(String lockName, long waitTime, long leaseTime, TimeUnit unit, LockType lockType) throws Exception {
-        MLock mLock = getLock(lockName);
-        InterProcessMutex ipm = (InterProcessMutex) mLock.getLock();
+    public XingGeLock tryLock(String lockName, long waitTime, long leaseTime, TimeUnit unit, LockType lockType) throws Exception {
+        XingGeLock xgLock = getLock(lockName);
+        InterProcessMutex ipm = (InterProcessMutex) xgLock.getLock();
         if (ipm.acquire(waitTime,unit)){
-            return mLock;
+            return xgLock;
         }
         return null;
     }

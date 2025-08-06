@@ -11,8 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Getter
 @Setter
-@ConfigurationProperties("ms.redis")
-public class MsRedisProperties {
+@ConfigurationProperties("xg.redis")
+public class XingGeRedisProperties {
     /**
      * 序列化方式
      */

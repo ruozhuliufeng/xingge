@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import tech.msop.core.tool.exception.LockException;
 import tech.msop.core.tool.lock.DistributedLock;
 import tech.msop.core.tool.lock.LockType;
-import tech.msop.core.tool.lock.MLock;
+import tech.msop.core.tool.lock.XingGeLock;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,14 +28,14 @@ public class RedissonDistributedLock implements DistributedLock {
      */
     private final RedissonClient redissonClient;
 
-    private MLock getLock(String lockName,LockType lockType){
+    private XingGeLock getLock(String lockName,LockType lockType){
         RLock lock;
         if (LockType.FAIR == lockType){
             lock = redissonClient.getFairLock(lockName);
         }else {
             lock = redissonClient.getLock(lockName);
         }
-        return new MLock(lock,this);
+        return new XingGeLock(lock,this);
     }
 
     /**
@@ -48,11 +48,11 @@ public class RedissonDistributedLock implements DistributedLock {
      * @return 锁对象
      */
     @Override
-    public MLock lock(String lockName, long leaseTime, TimeUnit timeUnit, LockType lockType) throws Exception {
-        MLock mLock = getLock(lockName,lockType);
-        RLock lock = (RLock) mLock.getLock();
+    public XingGeLock lock(String lockName, long leaseTime, TimeUnit timeUnit, LockType lockType) throws Exception {
+        XingGeLock xgLock = getLock(lockName,lockType);
+        RLock lock = (RLock) xgLock.getLock();
         lock.lock(leaseTime,timeUnit);
-        return mLock;
+        return xgLock;
     }
 
     /**
@@ -67,11 +67,11 @@ public class RedissonDistributedLock implements DistributedLock {
      * @return 锁对象，如果获取锁失败则为null
      */
     @Override
-    public MLock tryLock(String lockName, long waitTime, long leaseTime, TimeUnit unit, LockType lockType) throws Exception {
-        MLock mLock = getLock(lockName,lockType);
-        RLock lock = (RLock) mLock.getLock();
+    public XingGeLock tryLock(String lockName, long waitTime, long leaseTime, TimeUnit unit, LockType lockType) throws Exception {
+        XingGeLock xgLock = getLock(lockName,lockType);
+        RLock lock = (RLock) xgLock.getLock();
         if (lock.tryLock(waitTime,leaseTime,unit)){
-            return mLock;
+            return xgLock;
         }
         return null;
     }

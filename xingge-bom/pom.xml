@@ -14,7 +14,7 @@
             <dependency>
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-bom</artifactId>
-                <version>0.0.3</version>
+                <version>0.0.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -30,7 +30,7 @@
     <!-- 当前模块信息 -->
     <groupId>tech.msop</groupId>
     <artifactId>xingge-bom</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>xingge-bom</name>
     <description>行歌项目依赖版本管理 - 统一管理所有第三方依赖的版本号</description>
     <url>https://github.com/ruozhuliufeng/xingge</url>
@@ -90,7 +90,7 @@
         <!-- ================================ 监控相关 ================================ -->
         <!-- Micrometer 1.10.13 - 应用监控指标库，支持Prometheus等监控系统 -->
         <micrometer.version>1.10.13</micrometer.version>
-        <xingge.version>0.0.3</xingge.version>
+        <xingge.version>0.0.4</xingge.version>
         <guava.version>30.0-jre</guava.version>
         <swagger.version>2.10.5</swagger.version>
         <swagger.models.version>1.6.2</swagger.models.version>
@@ -270,7 +270,18 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.12.0</version>
             </dependency>
-            
+            <!-- redission -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            <!-- Disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
             <!-- Lombok - 简化Java开发的注解处理器 -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -327,6 +338,21 @@
             <dependency>
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-starter-mybatis-encrypt</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-mongo</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-redis</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-zookeeper</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
         </dependencies>

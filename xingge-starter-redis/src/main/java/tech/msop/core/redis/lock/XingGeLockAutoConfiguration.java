@@ -20,11 +20,11 @@ import tech.msop.core.tool.utils.StringUtil;
  */
 @AutoConfiguration
 @ConditionalOnClass(RedissonClient.class)
-@EnableConfigurationProperties(MsLockProperties.class)
-@ConditionalOnProperty(value = "ms.lock.enabled", havingValue = "true")
-public class MsLockAutoConfiguration {
+@EnableConfigurationProperties(XingGeLockProperties.class)
+@ConditionalOnProperty(value = "xg.lock.enabled", havingValue = "true")
+public class XingGeLockAutoConfiguration {
 
-    private static Config singleConfig(MsLockProperties properties){
+    private static Config singleConfig(XingGeLockProperties properties){
         Config config = new Config();
         SingleServerConfig serverConfig =config.useSingleServer();
         serverConfig.setAddress(properties.getAddress());
@@ -40,7 +40,7 @@ public class MsLockAutoConfiguration {
         serverConfig.setTimeout(properties.getTimeout());
         return config;
     }
-    private static Config masterConfig(MsLockProperties properties){
+    private static Config masterConfig(XingGeLockProperties properties){
         Config config = new Config();
         MasterSlaveServersConfig serverConfig =config.useMasterSlaveServers();
         serverConfig.setMasterAddress(properties.getMasterAddress());
@@ -59,7 +59,7 @@ public class MsLockAutoConfiguration {
         serverConfig.setTimeout(properties.getTimeout());
         return config;
     }
-    private static Config sentinelConfig(MsLockProperties properties){
+    private static Config sentinelConfig(XingGeLockProperties properties){
         Config config = new Config();
         SentinelServersConfig serverConfig =config.useSentinelServers();
         serverConfig.setMasterName(properties.getMasterName());
@@ -78,7 +78,7 @@ public class MsLockAutoConfiguration {
         serverConfig.setTimeout(properties.getTimeout());
         return config;
     }
-    private static Config clusterConfig(MsLockProperties properties){
+    private static Config clusterConfig(XingGeLockProperties properties){
         Config config = new Config();
         ClusterServersConfig serverConfig =config.useClusterServers();
         serverConfig.addNodeAddress(properties.getNodeAddress());
@@ -104,8 +104,8 @@ public class MsLockAutoConfiguration {
 
 
 
-    public static RedissonClient redissonClient(MsLockProperties properties){
-        MsLockProperties.Mode mode = properties.getMode();
+    public static RedissonClient redissonClient(XingGeLockProperties properties){
+        XingGeLockProperties.Mode mode = properties.getMode();
         Config config;
         switch (mode){
             case sentinel:

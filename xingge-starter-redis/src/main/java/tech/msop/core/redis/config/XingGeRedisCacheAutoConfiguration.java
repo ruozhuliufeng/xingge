@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @AutoConfiguration
 @EnableConfigurationProperties(CacheProperties.class)
-public class MsRedisCacheAutoConfiguration {
+public class XingGeRedisCacheAutoConfiguration {
     /**
      * 序列化方式
      */
@@ -36,7 +36,7 @@ public class MsRedisCacheAutoConfiguration {
     @Nullable
     private final RedisCacheConfiguration redisCacheConfiguration;
 
-    public MsRedisCacheAutoConfiguration(RedisSerializer<Object> redisSerializer, CacheProperties cacheProperties, CacheManagerCustomizers customizerInvoker, @Nullable RedisCacheConfiguration redisCacheConfiguration) {
+    public XingGeRedisCacheAutoConfiguration(RedisSerializer<Object> redisSerializer, CacheProperties cacheProperties, CacheManagerCustomizers customizerInvoker, @Nullable RedisCacheConfiguration redisCacheConfiguration) {
         this.redisSerializer = redisSerializer;
         this.cacheProperties = cacheProperties;
         this.customizerInvoker = customizerInvoker;

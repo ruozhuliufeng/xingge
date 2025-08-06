@@ -9,7 +9,7 @@ import org.springframework.data.redis.serializer.RedisSerializer;
  *
  * @author ruozhuliufeng
  */
-public interface MsRedisSerializerConfigAble {
+public interface XingGeRedisSerializerConfigAble {
     /**
      * JSON序列化字段
      */
@@ -21,7 +21,7 @@ public interface MsRedisSerializerConfigAble {
      * @param properties 配置
      * @return RedisSerializer
      */
-    RedisSerializer<Object> redisSerializer(MsRedisProperties properties);
+    RedisSerializer<Object> redisSerializer(XingGeRedisProperties properties);
 
     /**
      * 默认的序列化方式
@@ -29,9 +29,9 @@ public interface MsRedisSerializerConfigAble {
      * @param properties 配置
      * @return RedisSerializer
      */
-    default RedisSerializer<Object> defaultRedisSerializer(MsRedisProperties properties) {
-        MsRedisProperties.SerializerType serializerType = properties.getSerializerType();
-        if (MsRedisProperties.SerializerType.JDK == serializerType) {
+    default RedisSerializer<Object> defaultRedisSerializer(XingGeRedisProperties properties) {
+        XingGeRedisProperties.SerializerType serializerType = properties.getSerializerType();
+        if (XingGeRedisProperties.SerializerType.JDK == serializerType) {
             /*
              * SpringBoot 扩展了ClassLoader，进行分离打包的时候，使用到JdkSerializationRedisSerializer的地方
              * 会因为ClassLoader的不同导致加载不到Class

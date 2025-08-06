@@ -4,7 +4,7 @@
     <parent>
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -20,6 +20,7 @@
             <artifactId>xingge-core-auto</artifactId>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-core-tool</artifactId>
