@@ -18,6 +18,7 @@
 package tech.msop.core.tool.utils;
 
 import tech.msop.core.tool.function.*;
+import tech.msop.core.tool.function.*;
 
 import java.util.Comparator;
 import java.util.Objects;

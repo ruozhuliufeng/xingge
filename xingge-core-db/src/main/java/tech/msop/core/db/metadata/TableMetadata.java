@@ -10,7 +10,6 @@
 package tech.msop.core.db.metadata;
 
 import lombok.Data;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 

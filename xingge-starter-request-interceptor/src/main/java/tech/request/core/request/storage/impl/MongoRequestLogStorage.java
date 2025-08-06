@@ -61,7 +61,7 @@ import java.util.concurrent.CompletableFuture;
  * </pre>
  * 
  * @author 若竹流风
- * @version 0.0.2
+ * @version 0.0.3
  * @since 2025-07-11
  */
 @ConditionalOnProperty(name = "xg.request.mongo.enabled", havingValue = "true")

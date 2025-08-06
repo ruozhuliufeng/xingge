@@ -15,7 +15,7 @@
     <parent>
         <groupId>tech.msop</groupId>
         <artifactId>xingge</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -45,7 +45,7 @@
                     <proc>none</proc>
                 </configuration>
             </plugin>
-            
+
             <!-- 跳过源码插件执行，避免重复配置冲突 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

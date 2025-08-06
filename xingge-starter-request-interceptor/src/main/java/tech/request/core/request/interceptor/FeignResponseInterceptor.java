@@ -34,7 +34,7 @@ import java.util.Map;
  * <p>注意：该拦截器需要与OpenFeignRequestInterceptor配合使用。</p>
  * 
  * @author 若竹流风
- * @version 0.0.2
+ * @version 0.0.3
  * @since 2025-07-11
  */
 public class FeignResponseInterceptor implements Client {

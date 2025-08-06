@@ -41,7 +41,7 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-bom</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.3</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -87,7 +87,7 @@
 
 | XingGe版本 | Spring Boot版本 | JDK版本 | 说明 |
 |-----------|----------------|---------|------|
-| 0.0.2     | 2.7.x          | 8+      | 当前版本 |
+| 0.0.3     | 2.7.x          | 8+      | 当前版本 |
 | 0.0.1     | 2.6.x          | 8+      | 初始版本 |
 
 ## 🔧 自定义版本

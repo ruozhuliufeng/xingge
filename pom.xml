@@ -10,7 +10,7 @@
     </description>
     <url>https://github.com/ruozhuliufeng/xingge</url>
 
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <licenses>
@@ -53,6 +53,9 @@
         <module>xingge-starter-request-interceptor</module>
         <module>xingge-starter-mybatis</module>
         <module>xingge-starter-log</module>
+        <module>xingge-starter-actuate</module>
+        <module>xingge-starter-api-crypto</module>
+        <module>xingge-starter-mybatis-encrypt</module>
         <module>xingge-starter-redis</module>
         <module>xingge-starter-zookeeper</module>
         <module>xingge-starter-mongo</module>

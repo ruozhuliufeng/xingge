@@ -13,8 +13,6 @@ import tech.msop.core.db.metadata.ColumnMetadata;
 import tech.msop.core.db.metadata.IndexMetadata;
 import tech.msop.core.db.metadata.TableMetadata;
 
-import java.util.List;
-
 /**
  * 数据库方言接口
  * 用于处理不同数据库的SQL语法差异

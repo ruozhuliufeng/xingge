@@ -21,7 +21,7 @@
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-core-tool</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 

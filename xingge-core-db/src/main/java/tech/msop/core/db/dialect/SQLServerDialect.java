@@ -9,16 +9,11 @@
  */
 package tech.msop.core.db.dialect;
 
-import tech.msop.core.db.annotation.Index;
 import tech.msop.core.db.metadata.ColumnMetadata;
 import tech.msop.core.db.metadata.IndexMetadata;
 import tech.msop.core.db.metadata.TableMetadata;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
