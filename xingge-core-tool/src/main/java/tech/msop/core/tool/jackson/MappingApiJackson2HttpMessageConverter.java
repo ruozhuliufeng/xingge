@@ -52,7 +52,7 @@ public class MappingApiJackson2HttpMessageConverter extends AbstractReadWriteJac
         ObjectMapper writeObjectMapper = readObjectMapper.copy();
         // 大数字 转 字符串
         if (Boolean.TRUE.equals(properties.getBigNumToString())) {
-            writeObjectMapper.registerModules(MsNumberModule.INSTANCE);
+            writeObjectMapper.registerModules(XingGeNumberModule.INSTANCE);
         }
         // null 处理
         if (Boolean.TRUE.equals(properties.getNullToEmpty())) {

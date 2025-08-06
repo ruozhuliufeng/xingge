@@ -17,11 +17,11 @@ import java.math.BigInteger;
  *
  * @author ruozhuliufeng
  */
-public class MsNumberModule extends SimpleModule {
-	public static final MsNumberModule INSTANCE = new MsNumberModule();
+public class XingGeNumberModule extends SimpleModule {
+	public static final XingGeNumberModule INSTANCE = new XingGeNumberModule();
 
-	public MsNumberModule() {
-		super(MsNumberModule.class.getName());
+	public XingGeNumberModule() {
+		super(XingGeNumberModule.class.getName());
 		// Long 和 BigInteger 采用定制的逻辑序列化，避免超过js的精度
 		this.addSerializer(Long.class, BigNumberSerializer.instance);
 		this.addSerializer(Long.TYPE, BigNumberSerializer.instance);
