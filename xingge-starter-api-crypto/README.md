@@ -56,7 +56,7 @@
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-starter-api-crypto</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
@@ -218,7 +218,7 @@ public class CryptoExampleController {
 
 ## 版本信息
 
-- 当前版本：0.0.3
+- 当前版本：0.0.4
 - 最低JDK版本：1.8
 - Spring Boot兼容版本：2.x及以上
 - Spring Cloud兼容版本：2020.x及以上

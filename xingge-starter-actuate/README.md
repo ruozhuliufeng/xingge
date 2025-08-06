@@ -32,7 +32,7 @@
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-starter-actuate</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 </dependency>
 ```
 
@@ -102,6 +102,6 @@ public class StaticResourceController {
 
 ## 版本信息
 
-- 当前版本：0.0.3
+- 当前版本：0.0.4
 - 最低JDK版本：1.8
 - Spring Boot兼容版本：2.x及以上

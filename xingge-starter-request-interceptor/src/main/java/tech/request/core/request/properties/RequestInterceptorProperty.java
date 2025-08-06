@@ -38,7 +38,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * </pre>
  *
  * @author 若竹流风
- * @version 0.0.3
+ * @version 0.0.4
  * @since 2025-07-11
  */
 @ConfigurationProperties(prefix = "xg.request")

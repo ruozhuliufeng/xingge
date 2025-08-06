@@ -41,7 +41,7 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-bom</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -87,7 +87,7 @@
 
 | XingGe版本 | Spring Boot版本 | JDK版本 | 说明 |
 |-----------|----------------|---------|------|
-| 0.0.3     | 2.7.x          | 8+      | 当前版本 |
+| 0.0.4     | 2.7.x          | 8+      | 当前版本 |
 | 0.0.1     | 2.6.x          | 8+      | 初始版本 |
 
 ## 🔧 自定义版本
@@ -99,7 +99,7 @@
     <dependency>
         <groupId>tech.msop</groupId>
         <artifactId>xingge-core-tool</artifactId>
-        <version>0.0.3-SNAPSHOT</version> <!-- 覆盖BOM中的版本 -->
+        <version>0.0.4-SNAPSHOT</version> <!-- 覆盖BOM中的版本 -->
     </dependency>
 </dependencies>
 ```
@@ -124,7 +124,7 @@ my-project/
 <dependency>
     <groupId>tech.msop</groupId>
     <artifactId>xingge-bom</artifactId>
-    <version>0.0.3</version> <!-- 新版本 -->
+    <version>0.0.4</version> <!-- 新版本 -->
     <type>pom</type>
     <scope>import</scope>
 </dependency>

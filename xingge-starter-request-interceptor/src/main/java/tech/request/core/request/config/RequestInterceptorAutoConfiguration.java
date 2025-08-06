@@ -37,7 +37,7 @@ import tech.request.core.request.storage.impl.MongoRequestLogStorage;
  * <p>通过条件装配，只有在满足特定条件时才会创建相应的Bean。</p>
  * 
  * @author 若竹流风
- * @version 0.0.3
+ * @version 0.0.4
  * @since 2025-07-11
  */
 @Configuration

@@ -17,25 +17,25 @@
 
 | 模块 | 描述 | 版本 |
 |------|------|------|
-| **xingge-core-tool** | 核心工具类模块，提供通用工具类和异步处理器 | 0.0.3 |
-| **xingge-core-db** | 数据库核心模块，提供表结构自动维护功能 | 0.0.3 |
-| **xingge-core-auto** | 自动配置模块，提供Spring Boot自动配置支持 | 0.0.3 |
+| **xingge-core-tool** | 核心工具类模块，提供通用工具类和异步处理器 | 0.0.4 |
+| **xingge-core-db** | 数据库核心模块，提供表结构自动维护功能 | 0.0.4 |
+| **xingge-core-auto** | 自动配置模块，提供Spring Boot自动配置支持 | 0.0.4 |
 
 ### Starter模块
 
 | 模块 | 描述 | 版本 |
 |------|------|------|
-| **xingge-starter-request-interceptor** | HTTP请求拦截器，支持多种存储方式 | 0.0.3 |
-| **xingge-starter-http** | HTTP客户端增强模块 | 0.0.3 |
-| **xingge-starter-log** | 日志增强模块 | 0.0.3 |
-| **xingge-starter-mybatis** | MyBatis增强模块 | 0.0.3 |
+| **xingge-starter-request-interceptor** | HTTP请求拦截器，支持多种存储方式 | 0.0.4 |
+| **xingge-starter-http** | HTTP客户端增强模块 | 0.0.4 |
+| **xingge-starter-log** | 日志增强模块 | 0.0.4 |
+| **xingge-starter-mybatis** | MyBatis增强模块 | 0.0.4 |
 
 ### 其他模块
 
 | 模块 | 描述 | 版本 |
 |------|------|------|
-| **xingge-bom** | 依赖管理模块，统一管理版本 | 0.0.3 |
-| **xingge-project-test** | 测试项目模块 | 0.0.3 |
+| **xingge-bom** | 依赖管理模块，统一管理版本 | 0.0.4 |
+| **xingge-project-test** | 测试项目模块 | 0.0.4 |
 
 ## 🔧 快速开始
 
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>tech.msop</groupId>
             <artifactId>xingge-bom</artifactId>
-            <version>0.0.3</version>
+            <version>0.0.4</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
