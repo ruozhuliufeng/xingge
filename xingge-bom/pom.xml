@@ -355,6 +355,11 @@
                 <artifactId>xingge-starter-zookeeper</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-cache</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
