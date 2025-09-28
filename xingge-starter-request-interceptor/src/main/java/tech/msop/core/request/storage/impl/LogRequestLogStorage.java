@@ -8,16 +8,16 @@
  * - 支持批量存储和异步存储
  * - 格式化输出拦截的内容
  */
-package tech.request.core.request.storage.impl;
+package tech.msop.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import tech.msop.core.tool.async.AsyncProcessor;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

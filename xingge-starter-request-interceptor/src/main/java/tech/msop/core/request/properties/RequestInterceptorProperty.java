@@ -7,7 +7,7 @@
  * - 支持多种存储方式配置
  * - 支持多种HTTP客户端拦截配置
  */
-package tech.request.core.request.properties;
+package tech.msop.core.request.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

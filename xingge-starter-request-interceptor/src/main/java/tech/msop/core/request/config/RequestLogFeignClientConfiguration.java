@@ -6,12 +6,13 @@
  * - 配置RequestLogApiClient的Feign客户端
  * - 设置API存储相关的Feign配置
  */
-package tech.request.core.request.config;
+package tech.msop.core.request.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
-import tech.request.core.request.feign.RequestLogApiClient;
+import tech.msop.core.request.feign.RequestLogFeignConfiguration;
+import tech.msop.core.request.feign.RequestLogApiClient;
 
 /**
  * 请求日志Feign客户端配置类
@@ -30,7 +31,7 @@ import tech.request.core.request.feign.RequestLogApiClient;
 @Configuration
 @ConditionalOnProperty(prefix = "xg.request.api", name = "enabled", havingValue = "true")
 @EnableFeignClients(clients = RequestLogApiClient.class,
-                   defaultConfiguration = tech.request.core.request.feign.RequestLogFeignConfiguration.class)
+                   defaultConfiguration = RequestLogFeignConfiguration.class)
 public class RequestLogFeignClientConfiguration {
     
 }

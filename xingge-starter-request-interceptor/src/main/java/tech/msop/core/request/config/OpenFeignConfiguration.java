@@ -7,7 +7,7 @@
  * - 根据配置条件自动装配
  * - 支持拦截OpenFeign的请求和响应
  */
-package tech.request.core.request.config;
+package tech.msop.core.request.config;
 
 import feign.Client;
 import feign.RequestInterceptor;
@@ -15,10 +15,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.interceptor.FeignResponseInterceptor;
-import tech.request.core.request.interceptor.OpenFeignRequestInterceptor;
-import tech.request.core.request.handler.RequestLogHandler;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.interceptor.FeignResponseInterceptor;
+import tech.msop.core.request.interceptor.OpenFeignRequestInterceptor;
+import tech.msop.core.request.handler.RequestLogHandler;
 
 /**
  * OpenFeign客户端拦截器配置类

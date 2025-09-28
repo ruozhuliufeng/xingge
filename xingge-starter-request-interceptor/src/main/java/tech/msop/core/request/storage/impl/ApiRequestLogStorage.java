@@ -7,17 +7,17 @@
  * - 支持自定义API端点配置
  * - 提供重试机制和异常处理
  */
-package tech.request.core.request.storage.impl;
+package tech.msop.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
-import tech.request.core.request.feign.RequestLogApiClient;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.feign.RequestLogApiClient;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

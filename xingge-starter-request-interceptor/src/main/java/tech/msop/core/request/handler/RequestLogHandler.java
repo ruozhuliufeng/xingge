@@ -8,13 +8,13 @@
  * - 根据配置过滤数据
  * - 调用存储接口保存日志
  */
-package tech.request.core.request.handler;
+package tech.msop.core.request.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;

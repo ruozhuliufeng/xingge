@@ -7,9 +7,9 @@
  * - 支持多种存储实现方式
  * - 提供异步和同步存储方法
  */
-package tech.request.core.request.storage;
+package tech.msop.core.request.storage;
 
-import tech.request.core.request.model.RequestLogInfo;
+import tech.msop.core.request.model.RequestLogInfo;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

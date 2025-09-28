@@ -7,7 +7,7 @@
  * - 设置超时时间和重试策略
  * - 配置日志级别和错误处理
  */
-package tech.request.core.request.feign;
+package tech.msop.core.request.feign;
 
 import feign.Logger;
 import feign.Request;

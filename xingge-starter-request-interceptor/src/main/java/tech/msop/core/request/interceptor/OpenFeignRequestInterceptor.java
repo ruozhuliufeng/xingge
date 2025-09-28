@@ -7,15 +7,15 @@
  * - 收集请求和响应数据
  * - 通过请求日志处理器记录日志
  */
-package tech.request.core.request.interceptor;
+package tech.msop.core.request.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.handler.RequestLogHandler;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.handler.RequestLogHandler;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;

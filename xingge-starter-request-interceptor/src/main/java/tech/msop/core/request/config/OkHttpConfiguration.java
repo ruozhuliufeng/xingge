@@ -7,16 +7,16 @@
  * - 根据配置条件自动装配
  * - 支持拦截OkHttp的请求和响应
  */
-package tech.request.core.request.config;
+package tech.msop.core.request.config;
 
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.interceptor.OkHttpRequestInterceptor;
-import tech.request.core.request.handler.RequestLogHandler;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.interceptor.OkHttpRequestInterceptor;
+import tech.msop.core.request.handler.RequestLogHandler;
 
 /**
  * OkHttp客户端拦截器配置类

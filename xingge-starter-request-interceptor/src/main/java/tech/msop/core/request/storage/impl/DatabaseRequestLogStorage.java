@@ -7,7 +7,7 @@
  * - 自动维护表结构
  * - 支持批量插入和异步处理
  */
-package tech.request.core.request.storage.impl;
+package tech.msop.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +17,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tech.msop.core.tool.async.AsyncProcessor;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

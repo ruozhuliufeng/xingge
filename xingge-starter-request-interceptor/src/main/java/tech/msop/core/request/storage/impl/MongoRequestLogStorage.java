@@ -8,7 +8,7 @@
  * - 支持批量存储和异步存储
  * - 提供连接状态检查和资源管理
  */
-package tech.request.core.request.storage.impl;
+package tech.msop.core.request.storage.impl;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -21,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.util.StringUtils;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
 import tech.msop.core.tool.async.AsyncProcessor;
 
 import javax.annotation.PostConstruct;

@@ -7,13 +7,13 @@
  * - 支持单个和批量日志保存
  * - 基于OpenFeign实现
  */
-package tech.request.core.request.feign;
+package tech.msop.core.request.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import tech.msop.core.tool.common.Result;
-import tech.request.core.request.model.RequestLogInfo;
+import tech.msop.core.request.model.RequestLogInfo;
 
 import java.util.List;
 

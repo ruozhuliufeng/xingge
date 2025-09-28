@@ -7,7 +7,7 @@
  * - 支持序列化和反序列化
  * - 提供统一的数据结构用于存储
  */
-package tech.request.core.request.model;
+package tech.msop.core.request.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

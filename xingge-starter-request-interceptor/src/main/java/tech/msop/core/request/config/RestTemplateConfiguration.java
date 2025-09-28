@@ -7,7 +7,7 @@
  * - 根据配置条件自动装配
  * - 支持拦截RestTemplate的请求和响应
  */
-package tech.request.core.request.config;
+package tech.msop.core.request.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.handler.RequestLogHandler;
-import tech.request.core.request.interceptor.RestTemplateRequestInterceptor;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.handler.RequestLogHandler;
+import tech.msop.core.request.interceptor.RestTemplateRequestInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;

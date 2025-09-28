@@ -7,7 +7,7 @@
  * - 根据配置条件装配不同的存储实现
  * - 配置各种HTTP客户端的拦截器
  */
-package tech.request.core.request.config;
+package tech.msop.core.request.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,13 +16,14 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import tech.request.core.request.handler.RequestLogHandler;
-import tech.request.core.request.properties.RequestInterceptorProperty;
-import tech.request.core.request.storage.RequestLogStorage;
-import tech.request.core.request.storage.impl.ApiRequestLogStorage;
-import tech.request.core.request.storage.impl.DatabaseRequestLogStorage;
-import tech.request.core.request.storage.impl.LogRequestLogStorage;
-import tech.request.core.request.storage.impl.MongoRequestLogStorage;
+import tech.msop.core.request.storage.impl.CompositeRequestLogStorage;
+import tech.msop.core.request.handler.RequestLogHandler;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.storage.impl.ApiRequestLogStorage;
+import tech.msop.core.request.storage.impl.DatabaseRequestLogStorage;
+import tech.msop.core.request.storage.impl.LogRequestLogStorage;
+import tech.msop.core.request.storage.impl.MongoRequestLogStorage;
 
 /**
  * 请求拦截器自动配置类
@@ -160,7 +161,7 @@ public class RequestInterceptorAutoConfiguration {
             storageList.add(new LogRequestLogStorage());
         }
         
-        return new tech.request.core.request.storage.impl.CompositeRequestLogStorage(storageList);
+        return new CompositeRequestLogStorage(storageList);
     }
     
     /**

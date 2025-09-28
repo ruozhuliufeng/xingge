@@ -7,12 +7,12 @@
  * - 可以同时输出到日志和保存到数据库
  * - 提供容错机制，单个存储失败不影响其他存储
  */
-package tech.request.core.request.storage.impl;
+package tech.msop.core.request.storage.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tech.request.core.request.model.RequestLogInfo;
-import tech.request.core.request.storage.RequestLogStorage;
+import tech.msop.core.request.model.RequestLogInfo;
+import tech.msop.core.request.storage.RequestLogStorage;
 import tech.msop.core.tool.async.AsyncProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -7,7 +7,7 @@
  * - 收集响应数据
  * - 配合OpenFeignRequestInterceptor使用
  */
-package tech.request.core.request.interceptor;
+package tech.msop.core.request.interceptor;
 
 import feign.Client;
 import feign.Request;
@@ -15,7 +15,7 @@ import feign.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-import tech.request.core.request.properties.RequestInterceptorProperty;
+import tech.msop.core.request.properties.RequestInterceptorProperty;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
