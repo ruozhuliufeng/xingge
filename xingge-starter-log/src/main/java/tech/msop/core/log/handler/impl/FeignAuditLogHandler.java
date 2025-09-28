@@ -7,7 +7,7 @@
  * - 支持重试机制
  * - 支持批量发送
  */
-package tech.msop.core.handler.impl;
+package tech.msop.core.log.handler.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import tech.msop.core.handler.AuditLogHandler;
-import tech.msop.core.model.AuditLogInfo;
-import tech.msop.core.property.XingGeLogProperty;
+import tech.msop.core.log.handler.AuditLogHandler;
+import tech.msop.core.log.model.AuditLogInfo;
+import tech.msop.core.log.property.XingGeLogProperty;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;

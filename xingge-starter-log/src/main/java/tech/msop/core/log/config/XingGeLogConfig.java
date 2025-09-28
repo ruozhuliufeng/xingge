@@ -7,7 +7,7 @@
  * - 启用LogIndex注解切面
  * - 管理日志模块的自动配置
  */
-package tech.msop.core.config;
+package tech.msop.core.log.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,12 +15,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
-import tech.msop.core.aspect.LogIndexAspect;
-import tech.msop.core.aspect.AuditLogAspect;
-import tech.msop.core.handler.impl.ConsoleAuditLogHandler;
-import tech.msop.core.handler.impl.DatabaseAuditLogHandler;
-import tech.msop.core.handler.impl.FeignAuditLogHandler;
-import tech.msop.core.property.XingGeLogProperty;
+import tech.msop.core.log.aspect.LogIndexAspect;
+import tech.msop.core.log.aspect.AuditLogAspect;
+import tech.msop.core.log.handler.impl.ConsoleAuditLogHandler;
+import tech.msop.core.log.handler.impl.DatabaseAuditLogHandler;
+import tech.msop.core.log.handler.impl.FeignAuditLogHandler;
+import tech.msop.core.log.property.XingGeLogProperty;
 
 /**
  * 行歌日志模块配置类

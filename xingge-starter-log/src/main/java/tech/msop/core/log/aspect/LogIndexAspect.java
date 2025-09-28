@@ -8,7 +8,7 @@
  * - 支持自定义索引名称和前缀
  * - 提供日志上下文管理
  */
-package tech.msop.core.aspect;
+package tech.msop.core.log.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -19,8 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import tech.msop.core.annotation.LogIndex;
-import tech.msop.core.property.XingGeLogProperty;
+import tech.msop.core.log.annotation.LogIndex;
+import tech.msop.core.log.property.XingGeLogProperty;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

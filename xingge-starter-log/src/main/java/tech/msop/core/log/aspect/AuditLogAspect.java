@@ -7,7 +7,7 @@
  * - 收集审计日志信息
  * - 调用配置的处理器进行处理
  */
-package tech.msop.core.aspect;
+package tech.msop.core.log.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import tech.msop.core.annotation.AuditLog;
-import tech.msop.core.handler.AuditLogHandler;
-import tech.msop.core.model.AuditLogInfo;
-import tech.msop.core.property.XingGeLogProperty;
+import tech.msop.core.log.annotation.AuditLog;
+import tech.msop.core.log.handler.AuditLogHandler;
+import tech.msop.core.log.model.AuditLogInfo;
+import tech.msop.core.log.property.XingGeLogProperty;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;

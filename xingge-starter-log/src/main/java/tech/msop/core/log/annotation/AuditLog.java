@@ -7,7 +7,7 @@
  * - 支持自定义操作类型、模块、描述等
  * - 支持多种输出方式配置
  */
-package tech.msop.core.annotation;
+package tech.msop.core.log.annotation;
 
 import java.lang.annotation.*;
 

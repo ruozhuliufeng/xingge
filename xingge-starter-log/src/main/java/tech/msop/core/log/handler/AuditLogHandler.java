@@ -7,9 +7,9 @@
  * - 支持多种处理方式的扩展
  * - 提供异步和同步处理能力
  */
-package tech.msop.core.handler;
+package tech.msop.core.log.handler;
 
-import tech.msop.core.model.AuditLogInfo;
+import tech.msop.core.log.model.AuditLogInfo;
 
 /**
  * 审计日志处理器接口

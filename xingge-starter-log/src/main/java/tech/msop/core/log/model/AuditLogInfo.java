@@ -7,7 +7,7 @@
  * - 支持序列化和反序列化
  * - 提供便捷的构建方法
  */
-package tech.msop.core.model;
+package tech.msop.core.log.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

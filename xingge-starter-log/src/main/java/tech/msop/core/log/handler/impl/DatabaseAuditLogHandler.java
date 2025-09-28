@@ -7,7 +7,7 @@
  * - 支持多种数据库类型
  * - 支持批量插入优化
  */
-package tech.msop.core.handler.impl;
+package tech.msop.core.log.handler.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -15,9 +15,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import tech.msop.core.handler.AuditLogHandler;
-import tech.msop.core.model.AuditLogInfo;
-import tech.msop.core.property.XingGeLogProperty;
+import tech.msop.core.log.handler.AuditLogHandler;
+import tech.msop.core.log.model.AuditLogInfo;
+import tech.msop.core.log.property.XingGeLogProperty;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;

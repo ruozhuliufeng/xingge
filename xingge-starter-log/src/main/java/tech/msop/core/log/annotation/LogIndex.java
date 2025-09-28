@@ -7,7 +7,7 @@
  * - 支持自定义索引名称和前缀
  * - 用于MDC日志上下文管理
  */
-package tech.msop.core.annotation;
+package tech.msop.core.log.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

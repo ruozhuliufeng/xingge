@@ -1,7 +1,7 @@
-package tech.msop.core.example;
+package tech.msop.core.log.example;
 
 import org.springframework.stereotype.Service;
-import tech.msop.core.annotation.AuditLog;
+import tech.msop.core.log.annotation.AuditLog;
 
 /**
  * 审计日志使用示例

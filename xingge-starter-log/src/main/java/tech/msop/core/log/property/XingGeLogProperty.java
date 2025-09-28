@@ -7,7 +7,7 @@
  * - 支持LogIndex切面配置
  * - 提供灵活的开关控制
  */
-package tech.msop.core.property;
+package tech.msop.core.log.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
