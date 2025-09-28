@@ -18,7 +18,7 @@
 
 ## 配置解密密钥
 ```yaml
-ms:
+xg:
   mybatis:
     crypto:
       key: xxxxxxxxxxxxxx  # AES 密钥，不填使用默认生成的UUID
