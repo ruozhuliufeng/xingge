@@ -42,8 +42,8 @@ public class BaseEntity implements Serializable {
     private Integer status;
 
     /**
-     * 状态[0:未删除 1：已删除]
+     * 删除标识 [0:未删除 1:已删除]
      */
-    private Integer isDeleted;
+    private Integer isDelete;
 
 }

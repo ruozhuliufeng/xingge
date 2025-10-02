@@ -27,4 +27,9 @@ public class BaseEntity {
      * 更新时间
      */
     private LocalDateTime updateTime;
+    
+    /**
+     * 删除标识 [0:未删除 1:已删除]
+     */
+    private Integer isDelete;
 }

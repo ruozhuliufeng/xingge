@@ -29,7 +29,7 @@ public class Result<T> implements Serializable {
     /**
      * 异常信息
      */
-    private String msg;
+    private String message;
     /**
      * dataMap
      */
