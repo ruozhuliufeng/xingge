@@ -100,6 +100,11 @@
         <protostuff.version>1.6.0</protostuff.version>
         <disruptor.version>3.4.2</disruptor.version>
         <mybatis.version>3.5.6</mybatis.version>
+        <aliyun.oss.version>3.14.0</aliyun.oss.version>
+        <minio.oss.version>8.3.7</minio.oss.version>
+        <qiniu.oss.version>7.9.4</qiniu.oss.version>
+        <tencent.cos.version>5.6.69</tencent.cos.version>
+        <huaweicloud.obs.version>3.21.12</huaweicloud.obs.version>
         <logstash.version>6.2</logstash.version>
         <druid.version>1.2.8</druid.version>
         <jackson.version>2.11.4</jackson.version>
@@ -293,6 +298,37 @@
                 <artifactId>mybatis</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
+            <!-- ================================ 云服务OSS =============== -->
+            <!-- AliOss -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun.oss.version}</version>
+            </dependency>
+            <!-- MinIO -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.oss.version}</version>
+            </dependency>
+            <!-- 七牛云 -->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu.oss.version}</version>
+            </dependency>
+            <!-- 腾讯云COS -->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${tencent.cos.version}</version>
+            </dependency>
+            <!-- 华为云OBS -->
+            <dependency>
+                <groupId>com.huaweicloud</groupId>
+                <artifactId>esdk-obs-java</artifactId>
+                <version>${huaweicloud.obs.version}</version>
+            </dependency>
             <!-- ================================ 项目内部模块依赖 ================================ -->
             <!-- 项目核心模块 - 提供基础工具类和通用功能 -->
             <dependency>
@@ -358,6 +394,11 @@
             <dependency>
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-starter-cache</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-oss</artifactId>
                 <version>${xingge.version}</version>
             </dependency>
         </dependencies>
