@@ -105,6 +105,16 @@
         <jackson.version>2.11.4</jackson.version>
         <okhttp.version>4.9.3</okhttp.version>
         <jsoup.version>1.12.1</jsoup.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <commons-compress.version>1.24.0</commons-compress.version>
+        <zip4j.version>2.11.5</zip4j.version>
+        <junrar.version>7.5.5</junrar.version>
+        <poi.version>5.2.5</poi.version>
+        <pdfbox.version>2.0.29</pdfbox.version>
+        <openhtmltopdf.version>1.0.10</openhtmltopdf.version>
+        <flexmark.version>0.64.8</flexmark.version>
+        <docx4j.version>8.3.7</docx4j.version>
+        <xz.version>1.9</xz.version>
 
     </properties>
 
@@ -359,6 +369,96 @@
                 <groupId>tech.msop</groupId>
                 <artifactId>xingge-starter-cache</artifactId>
                 <version>${xingge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tech.msop</groupId>
+                <artifactId>xingge-starter-file</artifactId>
+                <version>${xingge.version}</version>
+            </dependency>
+            <!-- Apache Commons IO -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+            <!-- Apache Commons Compress -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${commons-compress.version}</version>
+            </dependency>
+            <!-- Zip4j -->
+            <dependency>
+                <groupId>net.lingala.zip4j</groupId>
+                <artifactId>zip4j</artifactId>
+                <version>${zip4j.version}</version>
+            </dependency>
+            <!-- Junrar -->
+            <dependency>
+                <groupId>com.github.junrar</groupId>
+                <artifactId>junrar</artifactId>
+                <version>${junrar.version}</version>
+            </dependency>
+            <!-- Apache POI -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <!-- Apache PDFBox -->
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+            <!-- Flexmark -->
+            <dependency>
+                <groupId>com.vladsch.flexmark</groupId>
+                <artifactId>flexmark-all</artifactId>
+                <version>${flexmark.version}</version>
+            </dependency>
+            <!-- Docx4j -->
+            <dependency>
+                <groupId>org.docx4j</groupId>
+                <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+                <version>${docx4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.docx4j</groupId>
+                <artifactId>docx4j-export-fo</artifactId>
+                <version>${docx4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.docx4j</groupId>
+                <artifactId>docx4j-ImportXHTML</artifactId>
+                <version>${docx4j.version}</version>
+            </dependency>
+            <!-- Openhtmltopdf -->
+            <dependency>
+                <groupId>com.openhtmltopdf</groupId>
+                <artifactId>openhtmltopdf-core</artifactId>
+                <version>${openhtmltopdf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.openhtmltopdf</groupId>
+                <artifactId>openhtmltopdf-pdfbox</artifactId>
+                <version>${openhtmltopdf.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.openhtmltopdf</groupId>
+                <artifactId>openhtmltopdf-slf4j</artifactId>
+                <version>${openhtmltopdf.version}</version>
+            </dependency>
+            <!-- XZ Utils -->
+            <dependency>
+                <groupId>org.tukaani</groupId>
+                <artifactId>xz</artifactId>
+                <version>${xz.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

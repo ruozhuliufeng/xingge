@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    xingge-starter-file 文件服务工具模块
+    
+    功能说明：
+    - 基础文件操作（创建、读取、删除等）
+    - 基础文件夹操作（读取、创建、列表等）
+    - 压缩文件操作（支持zip、rar、tar等格式，支持密码解压）
+    - Excel文件操作（读取、模板填充、添加盖章图片等）
+    - PDF文件操作（读取、解析、旋转、切分、整合、添加盖章等）
+    - 文件格式转换（Excel↔PDF/HTML、Markdown↔PDF/Word/HTML、Word↔PDF/HTML等）
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!-- 继承父项目 -->
+    <parent>
+        <groupId>tech.msop</groupId>
+        <artifactId>xingge</artifactId>
+        <version>0.0.4</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <!-- 当前模块信息 -->
+    <artifactId>xingge-starter-file</artifactId>
+    <packaging>jar</packaging>
+    <name>xingge-starter-file</name>
+    <description>行歌项目文件服务工具模块，提供文件、文件夹、压缩文件、Excel、PDF操作及文件格式转换支持</description>
+
+    <dependencies>
+        <!-- XingGe Core -->
+        <dependency>
+            <groupId>tech.msop</groupId>
+            <artifactId>xingge-core-tool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>tech.msop</groupId>
+            <artifactId>xingge-core-auto</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Boot Auto Configuration -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <!-- 基础工具依赖 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.tukaani</groupId>
+            <artifactId>xz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.lingala.zip4j</groupId>
+            <artifactId>zip4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.junrar</groupId>
+            <artifactId>junrar</artifactId>
+        </dependency>
+
+        <!-- Excel依赖 -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
+        <!-- PDF依赖 -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+        </dependency>
+
+        <!-- Markdown处理 -->
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+        </dependency>
+
+        <!-- Word处理 -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-export-fo</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-ImportXHTML</artifactId>
+        </dependency>
+
+        <!-- HTML渲染 -->
+        <dependency>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-pdfbox</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-slf4j</artifactId>
+        </dependency>
+    </dependencies>
+</project>

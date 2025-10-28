@@ -60,6 +60,7 @@
         <module>xingge-starter-zookeeper</module>
         <module>xingge-starter-mongo</module>
         <module>xingge-starter-cache</module>
+        <module>xingge-starter-file</module>
     </modules>
 
     <!-- 依赖版本管理 - 引入 xingge-bom 作为整个项目的版本管理模块 -->
