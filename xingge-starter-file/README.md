@@ -19,7 +19,7 @@ XingGe文件服务工具模块，提供文件、文件夹、压缩文件、Excel
 ### 3. 压缩文件操作
 - 支持格式：ZIP、RAR、TAR、TAR.GZ、TAR.BZ2、TAR.XZ
 - 支持密码保护的ZIP文件解压
-- 支持自定义字符集（默认UTF-8）
+- 支持指定字符集解压（可通过字符串名称指定，如"GBK"、"GB2312"、"ISO-8859-1"等，默认UTF-8）
 - 自动创建目标目录
 
 ### 4. Excel文件操作
@@ -69,13 +69,14 @@ XingGe文件服务工具模块，提供文件、文件夹、压缩文件、Excel
 在`application.yml`中添加配置（可选）：
 
 ```yaml
-xingge:
-  file:
-    enabled: true
+xg:
+  enabled: true
+  default-charset: UTF-8
+  temp-directory: ${java.io.tmpdir}
+  upload-directory: ./uploads
+  max-file-size: 104857600  # 100MB
+  compression:
     default-charset: UTF-8
-    temp-directory: ${java.io.tmpdir}
-    upload-directory: ./uploads
-    max-file-size: 104857600  # 100MB
 ```
 
 ### 3. 使用示例
@@ -130,6 +131,21 @@ fileService.decompress(
     new File("/path/to/archive.zip"),
     new File("/path/to/output"),
     "password"
+);
+
+// 使用指定字符集（如GBK）解压
+fileService.decompress(
+    new File("/path/to/archive.zip"),
+    new File("/path/to/output"),
+    "password",
+    "GBK"
+);
+
+// 使用字符串路径指定字符集解压
+fileService.decompress(
+    "/path/to/archive.zip",
+    "/path/to/output",
+    "GBK"
 );
 
 // 检查压缩文件是否包含某个文件
@@ -255,8 +271,23 @@ String content = FileUtil.readFileToString("/path/to/file.txt");
 DirectoryUtil.createDirectory("/path/to/directory");
 List<File> files = DirectoryUtil.listFiles("/path/to/directory", true);
 
-// 使用CompressionUtil
+// 使用CompressionUtil（支持指定字符集字符串）
 CompressionUtil.decompress("/path/to/archive.zip", "/path/to/output");
+
+// 指定字符集解压
+CompressionUtil.decompress(
+    "/path/to/archive.zip",
+    "/path/to/output",
+    "GBK"
+);
+
+// 指定字符集与密码解压
+CompressionUtil.decompress(
+    "/path/to/archive.zip",
+    "/path/to/output",
+    "password",
+    "GBK"
+);
 
 // 使用ExcelUtil
 List<List<String>> data = ExcelUtil.readExcel(new File("/path/to/excel.xlsx"));
@@ -275,16 +306,16 @@ FileConvertUtil.excelToPdf(
 
 | 配置项 | 类型 | 默认值 | 说明 |
 |--------|------|--------|------|
-| `xingge.file.enabled` | boolean | true | 是否启用文件服务 |
-| `xingge.file.default-charset` | String | UTF-8 | 默认字符编码 |
-| `xingge.file.temp-directory` | String | ${java.io.tmpdir} | 临时文件目录 |
-| `xingge.file.upload-directory` | String | ./uploads | 文件上传目录 |
-| `xingge.file.max-file-size` | long | 104857600 | 最大文件大小（字节） |
-| `xingge.file.compression.auto-create-target-dir` | boolean | true | 解压时是否自动创建目标目录 |
-| `xingge.file.compression.default-charset` | String | UTF-8 | 默认解压字符集 |
-| `xingge.file.excel.enable-streaming` | boolean | false | 是否启用流式写入 |
-| `xingge.file.pdf.author` | String | XingGe | PDF作者 |
-| `xingge.file.pdf.compress` | boolean | true | 是否压缩PDF |
+| `xg.enabled` | boolean | true | 是否启用文件服务 |
+| `xg.default-charset` | String | UTF-8 | 默认字符编码 |
+| `xg.temp-directory` | String | ${java.io.tmpdir} | 临时文件目录 |
+| `xg.upload-directory` | String | ./uploads | 文件上传目录 |
+| `xg.max-file-size` | long | 104857600 | 最大文件大小（字节） |
+| `xg.compression.auto-create-target-dir` | boolean | true | 解压时是否自动创建目标目录 |
+| `xg.compression.default-charset` | String | UTF-8 | 默认解压字符集（支持UTF-8、GBK、GB2312、ISO-8859-1等） |
+| `xg.excel.enable-streaming` | boolean | false | 是否启用流式写入 |
+| `xg.pdf.author` | String | XingGe | PDF作者 |
+| `xg.pdf.compress` | boolean | true | 是否压缩PDF |
 
 ## 依赖说明
 
@@ -306,6 +337,7 @@ FileConvertUtil.excelToPdf(
 3. RAR解压仅支持RAR 5.0以下版本
 4. 中文字体支持需要相关字体文件
 5. 部分格式转换可能有精度损失
+6. 解压文件时支持通过字符串名称指定字符集，如"GBK"、"GB2312"、"ISO-8859-1"等，自动处理无效字符集名称（回退到UTF-8）
 
 ## 许可证
 

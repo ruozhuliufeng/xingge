@@ -54,6 +54,29 @@ public class CompressionUtil {
     }
 
     /**
+     * 解压压缩文件到指定目录，指定字符集
+     *
+     * @param archivePath 压缩文件路径
+     * @param targetDir   目标目录
+     * @param charsetName 字符集名称
+     */
+    public static void decompress(String archivePath, String targetDir, String charsetName) {
+        decompress(archivePath, targetDir, null, resolveCharset(charsetName));
+    }
+
+    /**
+     * 解压压缩文件到指定目录，指定密码和字符集
+     *
+     * @param archivePath 压缩文件路径
+     * @param targetDir   目标目录
+     * @param password    密码（可选）
+     * @param charsetName 字符集名称
+     */
+    public static void decompress(String archivePath, String targetDir, String password, String charsetName) {
+        decompress(archivePath, targetDir, password, resolveCharset(charsetName));
+    }
+
+    /**
      * 解压压缩文件到指定目录
      *
      * @param archivePath 压缩文件路径
@@ -71,6 +94,29 @@ public class CompressionUtil {
         File archiveFile = new File(archivePath);
         File destination = new File(targetDir);
         decompress(archiveFile, destination, password, charset);
+    }
+
+    /**
+     * 解压压缩文件到指定目录，指定字符集
+     *
+     * @param archiveFile 压缩文件
+     * @param targetDir   目标目录
+     * @param charsetName 字符集名称
+     */
+    public static void decompress(File archiveFile, File targetDir, String charsetName) {
+        decompress(archiveFile, targetDir, null, resolveCharset(charsetName));
+    }
+
+    /**
+     * 解压压缩文件到指定目录，指定密码和字符集
+     *
+     * @param archiveFile 压缩文件
+     * @param targetDir   目标目录
+     * @param password    密码（可选）
+     * @param charsetName 字符集名称
+     */
+    public static void decompress(File archiveFile, File targetDir, String password, String charsetName) {
+        decompress(archiveFile, targetDir, password, resolveCharset(charsetName));
     }
 
     /**
@@ -249,6 +295,23 @@ public class CompressionUtil {
             }
         } catch (Exception e) {
             throw new FileOperationException("检查压缩文件内容失败: " + archiveFile.getAbsolutePath(), e);
+        }
+    }
+
+    /**
+     * 解析字符集名称为Charset对象
+     *
+     * @param charsetName 字符集名称
+     * @return Charset对象
+     */
+    private static Charset resolveCharset(String charsetName) {
+        if (charsetName == null || charsetName.trim().isEmpty()) {
+            return DEFAULT_CHARSET;
+        }
+        try {
+            return Charset.forName(charsetName);
+        } catch (Exception e) {
+            return DEFAULT_CHARSET;
         }
     }
 }

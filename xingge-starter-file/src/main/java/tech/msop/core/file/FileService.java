@@ -1,6 +1,5 @@
 package tech.msop.core.file;
 
-import tech.msop.core.file.exception.FileOperationException;
 import tech.msop.core.file.properties.FileProperties;
 import tech.msop.core.file.utils.*;
 
@@ -97,6 +96,22 @@ public class FileService {
 
     public void decompress(File archiveFile, File targetDir, String password) {
         CompressionUtil.decompress(archiveFile, targetDir, password, getCompressionCharset());
+    }
+
+    public void decompress(File archiveFile, File targetDir, String charsetName) {
+        CompressionUtil.decompress(archiveFile, targetDir, null, resolveCharset(charsetName));
+    }
+
+    public void decompress(File archiveFile, File targetDir, String password, String charsetName) {
+        CompressionUtil.decompress(archiveFile, targetDir, password, resolveCharset(charsetName));
+    }
+
+    public void decompress(String archivePath, String targetDir, String charsetName) {
+        CompressionUtil.decompress(archivePath, targetDir, null, resolveCharset(charsetName));
+    }
+
+    public void decompress(String archivePath, String targetDir, String password, String charsetName) {
+        CompressionUtil.decompress(archivePath, targetDir, password, resolveCharset(charsetName));
     }
 
     public void decompress(File archiveFile, File targetDir, String password, Charset charset) {

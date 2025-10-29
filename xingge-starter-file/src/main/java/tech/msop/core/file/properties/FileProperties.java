@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author ruozhuliufeng
  */
 @Data
-@ConfigurationProperties(prefix = "xingge.file")
+@ConfigurationProperties(prefix = "xg")
 public class FileProperties {
 
     /**

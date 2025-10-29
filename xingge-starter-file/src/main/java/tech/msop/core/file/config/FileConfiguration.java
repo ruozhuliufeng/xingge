@@ -16,7 +16,7 @@ import tech.msop.core.file.properties.FileProperties;
 @AutoConfiguration
 @AllArgsConstructor
 @EnableConfigurationProperties(FileProperties.class)
-@ConditionalOnProperty(prefix = "xingge.file", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "xg", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class FileConfiguration {
 
     private final FileProperties fileProperties;
