@@ -1,0 +1,43 @@
+# XingGe 文件服务配置示例
+
+xg:
+  # 是否启用文件服务
+  enabled: true
+  
+  # 默认字符编码
+  default-charset: UTF-8
+  
+  # 临时文件目录
+  temp-directory: ${java.io.tmpdir}
+  
+  # 文件上传目录
+  upload-directory: ./uploads
+  
+  # 最大文件大小（字节）100MB
+  max-file-size: 104857600
+  
+  # 允许的文件扩展名（逗号分隔，空表示不限制）
+  allowed-extensions: ""
+  
+  # 压缩配置
+  compression:
+    # 解压时是否自动创建目标目录
+    auto-create-target-dir: true
+    # 默认解压字符集（支持：UTF-8、GBK、GB2312、ISO-8859-1等）
+    default-charset: UTF-8
+  
+  # Excel配置
+  excel:
+    # 是否启用流式写入（大文件）
+    enable-streaming: false
+    # 流式写入时的行缓存大小
+    row-access-window-size: 100
+  
+  # PDF配置
+  pdf:
+    # PDF作者
+    author: XingGe
+    # PDF创建者
+    creator: XingGe File Service
+    # 是否压缩PDF
+    compress: true
