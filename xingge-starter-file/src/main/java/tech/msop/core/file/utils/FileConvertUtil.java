@@ -14,7 +14,6 @@ import tech.msop.core.file.exception.FileOperationException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.io.StringWriter;
 
 /**
  * 文件格式转换工具类
@@ -242,10 +241,10 @@ public class FileConvertUtil {
             HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
             htmlSettings.setWmlPackage(wordMLPackage);
 
-            StringWriter stringWriter = new StringWriter();
-            Docx4J.toHTML(htmlSettings, stringWriter, Docx4J.FLAG_EXPORT_PREFER_XSL);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            Docx4J.toHTML(htmlSettings, baos, Docx4J.FLAG_EXPORT_PREFER_XSL);
 
-            FileUtil.writeStringToFile(htmlFile.getAbsolutePath(), stringWriter.toString(), StandardCharsets.UTF_8, false);
+            FileUtil.writeStringToFile(htmlFile.getAbsolutePath(), baos.toString(StandardCharsets.UTF_8.name()), StandardCharsets.UTF_8, false);
         } catch (Exception e) {
             throw new FileOperationException("Word转HTML失败: " + wordFile.getAbsolutePath(), e);
         }

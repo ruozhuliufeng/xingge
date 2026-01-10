@@ -15,6 +15,7 @@ import org.apache.pdfbox.util.Matrix;
 import tech.msop.core.file.exception.FileOperationException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -143,12 +144,16 @@ public class PdfUtil {
             throw new FileOperationException("PDF文件列表不能为空");
         }
         PDFMergerUtility mergerUtility = new PDFMergerUtility();
-        pdfFiles.forEach(file -> {
+        for (File file : pdfFiles) {
             if (!file.exists()) {
                 throw new FileOperationException("PDF文件不存在: " + file.getAbsolutePath());
             }
-            mergerUtility.addSource(file);
-        });
+            try {
+                mergerUtility.addSource(file);
+            } catch (FileNotFoundException e) {
+                throw new FileOperationException("PDF文件不存在: " + file.getAbsolutePath(), e);
+            }
+        }
         mergerUtility.setDestinationFileName(outputFile.getAbsolutePath());
         try {
             mergerUtility.mergeDocuments(null);

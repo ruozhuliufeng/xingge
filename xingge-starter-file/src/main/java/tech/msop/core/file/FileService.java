@@ -98,7 +98,7 @@ public class FileService {
         CompressionUtil.decompress(archiveFile, targetDir, password, getCompressionCharset());
     }
 
-    public void decompress(File archiveFile, File targetDir, String charsetName) {
+    public void decompressWithCharset(File archiveFile, File targetDir, String charsetName) {
         CompressionUtil.decompress(archiveFile, targetDir, null, resolveCharset(charsetName));
     }
 
@@ -106,12 +106,12 @@ public class FileService {
         CompressionUtil.decompress(archiveFile, targetDir, password, resolveCharset(charsetName));
     }
 
-    public void decompress(String archivePath, String targetDir, String charsetName) {
-        CompressionUtil.decompress(archivePath, targetDir, null, resolveCharset(charsetName));
+    public void decompressPath(String archivePath, String targetDir, String charsetName) {
+        CompressionUtil.decompressWithCharset(archivePath, targetDir, null, charsetName);
     }
 
-    public void decompress(String archivePath, String targetDir, String password, String charsetName) {
-        CompressionUtil.decompress(archivePath, targetDir, password, resolveCharset(charsetName));
+    public void decompressPath(String archivePath, String targetDir, String password, String charsetName) {
+        CompressionUtil.decompressWithCharset(archivePath, targetDir, password, charsetName);
     }
 
     public void decompress(File archiveFile, File targetDir, String password, Charset charset) {

@@ -114,6 +114,7 @@
         <openhtmltopdf.version>1.0.10</openhtmltopdf.version>
         <flexmark.version>0.64.8</flexmark.version>
         <docx4j.version>8.3.7</docx4j.version>
+        <docx4j-importxhtml.version>8.3.15</docx4j-importxhtml.version>
         <xz.version>1.9</xz.version>
 
     </properties>
@@ -436,7 +437,7 @@
             <dependency>
                 <groupId>org.docx4j</groupId>
                 <artifactId>docx4j-ImportXHTML</artifactId>
-                <version>${docx4j.version}</version>
+                <version>${docx4j-importxhtml.version}</version>
             </dependency>
             <!-- Openhtmltopdf -->
             <dependency>

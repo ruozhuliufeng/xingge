@@ -10,7 +10,6 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.apache.commons.io.IOUtils;
 import com.github.junrar.Archive;
-import com.github.junrar.rarfile.FileHeader;
 import com.github.junrar.volume.FileVolumeManager;
 import tech.msop.core.file.exception.FileOperationException;
 
@@ -54,17 +53,6 @@ public class CompressionUtil {
     }
 
     /**
-     * 解压压缩文件到指定目录，指定字符集
-     *
-     * @param archivePath 压缩文件路径
-     * @param targetDir   目标目录
-     * @param charsetName 字符集名称
-     */
-    public static void decompress(String archivePath, String targetDir, String charsetName) {
-        decompress(archivePath, targetDir, null, resolveCharset(charsetName));
-    }
-
-    /**
      * 解压压缩文件到指定目录，指定密码和字符集
      *
      * @param archivePath 压缩文件路径
@@ -72,7 +60,7 @@ public class CompressionUtil {
      * @param password    密码（可选）
      * @param charsetName 字符集名称
      */
-    public static void decompress(String archivePath, String targetDir, String password, String charsetName) {
+    public static void decompressWithCharset(String archivePath, String targetDir, String password, String charsetName) {
         decompress(archivePath, targetDir, password, resolveCharset(charsetName));
     }
 
@@ -181,8 +169,8 @@ public class CompressionUtil {
      * 使用Junrar解压RAR文件
      */
     private static void decompressRar(File archiveFile, File targetDir, String password) {
-        try (Archive archive = password == null ? new Archive(archiveFile) : new Archive(new FileVolumeManager(archiveFile), password)) {
-            FileHeader fileHeader;
+        try (Archive archive = password == null ? new Archive(archiveFile) : new Archive(archiveFile, password)) {
+            com.github.junrar.rarfile.FileHeader fileHeader;
             while ((fileHeader = archive.nextFileHeader()) != null) {
                 String fileName = fileHeader.getFileNameW();
                 if (fileName == null || fileName.trim().isEmpty()) {
@@ -278,7 +266,7 @@ public class CompressionUtil {
                         .anyMatch(name -> name.equalsIgnoreCase(fileName));
             } else if (lowerName.endsWith(".rar")) {
                 try (Archive archive = new Archive(archiveFile)) {
-                    FileHeader fileHeader;
+                    com.github.junrar.rarfile.FileHeader fileHeader;
                     while ((fileHeader = archive.nextFileHeader()) != null) {
                         String headerName = fileHeader.getFileNameW();
                         if (headerName == null || headerName.trim().isEmpty()) {
